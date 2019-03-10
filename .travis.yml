@@ -1,0 +1,33 @@
+# JDK version
+language: java
+jdk: openjdk11
+
+# No need in sudo
+sudo: false
+
+# Add PostgreSQL database
+services:
+  - postgresql
+
+# Create testing databases
+before_install:
+  # Create usual database
+  - psql -c "CREATE DATABASE test_db;" -U postgres
+  - psql -c "CREATE USER tester WITH PASSWORD 'password';" -U postgres
+  - psql -c "GRANT ALL PRIVILEGES ON DATABASE test_db TO tester;" -U postgres
+
+# Set environment variables for https://codecov.io/
+env:
+  global:
+#    - CODECOV_TOKEN="b25766fb-bad5-494d-94b3-40f9b703a447"
+
+# Code coverage https://codecov.io/
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      - vermucht@gmail.com
+    on_success: never   # default: change
+    on_failure: change  # default: always
