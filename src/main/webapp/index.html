@@ -16,12 +16,64 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Jquery-UI -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(function () {
+            let priceSlider = $("#slider-range");
+            let priceShow = $("#amount");
+            priceSlider.slider({
+                range: true,
+                min: 0,
+                max: 500,
+                step: 10,
+                values: [75, 300],
+                slide: function (event, ui) {
+                    priceShow.val("$" + ui.values[0] + " - $" + ui.values[1]);
+                }
+            });
+
+            priceShow.val("$" + priceSlider.slider("values", 0) +
+                " - $" + priceSlider.slider("values", 1));
+
+            $("#getPrice").click(function () {
+                let minMax = getMinMax(priceSlider);
+                alert("MinPrice: " + minMax.min + "\n"
+                    + "MaxPrice: " + minMax.max);
+            });
+
+            function getMinMax(slider) {
+                return {
+                    min: slider.slider("values", 0),
+                    max: slider.slider("values", 1)
+                };
+            }
+        });
+    </script>
+
 </head>
 <body>
 
-<div align="center" class="container">
-    <h4>(Under active development)</h4>
+<div align="center" class="container-fluid">
     <h3>Car store</h3>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <p>
+                <label for="amount">Price range:</label>
+                <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+            </p>
+            <div id="slider-range"></div>
+        </div>
+        <div class="col-6">
+            <button id="getPrice" class="btn btn-primary">Узнать значения</button>
+        </div>
+    </div>
 </div>
 
 </body>
