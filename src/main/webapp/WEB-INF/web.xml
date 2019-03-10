@@ -4,27 +4,4 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-    <servlet>
-        <servlet-name>ItemsServlet</servlet-name>
-        <servlet-class>todolist.servlet.ItemsServlet</servlet-class>
-        <load-on-startup>0</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ItemsServlet</servlet-name>
-        <url-pattern>/items</url-pattern>
-    </servlet-mapping>
-
-    <filter>
-        <filter-name>ResponseParametersFilter</filter-name>
-        <filter-class>todolist.filter.ResponseParametersFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>ResponseParametersFilter</filter-name>
-        <url-pattern>*</url-pattern>
-    </filter-mapping>
-
-    <listener>
-        <listener-class>todolist.listener.ServletContextListener</listener-class>
-    </listener>
-
 </web-app>
