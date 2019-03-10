@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/vermucht/car_store.svg?branch=master)](https://travis-ci.org/vermucht/car_store
-[![codecov](https://codecov.io/gh/vermucht/car_store/branch/master/graph/badge.svg)](https://codecov.io/gh/vermucht/car_store)
+[![Build Status](https://travis-ci.org/vermucht/car-store.svg?branch=master)](https://travis-ci.org/vermucht/car-store)
+[![codecov](https://codecov.io/gh/vermucht/car-store/branch/master/graph/badge.svg)](https://codecov.io/gh/vermucht/car-store)
 # Car store
 
 Задание: реализовать площадку продаж машин.
