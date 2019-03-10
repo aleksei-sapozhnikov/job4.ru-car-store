@@ -19,7 +19,7 @@ before_install:
 # Set environment variables for https://codecov.io/
 env:
   global:
-#    - CODECOV_TOKEN="b25766fb-bad5-494d-94b3-40f9b703a447"
+    - CODECOV_TOKEN="31a85c4a-ee4f-46f3-ac7b-2e9692f2431b"
 
 # Code coverage https://codecov.io/
 after_success:
