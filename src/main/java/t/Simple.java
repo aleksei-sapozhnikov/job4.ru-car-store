@@ -2,7 +2,6 @@ package t;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Test;
 
 /**
  * Simple file to launch test.
@@ -18,7 +17,6 @@ public class Simple {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Simple.class);
 
-    @Test
     public int byTwo(int x) {
         return 2 * x;
     }
