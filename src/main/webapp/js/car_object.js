@@ -9,16 +9,16 @@ class CarFormat {
      */
     asHtmlCard(car) {
         let res = '';
-        res += `<h3>${car.mark.manufacturer} ${car.mark.model}</h3>`;
-        res += `<h2>${car.price.toLocaleString()} ₽</h2>`;
-        res += `<p><b>Body: </b>${Object.values(car.body).join('; ')}</p>`;
-        res += `<p><b>Age: </b>${[
+        res += `<p class="car-title">${car.mark.manufacturer} ${car.mark.model}</>`;
+        res += `<p class="car-price">${car.price.toLocaleString()} ₽</p>`;
+        res += `<p class="car-description"><b>Body: </b>${Object.values(car.body).join('; ')}</p>`;
+        res += `<p class="car-description"><b>Age: </b>${[
             car.age.manufactureYear,
             car.age.newness,
             car.age.mileage.toLocaleString() + 'km'
         ].join('; ')}`;
-        res += '<p><b>Engine: </b>' + Object.values(car.engine).join('; ') + '</p>';
-        res += '<p><b>Chassis: </b>' + Object.values(car.chassis).join('; ') + '</p>';
+        res += '<p class="car-description"><b>Engine: </b>' + Object.values(car.engine).join('; ') + '</p>';
+        res += '<p class="car-description"><b>Chassis: </b>' + Object.values(car.chassis).join('; ') + '</p>';
         return res;
     }
 }
