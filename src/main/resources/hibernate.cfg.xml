@@ -11,7 +11,12 @@
         <property name="hibernate.connection.password">${db.password}</property>
 
         <!-- List of XML mapping files -->
-        <!--<mapping resource="todolist/model/Item.hbm.xml"/>-->
+        <mapping resource="carstore/model/Age.hbm.xml"/>
+        <mapping resource="carstore/model/Body.hbm.xml"/>
+        <mapping resource="carstore/model/Car.hbm.xml"/>
+        <mapping resource="carstore/model/Chassis.hbm.xml"/>
+        <mapping resource="carstore/model/Engine.hbm.xml"/>
+        <mapping resource="carstore/model/Mark.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>
