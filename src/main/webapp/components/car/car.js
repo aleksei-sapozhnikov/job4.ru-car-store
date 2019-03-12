@@ -1,13 +1,22 @@
+let defaultCarImage = 'components/car/car-default-image.png';
+
 /**
  * Formatter for car items.
  */
 class CarFormat {
 
+    static cardHtml(car) {
+        let res = '';
+        res += `<div class="car-image-div"><img class="car-image-img" src="${defaultCarImage}" alt="${car.mark.manufacturer} ${car.mark.model}"></div>`;
+        res += `<div>${this.descriptionHtml(car)}</div>`;
+        return res;
+    }
+
     /**
      * Returns Car item as html card.
      * @param {Car} car
      */
-    asHtmlCard(car) {
+    static descriptionHtml(car) {
         let res = '';
         res += `<p class="car-title">${car.mark.manufacturer} ${car.mark.model}</>`;
         res += `<p class="car-price">${car.price.toLocaleString()} ₽</p>`;
