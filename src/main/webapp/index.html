@@ -54,12 +54,70 @@
         });
     </script>
 
+    <style>
+        p {
+            margin-top: 0; /* Отступ сверху */
+            margin-bottom: 0; /* Отступ снизу */
+        }
+
+        .item {
+            margin: 15px auto;
+            max-width: 300px;
+        }
+    </style>
+
+    <script type="text/javascript" src="js/car_object.js"></script>
+
+
+    <script>
+        $(function () {
+            let car = new Car(
+                13000000,
+                new Mark('Ford', 'Transit FX-1800'),
+                new Body('Package-Auto', 'Black'),
+                new Age(2003, 'used', 150000),
+                new Engine('gasoline', 1.2),
+                new Chassis('automatic')
+            );
+            $("[name='test']").html(CarFormat.prototype.asHtmlCard(car));
+        });
+    </script>
+
+
 </head>
 <body>
 
 <div align="center" class="container-fluid">
     <h3>Car store</h3>
 </div>
+
+<div class="container">
+    <div class="row row-centered">
+        <div class="item col col-12 col-md-6" name="test" style="background-color: darkslategrey;"></div>
+        <div class="item col col-12 col-md-6" name="test" style="background-color: darkslategrey;"></div>
+        <div class="item col col-12 col-md-6" name="test" style="background-color: darkslategrey;"></div>
+        <div class="item col col-12 col-md-6" name="test" style="background-color: darkslategrey;"></div>
+        <div class="item col col-12 col-md-6" name="test" style="background-color: darkslategrey;"></div>
+        <div class="item col col-12 col-md-6" name="test" style="background-color: darkslategrey;"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <button id="button_add_item" class="btn btn-primary">Добавить объявление</button>
+    </div>
+    <div id="all_announcements"></div>
+</div>
+
+
+<!--
+  --
+  --
+TEMP
+ --
+ --
+ --
+ -->
 
 <div class="container">
     <div class="row">
