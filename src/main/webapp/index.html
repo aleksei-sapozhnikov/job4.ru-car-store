@@ -16,12 +16,12 @@
     <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!-- Jquery-UI -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Custom components -->
-    <link type="text/css" rel="stylesheet" href="components/car/car.css">
-    <script type="text/javascript" src="components/car/car.js"></script>
+    <link href="components/car/car.css" rel="stylesheet" type="text/css">
+    <script src="components/car/car.js" type="text/javascript"></script>
 
 
     <style>
@@ -42,20 +42,22 @@
                 new Chassis('automatic')
             );
         }
-    </script>
 
-    <script>
-        function fillCar() {
-            let car = getCar();
-            $("[data-name='test']").html(CarFormat.cardHtml(car));
+        function fillCars() {
+            let res = '';
+            for (let i = 0; i < 6; i++) {
+                res += '<div class="item col col-12 col-md-6" data-name="test" style="background-color: bisque;"></div>'
+            }
+            $("#cars-table").html(res);
+            $("[data-name='test']").html(CarFormat.cardHtml(getCar()));
         }
     </script>
 
     <script>
         $(function () {
             $("#button_add_item").click(function () {
-                fillCar();
-            })
+                fillCars()
+            });
         })
     </script>
 
@@ -70,18 +72,11 @@
 <div class="container">
     <div class="container">
         <div class="row">
-            <button id="button_add_item" class="btn btn-primary">Добавить объявление</button>
+            <button class="btn btn-primary" id="button_add_item">Добавить объявление</button>
         </div>
         <div id="all_announcements"></div>
     </div>
-    <div class="row row-centered">
-        <div class="item col col-12 col-md-6" data-name="test" style="background-color: bisque;"></div>
-        <div class="item col col-12 col-md-6" data-name="test" style="background-color: bisque;"></div>
-        <div class="item col col-12 col-md-6" data-name="test" style="background-color: bisque;"></div>
-        <div class="item col col-12 col-md-6" data-name="test" style="background-color: bisque;"></div>
-        <div class="item col col-12 col-md-6" data-name="test" style="background-color: bisque;"></div>
-        <div class="item col col-12 col-md-6" data-name="test" style="background-color: bisque;"></div>
-    </div>
+    <div class="row row-centered" id="cars-table"></div>
 </div>
 
 </body>
