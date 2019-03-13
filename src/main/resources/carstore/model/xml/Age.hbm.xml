@@ -1,0 +1,10 @@
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
+    <class name="carstore.model.xml.Age" table="age">
+        <id name="id" column="age_id">
+            <generator class="identity"/>
+        </id>
+        <property name="manufactureYear" column="manufacture_year"/>
+        <property name="newness" column="newness"/>
+        <property name="mileage" column="mileage"/>
+    </class>
+</hibernate-mapping>

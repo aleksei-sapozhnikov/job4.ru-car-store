@@ -1,0 +1,14 @@
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
+    <class name="carstore.model.xml.Car" table="car">
+        <id name="id" column="car_id">
+            <generator class="identity"/>
+        </id>
+        <property name="price" column="price"/>
+        <many-to-one name="mark" column="mark_id" class="carstore.model.xml.Mark" cascade="merge" lazy="false"/>
+        <many-to-one name="body" column="body_id" class="carstore.model.xml.Body" cascade="merge" lazy="false"/>
+        <many-to-one name="age" column="age_id" class="carstore.model.xml.Age" cascade="merge" lazy="false"/>
+        <many-to-one name="engine" column="engine_id" class="carstore.model.xml.Engine" cascade="merge" lazy="false"/>
+        <many-to-one name="chassis" column="chassis_id" class="carstore.model.xml.Chassis" cascade="merge"
+                     lazy="false"/>
+    </class>
+</hibernate-mapping>
