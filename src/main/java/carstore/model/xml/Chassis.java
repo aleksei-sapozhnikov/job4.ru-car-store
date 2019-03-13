@@ -1,7 +1,9 @@
-package carstore.model;
+package carstore.model.xml;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
 
 /**
  * Car chassis bean.
@@ -27,6 +29,39 @@ public class Chassis {
      */
     private String transmissionType;
 
+    /* * * * * * * * * * * * * * * * * *
+     * equals(), hashCode(), toString()
+     * * * * * * * * * * * * * * * * * */
+
+    /**
+     * Object.equals() method override.
+     *
+     * @param o Other object.
+     * @return <tt>true</tt> if this and given objects are equal, <tt>false</tt> if not.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Chassis chassis = (Chassis) o;
+        return id == chassis.id &&
+                Objects.equals(transmissionType, chassis.transmissionType);
+    }
+
+    /**
+     * Returns this object's hashcode.
+     *
+     * @return Object's hashcode.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, transmissionType);
+    }
+
     /**
      * Returns current object state as String object.
      *
@@ -40,7 +75,7 @@ public class Chassis {
     }
 
     /* * * * * * * * * * * *
-     * GETTERS AND SETTERS
+     * getters and setters
      * * * * * * * * * * * */
 
     /**

@@ -1,7 +1,10 @@
-package carstore.model;
+package carstore.model.annotations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Car bean.
@@ -10,6 +13,8 @@ import org.apache.logging.log4j.Logger;
  * @version 0.1
  * @since 0.1
  */
+@Entity
+@Table(name = "car")
 public class Car {
     /**
      * Logger.
@@ -20,31 +25,83 @@ public class Car {
     /**
      * Unique id.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "car_id")
     private int id;
     /**
      * Price
      */
+    @Column(name = "price")
     private int price;
     /**
      * Mark info
      */
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "mark_id")
     private Mark mark;
     /**
      * Body info
      */
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "body_id")
     private Body body;
     /**
      * Age info
      */
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "age_id")
     private Age age;
     /**
      * Engine info
      */
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "engine_id")
     private Engine engine;
     /**
      * Chassis info
      */
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "chassis_id")
     private Chassis chassis;
+
+    /* * * * * * * * * * * * * * * * * *
+     * equals(), hashCode(), toString()
+     * * * * * * * * * * * * * * * * * */
+
+    /**
+     * Object.equals() method override.
+     *
+     * @param o Other object.
+     * @return <tt>true</tt> if this and given objects are equal, <tt>false</tt> if not.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Car car = (Car) o;
+        return id == car.id &&
+                price == car.price &&
+                Objects.equals(mark, car.mark) &&
+                Objects.equals(body, car.body) &&
+                Objects.equals(age, car.age) &&
+                Objects.equals(engine, car.engine) &&
+                Objects.equals(chassis, car.chassis);
+    }
+
+    /**
+     * Returns this object's hashcode.
+     *
+     * @return Object's hashcode.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, price, mark, body, age, engine, chassis);
+    }
 
     /**
      * Returns current object state as String object.
@@ -59,7 +116,7 @@ public class Car {
     }
 
     /* * * * * * * * * * * *
-     * GETTERS AND SETTERS
+     * getters and setters
      * * * * * * * * * * * */
 
     /**

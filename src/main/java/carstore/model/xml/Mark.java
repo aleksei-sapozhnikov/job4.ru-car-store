@@ -1,7 +1,9 @@
-package carstore.model;
+package carstore.model.xml;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
 
 /**
  * Car mark bean.
@@ -31,6 +33,40 @@ public class Mark {
      */
     private String model;
 
+    /* * * * * * * * * * * * * * * * * *
+     * equals(), hashCode(), toString()
+     * * * * * * * * * * * * * * * * * */
+
+    /**
+     * Object.equals() method override.
+     *
+     * @param o Other object.
+     * @return <tt>true</tt> if this and given objects are equal, <tt>false</tt> if not.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Mark mark = (Mark) o;
+        return id == mark.id &&
+                Objects.equals(manufacturer, mark.manufacturer) &&
+                Objects.equals(model, mark.model);
+    }
+
+    /**
+     * Returns this object's hashcode.
+     *
+     * @return Object's hashcode.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, manufacturer, model);
+    }
+
     /**
      * Returns current object state as String object.
      *
@@ -44,7 +80,7 @@ public class Mark {
     }
 
     /* * * * * * * * * * * *
-     * GETTERS AND SETTERS
+     * getters and setters
      * * * * * * * * * * * */
 
     /**

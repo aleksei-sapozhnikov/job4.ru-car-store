@@ -1,7 +1,10 @@
-package carstore.model;
+package carstore.model.annotations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Car age bean.
@@ -10,6 +13,8 @@ import org.apache.logging.log4j.Logger;
  * @version 0.1
  * @since 0.1
  */
+@Entity
+@Table(name = "age")
 public class Age {
     /**
      * Logger.
@@ -20,20 +25,61 @@ public class Age {
     /**
      * Unique id.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "age_id")
     private int id;
 
     /**
      * Year of manufacturing (2003).
      */
+    @Column(name = "manufacture_year")
     private int manufactureYear;
     /**
      * Car newness (new, used).
      */
+    @Column(name = "newness")
     private String newness;
     /**
      * Car mileage, kilometers (150 000)
      */
+    @Column(name = "mileage")
     private long mileage;
+
+    /* * * * * * * * * * * * * * * * * *
+     * equals(), hashCode(), toString()
+     * * * * * * * * * * * * * * * * * */
+
+    /**
+     * Object.equals() method override.
+     *
+     * @param o Other object.
+     * @return <tt>true</tt> if this and given objects are equal, <tt>false</tt> if not.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Age age = (Age) o;
+        return id == age.id &&
+                manufactureYear == age.manufactureYear &&
+                mileage == age.mileage &&
+                Objects.equals(newness, age.newness);
+    }
+
+    /**
+     * Returns this object's hashcode.
+     *
+     * @return Object's hashcode.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, manufactureYear, newness, mileage);
+    }
 
     /**
      * Returns current object state as String object.
@@ -48,7 +94,7 @@ public class Age {
     }
 
     /* * * * * * * * * * * *
-     * GETTERS AND SETTERS
+     * getters and setters
      * * * * * * * * * * * */
 
     /**

@@ -11,13 +11,13 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">create</property>
 
-        <!-- List of Annotations-mapping classes -->
-        <mapping class="carstore.model.annotations.Age"/>
-        <mapping class="carstore.model.annotations.Body"/>
-        <mapping class="carstore.model.annotations.Car"/>
-        <mapping class="carstore.model.annotations.Chassis"/>
-        <mapping class="carstore.model.annotations.Engine"/>
-        <mapping class="carstore.model.annotations.Mark"/>
+        <!-- List of XML mapping files -->
+        <mapping resource="carstore/model/xml/Age.hbm.xml"/>
+        <mapping resource="carstore/model/xml/Body.hbm.xml"/>
+        <mapping resource="carstore/model/xml/Car.hbm.xml"/>
+        <mapping resource="carstore/model/xml/Chassis.hbm.xml"/>
+        <mapping resource="carstore/model/xml/Engine.hbm.xml"/>
+        <mapping resource="carstore/model/xml/Mark.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

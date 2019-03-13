@@ -1,7 +1,10 @@
-package carstore.model;
+package carstore.model.annotations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * TCar body bean.
@@ -10,6 +13,8 @@ import org.apache.logging.log4j.Logger;
  * @version 0.1
  * @since 0.1
  */
+@Entity
+@Table(name = "body")
 public class Body {
     /**
      * Logger.
@@ -20,16 +25,55 @@ public class Body {
     /**
      * Unique id.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "body_id")
     private int id;
 
     /**
      * Body type (sedan, track, SUV)
      */
+    @Column(name = "body_type")
     private String type;
     /**
      * Body color (black, white, red)
      */
+    @Column(name = "color")
     private String color;
+
+    /* * * * * * * * * * * * * * * * * *
+     * equals(), hashCode(), toString()
+     * * * * * * * * * * * * * * * * * */
+
+    /**
+     * Object.equals() method override.
+     *
+     * @param o Other object.
+     * @return <tt>true</tt> if this and given objects are equal, <tt>false</tt> if not.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Body body = (Body) o;
+        return id == body.id &&
+                Objects.equals(type, body.type) &&
+                Objects.equals(color, body.color);
+    }
+
+    /**
+     * Returns this object's hashcode.
+     *
+     * @return Object's hashcode.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, color);
+    }
 
     /**
      * Returns current object state as String object.
@@ -44,7 +88,7 @@ public class Body {
     }
 
     /* * * * * * * * * * * *
-     * GETTERS AND SETTERS
+     * getters and setters
      * * * * * * * * * * * */
 
     /**
