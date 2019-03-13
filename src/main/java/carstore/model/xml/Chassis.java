@@ -48,8 +48,8 @@ public class Chassis {
             return false;
         }
         Chassis chassis = (Chassis) o;
-        return id == chassis.id &&
-                Objects.equals(transmissionType, chassis.transmissionType);
+        return id == chassis.id
+                && Objects.equals(transmissionType, chassis.transmissionType);
     }
 
     /**

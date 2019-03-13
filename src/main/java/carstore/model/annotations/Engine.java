@@ -60,9 +60,9 @@ public class Engine {
             return false;
         }
         Engine engine = (Engine) o;
-        return id == engine.id &&
-                engineVolume == engine.engineVolume &&
-                Objects.equals(engineType, engine.engineType);
+        return id == engine.id
+                && engineVolume == engine.engineVolume
+                && Objects.equals(engineType, engine.engineType);
     }
 
     /**

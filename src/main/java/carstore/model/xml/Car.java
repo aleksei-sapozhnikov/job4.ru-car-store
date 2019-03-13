@@ -67,13 +67,13 @@ public class Car {
             return false;
         }
         Car car = (Car) o;
-        return id == car.id &&
-                price == car.price &&
-                Objects.equals(mark, car.mark) &&
-                Objects.equals(body, car.body) &&
-                Objects.equals(age, car.age) &&
-                Objects.equals(engine, car.engine) &&
-                Objects.equals(chassis, car.chassis);
+        return id == car.id
+                && price == car.price
+                && Objects.equals(mark, car.mark)
+                && Objects.equals(body, car.body)
+                && Objects.equals(age, car.age)
+                && Objects.equals(engine, car.engine)
+                && Objects.equals(chassis, car.chassis);
     }
 
     /**

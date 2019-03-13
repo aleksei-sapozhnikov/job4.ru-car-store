@@ -65,10 +65,10 @@ public class Age {
             return false;
         }
         Age age = (Age) o;
-        return id == age.id &&
-                manufactureYear == age.manufactureYear &&
-                mileage == age.mileage &&
-                Objects.equals(newness, age.newness);
+        return id == age.id
+                && manufactureYear == age.manufactureYear
+                && mileage == age.mileage
+                && Objects.equals(newness, age.newness);
     }
 
     /**

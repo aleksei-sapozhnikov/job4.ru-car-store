@@ -60,9 +60,9 @@ public class Body {
             return false;
         }
         Body body = (Body) o;
-        return id == body.id &&
-                Objects.equals(type, body.type) &&
-                Objects.equals(color, body.color);
+        return id == body.id
+                && Objects.equals(type, body.type)
+                && Objects.equals(color, body.color);
     }
 
     /**

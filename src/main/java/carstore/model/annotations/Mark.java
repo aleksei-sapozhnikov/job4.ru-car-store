@@ -60,9 +60,9 @@ public class Mark {
             return false;
         }
         Mark mark = (Mark) o;
-        return id == mark.id &&
-                Objects.equals(manufacturer, mark.manufacturer) &&
-                Objects.equals(model, mark.model);
+        return id == mark.id
+                && Objects.equals(manufacturer, mark.manufacturer)
+                && Objects.equals(model, mark.model);
     }
 
     /**
