@@ -1,6 +1,6 @@
 package carstore.model.annotations;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class AgeTest {
 
