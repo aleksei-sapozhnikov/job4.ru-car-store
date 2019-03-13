@@ -12,7 +12,7 @@ import static org.hamcrest.core.Is.is;
 public class StoreModelsTest {
 
     @Test
-    public void whenSaveUsingXmlMappingThenAllStored() throws Exception {
+    public void whenSaveUsingXmlMappingThenAllStored() {
         var age = new carstore.model.xml.Age().setNewness("new").setMileage(1500).setManufactureYear(2003);
         var body = new carstore.model.xml.Body().setColor("black").setType("sedan");
         var chassis = new carstore.model.xml.Chassis().setTransmissionType("automatic");
