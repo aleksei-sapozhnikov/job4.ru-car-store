@@ -1,4 +1,4 @@
-package carstore.model.annotations;
+package carstore.model.xml;
 
 import org.junit.Test;
 
