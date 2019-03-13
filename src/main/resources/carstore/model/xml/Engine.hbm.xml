@@ -1,0 +1,9 @@
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
+    <class name="carstore.model.xml.Engine" table="engine">
+        <id name="id" column="engine_id">
+            <generator class="identity"/>
+        </id>
+        <property name="engineType" column="engine_type"/>
+        <property name="engineVolume" column="engine_volume"/>
+    </class>
+</hibernate-mapping>
