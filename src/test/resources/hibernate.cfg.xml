@@ -1,0 +1,23 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
+        <property name="hibernate.connection.url">jdbc:hsqldb:mem:todolist</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password"/>
+        <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        <!-- List of Annotations-mapping classes -->
+        <mapping class="carstore.model.Age"/>
+        <mapping class="carstore.model.Body"/>
+        <mapping class="carstore.model.Car"/>
+        <mapping class="carstore.model.Chassis"/>
+        <mapping class="carstore.model.Engine"/>
+        <mapping class="carstore.model.Mark"/>
+
+    </session-factory>
+</hibernate-configuration>
