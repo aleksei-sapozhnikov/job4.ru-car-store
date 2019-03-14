@@ -1,0 +1,9 @@
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
+    <class name="carstore.model.Body" table="body">
+        <id name="id" column="body_id">
+            <generator class="identity"/>
+        </id>
+        <property name="type" column="body_type"/>
+        <property name="color" column="color"/>
+    </class>
+</hibernate-mapping>

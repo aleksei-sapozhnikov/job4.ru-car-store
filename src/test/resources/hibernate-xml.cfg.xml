@@ -12,12 +12,12 @@
         <property name="hibernate.hbm2ddl.auto">create</property>
 
         <!-- List of XML mapping files -->
-        <mapping resource="carstore/model/xml/Age.hbm.xml"/>
-        <mapping resource="carstore/model/xml/Body.hbm.xml"/>
-        <mapping resource="carstore/model/xml/Car.hbm.xml"/>
-        <mapping resource="carstore/model/xml/Chassis.hbm.xml"/>
-        <mapping resource="carstore/model/xml/Engine.hbm.xml"/>
-        <mapping resource="carstore/model/xml/Mark.hbm.xml"/>
+        <mapping resource="carstore/model/Age.hbm.xml"/>
+        <mapping resource="carstore/model/Body.hbm.xml"/>
+        <mapping resource="carstore/model/Car.hbm.xml"/>
+        <mapping resource="carstore/model/Chassis.hbm.xml"/>
+        <mapping resource="carstore/model/Engine.hbm.xml"/>
+        <mapping resource="carstore/model/Mark.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

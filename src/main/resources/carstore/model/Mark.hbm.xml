@@ -1,0 +1,9 @@
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
+    <class name="carstore.model.Mark" table="mark">
+        <id name="id" column="mark_id">
+            <generator class="identity"/>
+        </id>
+        <property name="manufacturer" column="manufacturer"/>
+        <property name="model" column="model"/>
+    </class>
+</hibernate-mapping>
