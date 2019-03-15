@@ -32,12 +32,7 @@ public class StoreImg {
                 // save image
                 List<byte[]> allData = Arrays.asList(
                         Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\1\\1.png")),
-                        Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\1\\2.jpg")),
-                        Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\1\\3.png")),
-                        Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\1\\4.jpg")),
-                        Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\1\\5.jpg")),
-                        Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\1\\6.jpg")),
-                        Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\1\\7.jpg"))
+                        Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\1\\IMG_20180910_114351.jpg"))
                 );
                 for (var data : allData) {
                     session.save(new Image().setData(data));

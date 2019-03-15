@@ -1,6 +1,6 @@
 create table image (
   image_id   serial primary key,
-  image_data bytea
+  image_data oid
 );
 
 create table mark (

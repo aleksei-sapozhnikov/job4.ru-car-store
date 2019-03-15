@@ -30,6 +30,7 @@ public class Image {
     /**
      * Image data.
      */
+    @Lob
     @Column(name = "image_data")
     private byte[] data;
 
