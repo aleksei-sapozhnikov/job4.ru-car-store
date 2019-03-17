@@ -1,4 +1,4 @@
-package carstore.experiments;
+package carstore.model.car;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import javax.persistence.*;
 
 /**
- * Car image entity.
+ * Item image entity.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
@@ -26,7 +26,7 @@ public class Image {
     @Id
     @Column(name = "image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     /**
      * Image data.
      */
@@ -39,7 +39,7 @@ public class Image {
      *
      * @return Value of id field.
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -48,7 +48,7 @@ public class Image {
      *
      * @param id Value to set.
      */
-    public Image setId(int id) {
+    public Image setId(long id) {
         this.id = id;
         return this;
     }

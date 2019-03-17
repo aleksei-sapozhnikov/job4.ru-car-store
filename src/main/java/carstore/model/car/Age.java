@@ -1,4 +1,4 @@
-package carstore.model;
+package carstore.model.car;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Car age bean.
+ * Item age bean.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
@@ -28,7 +28,7 @@ public class Age {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "age_id")
-    private int id;
+    private long id;
 
     /**
      * Year of manufacturing (2003).
@@ -36,12 +36,12 @@ public class Age {
     @Column(name = "manufacture_year")
     private int manufactureYear;
     /**
-     * Car newness (new, used).
+     * Item newness (new, used).
      */
     @Column(name = "newness")
     private String newness;
     /**
-     * Car mileage, kilometers (150 000)
+     * Item mileage, kilometers (150 000)
      */
     @Column(name = "mileage")
     private long mileage;
@@ -102,7 +102,7 @@ public class Age {
      *
      * @return Value of id field.
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -111,7 +111,7 @@ public class Age {
      *
      * @param id Value to set.
      */
-    public Age setId(int id) {
+    public Age setId(long id) {
         this.id = id;
         return this;
     }

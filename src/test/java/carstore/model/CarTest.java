@@ -1,5 +1,6 @@
 package carstore.model;
 
+import carstore.model.car.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -183,7 +184,7 @@ public class CarTest {
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         var result = car.toString();
         var expected = String.format(
-                "Car{id=%d, price=%d, mark=%s, body=%s, age=%s, engine=%s, chassis=%s}",
+                "Item{id=%d, price=%d, mark=%s, body=%s, age=%s, engine=%s, chassis=%s}",
                 car.getId(), car.getPrice(), car.getMark(), car.getBody(), car.getAge(), car.getEngine(), car.getChassis());
         assertEquals(result, expected);
     }

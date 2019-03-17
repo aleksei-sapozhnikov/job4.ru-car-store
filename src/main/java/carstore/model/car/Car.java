@@ -1,13 +1,14 @@
-package carstore.model;
+package carstore.model.car;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * Car bean.
+ * Item bean.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
@@ -28,40 +29,43 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
-    private int id;
+    private long id;
     /**
      * Price
      */
     @Column(name = "price")
     private int price;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "car_image")
+    private List<Image> images;
     /**
      * Mark info
      */
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "mark_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Mark mark;
     /**
      * Body info
      */
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "body_id")
     private Body body;
     /**
      * Age info
      */
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "age_id")
     private Age age;
     /**
      * Engine info
      */
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "engine_id")
     private Engine engine;
     /**
      * Chassis info
      */
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "chassis_id")
     private Chassis chassis;
 
@@ -111,7 +115,7 @@ public class Car {
     @Override
     public String toString() {
         return String.format(
-                "Car{id=%d, price=%d, mark=%s, body=%s, age=%s, engine=%s, chassis=%s}",
+                "Item{id=%d, price=%d, mark=%s, body=%s, age=%s, engine=%s, chassis=%s}",
                 this.id, this.price, this.mark, this.body, this.age, this.engine, this.chassis);
     }
 
@@ -124,7 +128,7 @@ public class Car {
      *
      * @return Value of id field.
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -133,7 +137,7 @@ public class Car {
      *
      * @param id Value to set.
      */
-    public Car setId(int id) {
+    public Car setId(long id) {
         this.id = id;
         return this;
     }
@@ -154,6 +158,25 @@ public class Car {
      */
     public Car setPrice(int price) {
         this.price = price;
+        return this;
+    }
+
+    /**
+     * Returns images.
+     *
+     * @return Value of images field.
+     */
+    public List<Image> getImages() {
+        return this.images;
+    }
+
+    /**
+     * Sets images value.
+     *
+     * @param images Value to set.
+     */
+    public Car setImages(List<Image> images) {
+        this.images = images;
         return this;
     }
 

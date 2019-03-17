@@ -1,4 +1,9 @@
-.car-title {
+.item-div {
+    margin: 15px auto;
+    max-width: 300px;
+}
+
+.item-title {
     margin-top: 0;
     margin-bottom: 0;
     font-size: 1.2em;
@@ -6,7 +11,7 @@
     text-align: center;
 }
 
-.car-price {
+.item-price {
     margin-top: 0;
     margin-bottom: 0;
     font-size: 1.3em;
@@ -14,17 +19,24 @@
     text-align: center;
 }
 
-.car-description {
+.item-description-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.item-description-text {
     margin-top: 0;
     margin-bottom: 0;
 }
 
-.car-image-div {
+.item-image-div {
     height: 100px;
     text-align: center;
+    margin: 15px;
 }
 
-.car-image-img {
+.item-image-img {
     height: 100%;
     width: auto;
 }

@@ -1,5 +1,6 @@
 package carstore.model;
 
+import carstore.model.car.Engine;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

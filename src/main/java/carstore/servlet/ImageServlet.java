@@ -1,12 +1,14 @@
-package carstore.experiments;
+package carstore.servlet;
 
+import carstore.constants.ServletContextAttributes;
+import carstore.model.car.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +22,7 @@ import java.io.IOException;
  * @version 0.1
  * @since 0.1
  */
+@WebServlet("/image")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 10,   // 10 MB
         maxFileSize = 1024 * 1024 * 50,         // 50 MB
@@ -33,19 +36,17 @@ public class ImageServlet extends HttpServlet {
 
     private SessionFactory factory;
 
-    public void init() {
-        this.factory = new Configuration().configure().buildSessionFactory();
-
-    }
-
-    public void destroy() {
-        this.factory.close();
+    @Override
+    public void init() throws ServletException {
+        var context = this.getServletContext();
+        this.factory = (SessionFactory)
+                context.getAttribute(ServletContextAttributes.SESSION_FACTORY.v());
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var idParam = req.getParameter("id");
-        var id = Integer.parseInt(idParam);
+        var id = Long.parseLong(idParam);
         try (var session = this.factory.openSession()) {
             var tx = session.beginTransaction();
             try {
@@ -81,7 +82,7 @@ public class ImageServlet extends HttpServlet {
 
         var image = new Image().setData(data);
         // save object
-        int id;
+        long id;
         try (
                 var session = this.factory.openSession()) {
             var tx = session.beginTransaction();

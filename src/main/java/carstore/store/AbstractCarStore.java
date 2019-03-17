@@ -1,6 +1,6 @@
 package carstore.store;
 
-import carstore.model.Car;
+import carstore.model.car.Car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * General Car store class.
+ * General Item store class.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
@@ -66,7 +66,7 @@ public abstract class AbstractCarStore implements CarStore {
     /**
      * Deletes car from storage.
      *
-     * @param car Car containing parameters defining object to delete.
+     * @param car Item containing parameters defining object to delete.
      */
     @Override
     public void delete(Car car) {

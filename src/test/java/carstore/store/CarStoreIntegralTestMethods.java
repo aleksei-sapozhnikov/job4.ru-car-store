@@ -1,6 +1,6 @@
 package carstore.store;
 
-import carstore.model.*;
+import carstore.model.car.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -76,7 +76,7 @@ public class CarStoreIntegralTestMethods {
                 .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                 .setMark(new Mark().setManufacturer("Ford").setModel("Transit 2080-MX"));
         var saved = store.merge(isAdd);
-        int id = saved.getId();
+        var id = saved.getId();
         var got = store.get(new Car().setId(id));
         assertEquals(saved, got);
     }
@@ -89,7 +89,7 @@ public class CarStoreIntegralTestMethods {
                 .setChassis(new Chassis().setTransmissionType("automatic"))
                 .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                 .setMark(new Mark().setManufacturer("Ford").setModel("Transit 2080-MX"));
-        int id = store.merge(isAdd).getId();
+        var id = store.merge(isAdd).getId();
         var storedBefore = store.getAll().size();
         store.delete(new Car().setId(id));
         var storedAfter = store.getAll().size();
@@ -117,7 +117,7 @@ public class CarStoreIntegralTestMethods {
         var allResult = store.getAll();
         var sizeAfter = store.getAll().size();
         var allExpected = Arrays.asList(savedOne, savedTwo);
-        Comparator<Car> comparator = Comparator.comparingInt(Car::getId);
+        Comparator<Car> comparator = Comparator.comparingLong(Car::getId);
         allExpected.sort(comparator);
         allResult.sort(comparator);
         assertEquals(allExpected, allResult);

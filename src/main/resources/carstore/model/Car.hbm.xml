@@ -1,14 +1,14 @@
 <hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
-    <class name="carstore.model.Car" table="car">
+    <class name="carstore.model.car.Car" table="car">
         <id name="id" column="car_id">
             <generator class="identity"/>
         </id>
         <property name="price" column="price"/>
-        <many-to-one name="mark" column="mark_id" class="carstore.model.Mark" cascade="merge" lazy="false"/>
-        <many-to-one name="body" column="body_id" class="carstore.model.Body" cascade="merge" lazy="false"/>
-        <many-to-one name="age" column="age_id" class="carstore.model.Age" cascade="merge" lazy="false"/>
-        <many-to-one name="engine" column="engine_id" class="carstore.model.Engine" cascade="merge" lazy="false"/>
-        <many-to-one name="chassis" column="chassis_id" class="carstore.model.Chassis" cascade="merge"
+        <many-to-one name="mark" column="mark_id" class="carstore.model.car.Mark" cascade="merge" lazy="false"/>
+        <many-to-one name="body" column="body_id" class="carstore.model.car.Body" cascade="merge" lazy="false"/>
+        <many-to-one name="age" column="age_id" class="carstore.model.car.Age" cascade="merge" lazy="false"/>
+        <many-to-one name="engine" column="engine_id" class="carstore.model.car.Engine" cascade="merge" lazy="false"/>
+        <many-to-one name="chassis" column="chassis_id" class="carstore.model.car.Chassis" cascade="merge"
                      lazy="false"/>
     </class>
 </hibernate-mapping>

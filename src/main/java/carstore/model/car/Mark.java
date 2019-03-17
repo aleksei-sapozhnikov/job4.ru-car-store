@@ -1,4 +1,4 @@
-package carstore.model;
+package carstore.model.car;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Car mark bean.
+ * Item mark bean.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
@@ -28,7 +28,7 @@ public class Mark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mark_id")
-    private int id;
+    private long id;
 
     /**
      * Manufacturer (Ford, Mercedes)
@@ -96,7 +96,7 @@ public class Mark {
      *
      * @return Value of id field.
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -105,7 +105,7 @@ public class Mark {
      *
      * @param id Value to set.
      */
-    public Mark setId(int id) {
+    public Mark setId(long id) {
         this.id = id;
         return this;
     }

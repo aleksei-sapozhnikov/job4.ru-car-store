@@ -1,4 +1,4 @@
-package carstore.model;
+package carstore.model.car;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Car engine bean.
+ * Item engine bean.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
@@ -28,7 +28,7 @@ public class Engine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "engine_id")
-    private int id;
+    private long id;
 
     /**
      * Engine type (gasoline, kerosene, gas)
@@ -96,7 +96,7 @@ public class Engine {
      *
      * @return Value of id field.
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -105,7 +105,7 @@ public class Engine {
      *
      * @param id Value to set.
      */
-    public Engine setId(int id) {
+    public Engine setId(long id) {
         this.id = id;
         return this;
     }

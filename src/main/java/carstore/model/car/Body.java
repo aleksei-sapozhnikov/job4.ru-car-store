@@ -1,4 +1,4 @@
-package carstore.model;
+package carstore.model.car;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,34 +7,39 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Car chassis bean.
+ * TCar body bean.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
  * @since 0.1
  */
 @Entity
-@Table(name = "chassis")
-public class Chassis {
+@Table(name = "body")
+public class Body {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
-    private static final Logger LOG = LogManager.getLogger(Chassis.class);
+    private static final Logger LOG = LogManager.getLogger(Body.class);
 
     /**
      * Unique id.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chassis_id")
-    private int id;
+    @Column(name = "body_id")
+    private long id;
 
     /**
-     * Transmission type (automatic, manual)
+     * Body type (sedan, track, SUV)
      */
-    @Column(name = "transmission_type")
-    private String transmissionType;
+    @Column(name = "body_type")
+    private String type;
+    /**
+     * Body color (black, white, red)
+     */
+    @Column(name = "color")
+    private String color;
 
     /* * * * * * * * * * * * * * * * * *
      * equals(), hashCode(), toString()
@@ -54,9 +59,10 @@ public class Chassis {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Chassis chassis = (Chassis) o;
-        return id == chassis.id
-                && Objects.equals(transmissionType, chassis.transmissionType);
+        Body body = (Body) o;
+        return id == body.id
+                && Objects.equals(type, body.type)
+                && Objects.equals(color, body.color);
     }
 
     /**
@@ -66,7 +72,7 @@ public class Chassis {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, transmissionType);
+        return Objects.hash(id, type, color);
     }
 
     /**
@@ -77,8 +83,8 @@ public class Chassis {
     @Override
     public String toString() {
         return String.format(
-                "Chassis{id=%d, transmissionType='%s'}",
-                this.id, this.transmissionType);
+                "Body{id=%d, type='%s', color='%s'}",
+                this.id, this.type, this.color);
     }
 
     /* * * * * * * * * * * *
@@ -90,7 +96,7 @@ public class Chassis {
      *
      * @return Value of id field.
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -99,27 +105,46 @@ public class Chassis {
      *
      * @param id Value to set.
      */
-    public Chassis setId(int id) {
+    public Body setId(long id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Returns transmissionType.
+     * Returns type.
      *
-     * @return Value of transmissionType field.
+     * @return Value of type field.
      */
-    public String getTransmissionType() {
-        return this.transmissionType;
+    public String getType() {
+        return this.type;
     }
 
     /**
-     * Sets transmissionType value.
+     * Sets type value.
      *
-     * @param transmissionType Value to set.
+     * @param type Value to set.
      */
-    public Chassis setTransmissionType(String transmissionType) {
-        this.transmissionType = transmissionType;
+    public Body setType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Returns color.
+     *
+     * @return Value of color field.
+     */
+    public String getColor() {
+        return this.color;
+    }
+
+    /**
+     * Sets color value.
+     *
+     * @param color Value to set.
+     */
+    public Body setColor(String color) {
+        this.color = color;
         return this;
     }
 }

@@ -1,11 +1,11 @@
 package carstore.store;
 
-import carstore.model.Car;
+import carstore.model.car.Car;
 
 import java.util.List;
 
 /**
- * Car store.
+ * Item store.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
@@ -31,7 +31,7 @@ public interface CarStore extends AutoCloseable {
     /**
      * Deletes car from storage.
      *
-     * @param car Car containing parameters defining object to delete.
+     * @param car Item containing parameters defining object to delete.
      */
     void delete(Car car);
 

@@ -1,6 +1,6 @@
 package carstore.store;
 
-import carstore.model.Car;
+import carstore.model.car.Car;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

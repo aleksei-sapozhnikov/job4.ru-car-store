@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/vermucht/car-store.svg?branch=master)](https://travis-ci.org/vermucht/car-store)
 [![codecov](https://codecov.io/gh/vermucht/car-store/branch/master/graph/badge.svg)](https://codecov.io/gh/vermucht/car-store)
-# Car store
+# Item store
 
 Задание: реализовать площадку продаж машин.
 1. Основная страница: таблица со всеми объявлениям машин на продажу.

@@ -1,5 +1,5 @@
 <hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
-    <class name="carstore.model.Mark" table="mark">
+    <class name="carstore.model.car.Mark" table="mark">
         <id name="id" column="mark_id">
             <generator class="identity"/>
         </id>
