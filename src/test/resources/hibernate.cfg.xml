@@ -19,5 +19,7 @@
         <mapping class="carstore.model.car.Engine"/>
         <mapping class="carstore.model.car.Mark"/>
 
+        <mapping class="carstore.model.car.Image"/>
+
     </session-factory>
 </hibernate-configuration>

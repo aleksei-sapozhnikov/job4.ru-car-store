@@ -37,12 +37,15 @@ public class Car {
     private int price;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "car_image")
+    @JoinTable(name = "car_image",
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
     private List<Image> images;
     /**
      * Mark info
      */
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "mark_id")
     private Mark mark;
     /**
      * Body info
