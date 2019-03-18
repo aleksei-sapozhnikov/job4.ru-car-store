@@ -2,8 +2,7 @@ package carstore.servlet;
 
 import carstore.constants.ServletContextAttributes;
 import carstore.model.Item;
-import carstore.model.car.Car;
-import carstore.model.car.Image;
+import carstore.model.car.*;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,14 +10,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,14 +29,16 @@ import java.util.stream.Collectors;
  * @since 0.1
  */
 @WebServlet("/cars")
+@MultipartConfig
 public class CarServlet extends HttpServlet {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(CarServlet.class);
-    private final Gson gson = new Gson();
+
     private SessionFactory factory;
+    private final Gson gson = new Gson();
 
     @Override
     public void init() throws ServletException {
@@ -55,9 +56,71 @@ public class CarServlet extends HttpServlet {
                     .map(this::carToItem)
                     .collect(Collectors.toList());
             try (var writer = resp.getWriter()) {
-                var json = this.gson.toJson(items);
                 this.gson.toJson(items, writer);
             }
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var values = new TreeMap<String, String>();
+        var images = new ArrayList<Image>();
+
+        for (var part : req.getParts()) {
+            try (var in = part.getInputStream();
+                 var out = new ByteArrayOutputStream()
+            ) {
+                var buf = new byte[1024];
+                var read = in.read(buf);
+                while (read > -1) {
+                    out.write(buf, 0, read);
+                    read = in.read(buf);
+                }
+                var name = part.getName();
+                if (!(name.startsWith("image"))) {
+                    values.put(part.getName(), out.toString().intern());
+                } else {
+                    images.add(new Image().setData(out.toByteArray()));
+                }
+            }
+        }
+
+        long savedId;
+        try (var session = this.factory.openSession()) {
+            var tx = session.beginTransaction();
+            try {
+                var car = new Car();
+
+                // main props
+                car.setMark(new Mark()
+                        .setManufacturer(values.get("mark_manufacturer"))
+                        .setModel(values.get("mark_model")));
+                car.setAge(new Age()
+                        .setMileage(Long.parseLong(values.get("age_mileage")))
+                        .setManufactureYear(Integer.parseInt(values.get("age_manufactureYear")))
+                        .setNewness(values.get("age_newness")));
+                car.setBody(new Body()
+                        .setColor(values.get("body_color"))
+                        .setType(values.get("body_type")));
+                car.setChassis(new Chassis()
+                        .setTransmissionType(values.get("chassis_type")));
+                car.setEngine(new Engine()
+                        .setEngineType(values.get("engine_type"))
+                        .setEngineVolume(Integer.parseInt(values.get("engine_volume"))));
+                car.setPrice(Integer.parseInt(values.get("price")));
+                car.setImages(images);
+
+                session.save(car);
+                savedId = car.getId();
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
+
+        try (var writer = resp.getWriter()) {
+            writer.write(String.valueOf(savedId));
         }
     }
 

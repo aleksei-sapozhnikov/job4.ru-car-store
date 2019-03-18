@@ -43,7 +43,7 @@
 
 <div class="container">
     <p class="statusMsg"></p>
-    <form enctype="multipart/form-data" id="editForm">
+    <form action="cars" enctype="multipart/form-data" id="editForm" method="POST">
         <!--Mark-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -53,6 +53,14 @@
                    type="text">
             <input class="form-control" name="mark_model" placeholder="Model (e.g. Transit FX-1300)" required
                    type="text">
+        </div>
+        <!--Price-->
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Price</span>
+            </div>
+            <input class="form-control" name="price" placeholder="Price, $ (e.g. 4000)"
+                   required type="number">
         </div>
         <!--Age-->
         <div class="input-group mb-4">
@@ -128,7 +136,7 @@
                 <option>Manual</option>
             </select>
         </div>
-        <!--Chassis-->
+        <!--Photo-->
         <div class="input-group mb-2">
             <div class="input-group-prepend">
                 <span class="input-group-text">Photo</span>
