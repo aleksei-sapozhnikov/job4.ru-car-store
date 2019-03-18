@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script crossorigin="anonymous"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Jquery-UI -->
+    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Custom components -->
+    <link href="components/Item.css" rel="stylesheet" type="text/css">
+    <script src="components/Item.js" type="text/javascript"></script>
+
+    <title>Edit car</title>
+</head>
+<body>
+
+<div align="center" class="container-fluid">
+    <h3>Edit car</h3>
+</div>
+
+<div class="container">
+    <p class="statusMsg"></p>
+    <form enctype="multipart/form-data" id="editForm">
+        <!--Mark-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Mark</span>
+            </div>
+            <input class="form-control" name="mark_manufacturer" placeholder="Manufacturer (e.g. Ford)" required
+                   type="text">
+            <input class="form-control" name="mark_model" placeholder="Model (e.g. Transit FX-1300)" required
+                   type="text">
+        </div>
+        <!--Age-->
+        <div class="input-group mb-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Age</span>
+            </div>
+            <select class="form-control" name="age_newness" required>
+                <option disabled selected value="">Newness</option>
+                <option>New</option>
+                <option>Used</option>
+            </select>
+            <input class="form-control" name="age_manufactureYear" placeholder="Year of manufacturing (e.g. 2014)"
+                   required type="number">
+            <input class="form-control" name="age_mileage" placeholder="Mileage, km (e.g. 150000)" required
+                   type="number">
+        </div>
+        <!--Body-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Body</span>
+            </div>
+            <select class="form-control" name="body_type" required>
+                <option disabled selected value="">Type</option>
+                <option>Sedan</option>
+                <option>Hatchback</option>
+                <option>SUV</option>
+                <option>MPV</option>
+                <option>Estate</option>
+                <option>Crossover</option>
+                <option>Coupe</option>
+                <option>Convertible</option>
+                <option>Pickup</option>
+                <option>Other</option>
+            </select>
+            <select class="form-control" name="body_color" required>
+                <option disabled selected value="">Color</option>
+                <option>White</option>
+                <option>Gray</option>
+                <option>Black</option>
+                <option>Red</option>
+                <option>Pink</option>
+                <option>Orange</option>
+                <option>Yellow</option>
+                <option>Purple</option>
+                <option>Green</option>
+                <option>Blue</option>
+                <option>Brown</option>
+            </select>
+        </div>
+        <!--Engine-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Engine</span>
+            </div>
+            <select class="form-control" name="engine_type" required>
+                <option disabled selected value="">Type</option>
+                <option>Gasoline</option>
+                <option>Kerosene</option>
+                <option>Gas</option>
+                <option>Electricity</option>
+            </select>
+            <input class="form-control" name="engine_volume" placeholder="Volume, mm³ (e.g. 1200)" required
+                   type="number">
+        </div>
+        <!--Chassis-->
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Chassis</span>
+            </div>
+            <select class="form-control" name="chassis_type" required>
+                <option disabled selected value="">Type</option>
+                <option>Automatic</option>
+                <option>Manual</option>
+            </select>
+        </div>
+        <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>
+    </form>
+</div>
+
+</body>
+</html>
