@@ -1,4 +1,4 @@
-let defaultCarImage = 'components/item-default-image.png';
+let defaultCarImage = 'components/item-default-image.jpg';
 
 /**
  * Item - main item to sale.
