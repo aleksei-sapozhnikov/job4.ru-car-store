@@ -118,10 +118,7 @@ public class CarServlet extends HttpServlet {
                 throw e;
             }
         }
-
-        try (var writer = resp.getWriter()) {
-            writer.write(String.valueOf(savedId));
-        }
+        resp.sendRedirect("index.html?id=" + savedId);
     }
 
     private Item carToItem(Car car) {
