@@ -47,3 +47,16 @@ create table car_image (
   car_id   bigint,
   image_id bigint
 );
+
+create table users (
+  user_id  bigserial primary key,
+  login    text unique,
+  password text,
+  phone    text,
+  address  text
+);
+
+create table user_car (
+  user_id bigint,
+  car_id  bigint
+);
