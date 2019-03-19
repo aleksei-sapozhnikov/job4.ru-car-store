@@ -36,7 +36,7 @@ public class Car {
     @Column(name = "price")
     private int price;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "car_image",
             joinColumns = @JoinColumn(name = "car_id"),
             inverseJoinColumns = @JoinColumn(name = "image_id"))
