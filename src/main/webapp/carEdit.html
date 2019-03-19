@@ -34,6 +34,19 @@
             width: 100%;
         }
     </style>
+
+    <script>
+        $(function () {
+            $('input[type="file"]').change(function (e) {
+                let file = e.target.files[0];
+                let labelSelector = '#' + e.target.id + '_label';
+                let fileName = file !== undefined
+                    ? e.target.files[0].name
+                    : 'Choose file';
+                $(labelSelector).text(fileName);
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -44,6 +57,10 @@
 <div class="container">
     <p class="statusMsg"></p>
     <form action="cars" enctype="multipart/form-data" id="editForm" method="POST">
+        <!--
+        **** Required fields
+        -->
+        <h4>Required</h4>
         <!--Mark-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -136,6 +153,10 @@
                 <option>Manual</option>
             </select>
         </div>
+        <!--
+        **** Optional fields
+        -->
+        <h4>Optional</h4>
         <!--Photo-->
         <div class="input-group mb-2">
             <div class="input-group-prepend">
@@ -143,7 +164,7 @@
             </div>
             <div class="custom-file">
                 <input class="custom-file-input" id="car_image" name="image" type="file">
-                <label class="custom-file-label" for="car_image">Choose file</label>
+                <label class="custom-file-label" for="car_image" id="car_image_label">Choose file</label>
             </div>
         </div>
         <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>
