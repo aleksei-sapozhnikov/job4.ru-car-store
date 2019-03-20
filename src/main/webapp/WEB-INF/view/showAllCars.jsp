@@ -83,28 +83,22 @@
         }
     </script>
 
-    <script>
-        $(function () {
-            $("#button_add_item").click(function () {
-                location.href = "addCar";
-            });
-        })
-    </script>
-
-    <title>Item store</title>
+    <title>Car store</title>
     <link rel="shortcut icon" href="${context}/favicon.ico"/>
 </head>
 <body>
 
 <div align="center" class="container-fluid">
-    <h3>Item store</h3>
+    <h3>Car store</h3>
 </div>
 
 <div class="container">
     <p id="alert-message" style="color: green"></p>
 
     <div class="row">
-        <button class="btn btn-primary" id="button_add_item">Add car</button>
+        <a href="addCar">
+            <button class="btn btn-primary" id="button_add_item">Add car</button>
+        </a>
     </div>
 
     <div class="row row-centered" id="cars-table">

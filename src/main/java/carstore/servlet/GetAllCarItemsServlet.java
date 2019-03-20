@@ -63,6 +63,7 @@ public class GetAllCarItemsServlet extends HttpServlet {
         item.setTitle(String.format("%s %s",
                 car.getMark().getManufacturer(),
                 car.getMark().getModel()));
+        item.setStoreId(car.getId());
         item.setPrice(car.getPrice());
         item.setDescriptions(this.carToDescriptionsForItem(car));
         item.setImagesIds(this.carToImagesForItem(car));

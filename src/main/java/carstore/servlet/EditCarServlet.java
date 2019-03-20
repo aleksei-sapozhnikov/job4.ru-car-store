@@ -78,7 +78,7 @@ public class EditCarServlet extends HttpServlet {
             var tx = session.beginTransaction();
             try {
                 var car = this.createCar(values, images);
-                session.save(car);
+                session.saveOrUpdate(car);
                 savedId = car.getId();
                 tx.commit();
             } catch (Exception e) {
@@ -86,11 +86,13 @@ public class EditCarServlet extends HttpServlet {
                 throw e;
             }
         }
-        resp.sendRedirect(this.getServletContext().getContextPath() + "/index.html?id=" + savedId);
+        resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + savedId);
     }
 
     private Car createCar(Map<String, String> values, List<Image> images) {
         var car = new Car();
+        var id = values.get("storeId");
+        car.setId(Long.parseLong(values.get("storeId")));
         car.setMark(new Mark()
                 .setManufacturer(values.get("mark_manufacturer"))
                 .setModel(values.get("mark_model")));
@@ -107,7 +109,9 @@ public class EditCarServlet extends HttpServlet {
                 .setEngineType(values.get("engine_type"))
                 .setEngineVolume(Integer.parseInt(values.get("engine_volume"))));
         car.setPrice(Integer.parseInt(values.get("price")));
-        car.setImages(images);
+        if (images.size() > 0) {
+            car.setImages(images);
+        }
         return car;
     }
 

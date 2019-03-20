@@ -62,6 +62,19 @@
             });
         });
     </script>
+
+    <script>
+        function showLoadedImage(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#img_current').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
 </head>
 <body>
 
@@ -69,7 +82,21 @@
     <div align="center"><h3> ${title} </h3></div>
 
     <p class="statusMsg"></p>
+
+
+    <div class="row">
+        <a href="${context}">
+            <button class="btn btn-primary" id="button_add_item">To main page</button>
+        </a>
+    </div>
+
     <form action="addCar" enctype="multipart/form-data" id="editCarForm" method="POST">
+        <%--
+        Hidden fields
+        --%>
+        <input class="form-control" name="storeId" hidden
+               type="text"
+               value="<c:choose><c:when test="${not empty editCar}">${editCar.id}</c:when><c:otherwise>0</c:otherwise></c:choose>">
         <!--
         **** Required fields
         -->
@@ -138,12 +165,17 @@
         -->
         <h4>Optional</h4>
         <!--Photo-->
-        <div class="input-group mb-2">
+        <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text">Photo</span>
             </div>
+            <div class="item-image-div">
+                <img id="img_current" alt="current image" class="item-image-img"
+                     src="<c:choose><c:when test="${not empty editCar && editCar.images.size() > 0}">image?id=${editCar.images.get(0).id}</c:when><c:otherwise>${context}/item-default-image.jpg</c:otherwise></c:choose>"/>
+            </div>
             <div class="custom-file">
-                <input class="custom-file-input" id="car_image" name="image" type="file">
+                <input class="custom-file-input" id="car_image" name="image" type="file"
+                       onchange="showLoadedImage(this)">
                 <label class="custom-file-label" for="car_image" id="car_image_label">Choose file</label>
             </div>
         </div>
