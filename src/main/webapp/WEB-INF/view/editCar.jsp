@@ -94,9 +94,10 @@
         <%--
         Hidden fields
         --%>
-        <input class="form-control" name="storeId" hidden
-               type="text"
-               value="<c:choose><c:when test="${not empty editCar}">${editCar.id}</c:when><c:otherwise>0</c:otherwise></c:choose>">
+        <c:if test="${not empty editCar}">${editCar.id}
+            <input class="form-control" name="storeId" hidden
+                   type="text" value="${editCar.id}">
+        </c:if>
         <!--
         **** Required fields
         -->

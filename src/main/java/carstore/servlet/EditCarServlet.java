@@ -73,11 +73,20 @@ public class EditCarServlet extends HttpServlet {
         var values = new TreeMap<String, String>();
         var images = new ArrayList<Image>();
         this.fillParametersMaps(req, values, images);
+        long storeId = 0;
+        var strStoreId = values.get("storeId");
+        if (strStoreId != null && strStoreId.matches("\\d+")) {
+            storeId = Long.parseLong(strStoreId);
+        }
         long savedId;
         try (var session = this.factory.openSession()) {
             var tx = session.beginTransaction();
             try {
-                var car = this.createCar(values, images);
+                var car = session.get(Car.class, storeId);
+                if (car == null) {
+                    car = new Car();
+                }
+                this.setCarParameters(car, values, images);
                 session.saveOrUpdate(car);
                 savedId = car.getId();
                 tx.commit();
@@ -89,10 +98,7 @@ public class EditCarServlet extends HttpServlet {
         resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + savedId);
     }
 
-    private Car createCar(Map<String, String> values, List<Image> images) {
-        var car = new Car();
-        var id = values.get("storeId");
-        car.setId(Long.parseLong(values.get("storeId")));
+    private void setCarParameters(Car car, Map<String, String> values, List<Image> images) {
         car.setMark(new Mark()
                 .setManufacturer(values.get("mark_manufacturer"))
                 .setModel(values.get("mark_model")));
@@ -109,10 +115,9 @@ public class EditCarServlet extends HttpServlet {
                 .setEngineType(values.get("engine_type"))
                 .setEngineVolume(Integer.parseInt(values.get("engine_volume"))));
         car.setPrice(Integer.parseInt(values.get("price")));
-        if (images.size() > 0) {
+        if (images.size() > 0 && images.get(0).getData().length > 0) {
             car.setImages(images);
         }
-        return car;
     }
 
     private void fillParametersMaps(HttpServletRequest req, Map<String, String> values, List<Image> images) throws IOException, ServletException {
