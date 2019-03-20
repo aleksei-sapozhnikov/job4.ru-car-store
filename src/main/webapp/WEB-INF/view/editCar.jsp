@@ -35,10 +35,10 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Custom components -->
-    <link href="components/Item.css" rel="stylesheet" type="text/css">
-    <script src="components/Item.js" type="text/javascript"></script>
+    <c:import url="tools/Item.html"/>
 
     <title>${title}</title>
+    <link rel="shortcut icon" href="${context}/favicon.ico"/>
 
     <style>
         .input-group-prepend {
