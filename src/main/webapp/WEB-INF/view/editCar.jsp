@@ -1,3 +1,18 @@
+<%--@elvariable id="editCar" type="carstore.model.car.Car"--%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="context" scope="request" value="${pageContext.request.contextPath}"/>
+<c:choose>
+    <c:when test="${not empty editCar}">
+        <c:set var="title" scope="page" value="Edit car"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="title" scope="page" value="Add car"/>
+    </c:otherwise>
+</c:choose>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +38,7 @@
     <link href="components/Item.css" rel="stylesheet" type="text/css">
     <script src="components/Item.js" type="text/javascript"></script>
 
-    <title>Edit car</title>
+    <title>${title}</title>
 
     <style>
         .input-group-prepend {
@@ -50,13 +65,11 @@
 </head>
 <body>
 
-<div align="center" class="container-fluid">
-    <h3>Edit car</h3>
-</div>
-
 <div class="container">
+    <div align="center"><h3> ${title} </h3></div>
+
     <p class="statusMsg"></p>
-    <form action="cars" enctype="multipart/form-data" id="editForm" method="POST">
+    <form action="addCar" enctype="multipart/form-data" id="editCarForm" method="POST">
         <!--
         **** Required fields
         -->
@@ -67,9 +80,9 @@
                 <span class="input-group-text">Mark</span>
             </div>
             <input class="form-control" name="mark_manufacturer" placeholder="Manufacturer (e.g. Ford)" required
-                   type="text">
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.mark.manufacturer}"</c:if>>
             <input class="form-control" name="mark_model" placeholder="Model (e.g. Transit FX-1300)" required
-                   type="text">
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.mark.model}"</c:if>">
         </div>
         <!--Price-->
         <div class="input-group mb-2">
@@ -77,81 +90,48 @@
                 <span class="input-group-text">Price</span>
             </div>
             <input class="form-control" name="price" placeholder="Price, $ (e.g. 4000)"
-                   required type="number">
+                   required type="number" <c:if test="${not empty editCar}">value="${editCar.price}"</c:if>">
         </div>
         <!--Age-->
         <div class="input-group mb-4">
             <div class="input-group-prepend">
                 <span class="input-group-text">Age</span>
             </div>
-            <select class="form-control" name="age_newness" required>
-                <option disabled selected value="">Newness</option>
-                <option>New</option>
-                <option>Used</option>
-            </select>
+            <input class="form-control" name="age_newness" placeholder="Newness (e.g. new, old)" required
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.age.newness}"</c:if>>
             <input class="form-control" name="age_manufactureYear" placeholder="Year of manufacturing (e.g. 2014)"
-                   required type="number">
+                   required type="number"
+                   <c:if test="${not empty editCar}">value="${editCar.age.manufactureYear}"</c:if>">
             <input class="form-control" name="age_mileage" placeholder="Mileage, km (e.g. 150000)" required
-                   type="number">
+                   type="number" <c:if test="${not empty editCar}">value="${editCar.age.mileage}"</c:if>">
         </div>
         <!--Body-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text">Body</span>
             </div>
-            <select class="form-control" name="body_type" required>
-                <option disabled selected value="">Type</option>
-                <option>Sedan</option>
-                <option>Hatchback</option>
-                <option>SUV</option>
-                <option>MPV</option>
-                <option>Estate</option>
-                <option>Crossover</option>
-                <option>Coupe</option>
-                <option>Convertible</option>
-                <option>Pickup</option>
-                <option>Other</option>
-            </select>
-            <select class="form-control" name="body_color" required>
-                <option disabled selected value="">Color</option>
-                <option>White</option>
-                <option>Gray</option>
-                <option>Black</option>
-                <option>Red</option>
-                <option>Pink</option>
-                <option>Orange</option>
-                <option>Yellow</option>
-                <option>Purple</option>
-                <option>Green</option>
-                <option>Blue</option>
-                <option>Brown</option>
-            </select>
+            <input class="form-control" name="body_type" placeholder="Type (e.g. Sedan, Pickup)" required
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.body.type}"</c:if>>
+            <input class="form-control" name="body_color" placeholder="Color (e.g. black, white)" required
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.body.color}"</c:if>>
         </div>
         <!--Engine-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text">Engine</span>
             </div>
-            <select class="form-control" name="engine_type" required>
-                <option disabled selected value="">Type</option>
-                <option>Gasoline</option>
-                <option>Kerosene</option>
-                <option>Gas</option>
-                <option>Electricity</option>
-            </select>
+            <input class="form-control" name="engine_type" placeholder="Type (e.g. gasoline, kerosene)" required
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.engine.engineType}"</c:if>>
             <input class="form-control" name="engine_volume" placeholder="Volume, mm³ (e.g. 1200)" required
-                   type="number">
+                   type="number" <c:if test="${not empty editCar}">value="${editCar.engine.engineVolume}"</c:if>>
         </div>
         <!--Chassis-->
         <div class="input-group mb-2">
             <div class="input-group-prepend">
                 <span class="input-group-text">Chassis</span>
             </div>
-            <select class="form-control" name="chassis_type" required>
-                <option disabled selected value="">Type</option>
-                <option>Automatic</option>
-                <option>Manual</option>
-            </select>
+            <input class="form-control" name="chassis_type" placeholder="Chassis type (e.g. automatic, manual)" required
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.chassis.transmissionType}"</c:if>>
         </div>
         <!--
         **** Optional fields

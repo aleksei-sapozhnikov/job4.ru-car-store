@@ -1,3 +1,21 @@
+<%--@elvariable id="editUser" type="java.util.List<Role>"--%>
+<%--@elvariable id="loggedUser" type="ru.job4j.crud.model.User"--%>
+<%--@elvariable id="users" type="java.util.List<ru.job4j.crud.model.User>"--%>
+<%--@elvariable id="error" type="java.lang.String"--%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="context" scope="request" value="${pageContext.request.contextPath}"/>
+<c:choose>
+    <c:when test="${not empty param.id}">
+        <c:set var="title" scope="page" value="Edit user"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="title" scope="page" value="Add user"/>
+    </c:otherwise>
+</c:choose>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +41,7 @@
     <link href="components/Item.css" rel="stylesheet" type="text/css">
     <script src="components/Item.js" type="text/javascript"></script>
 
-    <title>Edit user</title>
+    <title>${title}</title>
 
     <style>
         .input-group-prepend {
@@ -38,7 +56,7 @@
 <body>
 
 <div align="center" class="container-fluid">
-    <h3>Edit car</h3>
+    <h3>${title}</h3>
 </div>
 
 <div class="container">

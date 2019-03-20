@@ -21,6 +21,10 @@ public class Item {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Item.class);
     /**
+     * Item id in store.
+     */
+    private long storeId;
+    /**
      * Price.
      */
     private int price;
@@ -40,6 +44,25 @@ public class Item {
      * Id's of images for this item.
      */
     private List<Long> imagesIds;
+
+    /**
+     * Returns storeId.
+     *
+     * @return Value of storeId field.
+     */
+    public long getStoreId() {
+        return this.storeId;
+    }
+
+    /**
+     * Sets storeId value.
+     *
+     * @param storeId Value to set.
+     */
+    public Item setStoreId(long storeId) {
+        this.storeId = storeId;
+        return this;
+    }
 
     /**
      * Returns price.

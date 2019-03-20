@@ -1,3 +1,12 @@
+<%--@elvariable id="roles" type="java.util.List<Role>"--%>
+<%--@elvariable id="loggedUser" type="ru.job4j.crud.model.User"--%>
+<%--@elvariable id="users" type="java.util.List<ru.job4j.crud.model.User>"--%>
+<%--@elvariable id="error" type="java.lang.String"--%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="context" scope="request" value="${pageContext.request.contextPath}"/>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +39,7 @@
                 type: 'GET',
                 async: false,
                 datatype: "application/json",
-                url: 'cars',
+                url: '${context}' + '/' + 'getAllCarItems',
                 success: function (response) {
                     if (response.error != null) {
                         alert(response.error);
@@ -77,7 +86,7 @@
     <script>
         $(function () {
             $("#button_add_item").click(function () {
-                location.href = "editCar.html";
+                location.href = "addCar";
             });
         })
     </script>

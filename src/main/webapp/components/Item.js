@@ -4,6 +4,8 @@ let defaultCarImage = 'components/item-default-image.jpg';
  * Item - main item to sale.
  */
 class Item {
+    /** Store id */
+    storeId;
     /** Title */
     title;
     /** Price */
@@ -15,12 +17,14 @@ class Item {
 
     /**
      * Constructs new car object.
+     * @param {number} storeId
      * @param {string} title
      * @param {number} price
      * @param descriptions
      * @param imagesIds
      */
-    constructor(title, price, descriptions, imagesIds) {
+    constructor(storeId, title, price, descriptions, imagesIds) {
+        this.storeId = storeId;
         this.title = title;
         this.price = price;
         this.descriptions = descriptions;
