@@ -38,7 +38,7 @@
     <c:import url="tools/Item.html"/>
 
     <title>${title}</title>
-    <link rel="shortcut icon" href="${context}/favicon.ico"/>
+    <link rel="shortcut icon" href="<c:url value="/favicon.ico"/>"/>
 
     <style>
         .input-group-prepend {
@@ -85,7 +85,7 @@
 
 
     <div class="row">
-        <a href="${context}">
+        <a href="<c:url value="/"/>">
             <button class="btn btn-primary" id="button_add_item">To main page</button>
         </a>
     </div>
@@ -171,7 +171,7 @@
             </div>
             <div class="item-image-div">
                 <img id="img_current" alt="current image" class="item-image-img"
-                     src="<c:choose><c:when test="${not empty editCar && editCar.images.size() > 0}">image?id=${editCar.images.get(0).id}</c:when><c:otherwise>${context}/item-default-image.jpg</c:otherwise></c:choose>"/>
+                     src="<c:choose><c:when test="${not empty editCar && editCar.images.size() > 0}">image?id=${editCar.images.get(0).id}</c:when><c:otherwise><c:url value="/item-default-image.jpg"/></c:otherwise></c:choose>"/>
             </div>
             <div class="custom-file">
                 <input class="custom-file-input" id="car_image" name="image" type="file"

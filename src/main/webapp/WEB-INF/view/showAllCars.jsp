@@ -39,7 +39,7 @@
                 type: 'GET',
                 async: false,
                 datatype: "application/json",
-                url: '${context}' + '/' + 'getAllCarItems',
+                url: "<c:url value="/getAllCarItems"/>",
                 success: function (response) {
                     if (response.error != null) {
                         alert(response.error);

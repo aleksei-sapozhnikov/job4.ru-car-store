@@ -38,7 +38,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <title>${title}</title>
-    <link rel="shortcut icon" href="${context}/favicon.ico"/>
+    <link rel="shortcut icon" href="<c:url value="/favicon.ico"/>"/>
 
     <style>
         .input-group-prepend {
