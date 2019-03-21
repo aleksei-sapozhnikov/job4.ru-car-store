@@ -41,10 +41,11 @@ public class UserEditCarFilter implements Filter {
         var req = (HttpServletRequest) request;
         var resp = (HttpServletResponse) response;
 
-        var session = req.getSession();
+        var passed = false;
+        var session = req.getSession(false);
         var loggedUser = session.getAttribute("loggedUser");
         var strStoreId = req.getParameter("storeId");
-        var passed = strStoreId == null && loggedUser != null;    // add car
+        passed = strStoreId == null && loggedUser != null;    // add car
 
         if (!passed) {
             long carStoreId = 0;
@@ -75,7 +76,12 @@ public class UserEditCarFilter implements Filter {
         if (passed) {
             chain.doFilter(request, response);
         } else {
-            resp.sendRedirect(req.getContextPath());
+            var currentSession = req.getSession(false);
+            if (currentSession.getAttribute("loggedUser") == null) {
+                resp.sendRedirect(req.getContextPath() + "/login");
+            } else {
+                resp.sendRedirect(req.getContextPath() + "?error=" + "You are not car owner");
+            }
         }
     }
 
