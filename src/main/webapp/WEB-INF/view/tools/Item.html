@@ -44,7 +44,7 @@
                 + ` src="${this.imagesIds.length > 0 ? `image?id=${this.imagesIds[0]}` : defaultCarImage}"`
                 + ` alt="${this.title}">`
                 + '</div>';
-            res += `<a class="item-link" href="${carEditPage}?id=${this.storeId}"><div>`;
+            res += `<a class="item-link" href="${carEditPage}?storeId=${this.storeId}"><div>`;
             res += `<p class="item-title" >${this.title}</p>`
                 + `<p class="item-price" >${this.price.toLocaleString()}</p>`;
             res += '</div></a>';

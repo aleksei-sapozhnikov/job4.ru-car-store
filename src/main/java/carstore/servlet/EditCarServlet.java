@@ -48,7 +48,7 @@ public class EditCarServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var carId = req.getParameter("id");
+        var carId = req.getParameter("storeId");
         if (carId != null && carId.matches("\\d+")) {
             try (var session = this.factory.openSession()) {
                 var tx = session.beginTransaction();
