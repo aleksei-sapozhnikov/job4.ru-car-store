@@ -40,32 +40,35 @@ public class UserEditCarFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         var req = (HttpServletRequest) request;
         var resp = (HttpServletResponse) response;
-        boolean passed = false;
-
-        long carStoreId = 0;
-        var strStoreId = req.getParameter("storeId");
-        if (strStoreId != null && strStoreId.matches("\\d+")) {
-            carStoreId = Long.parseLong(strStoreId);
-        }
 
         var session = req.getSession();
         var loggedUser = session.getAttribute("loggedUser");
-        if (loggedUser != null) {
-            try (var hbSession = this.factory.openSession()) {
-                var tx = hbSession.beginTransaction();
-                try {
-                    var finalCarStoreId = carStoreId;
-                    var user = hbSession.get(User.class, ((User) loggedUser).getId());
-                    var carsFound = user.getCars().stream()
-                            .filter(c -> c.getId() == finalCarStoreId)
-                            .count();
-                    if (carsFound == 1) {
-                        passed = true;
+        var strStoreId = req.getParameter("storeId");
+        var passed = strStoreId == null && loggedUser != null;    // add car
+
+        if (!passed) {
+            long carStoreId = 0;
+            if (strStoreId != null && strStoreId.matches("\\d+")) {
+                carStoreId = Long.parseLong(strStoreId);
+            }
+
+            if (loggedUser != null) {
+                try (var hbSession = this.factory.openSession()) {
+                    var tx = hbSession.beginTransaction();
+                    try {
+                        var finalCarStoreId = carStoreId;
+                        var user = hbSession.get(User.class, ((User) loggedUser).getId());
+                        var carsFound = user.getCars().stream()
+                                .filter(c -> c.getId() == finalCarStoreId)
+                                .count();
+                        if (carsFound == 1) {
+                            passed = true;
+                        }
+                        tx.rollback();
+                    } catch (Exception e) {
+                        tx.rollback();
+                        throw e;
                     }
-                    tx.rollback();
-                } catch (Exception e) {
-                    tx.rollback();
-                    throw e;
                 }
             }
         }

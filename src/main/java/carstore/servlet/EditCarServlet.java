@@ -97,6 +97,9 @@ public class EditCarServlet extends HttpServlet {
                         });
                 this.setCarParameters(destCar, values, images);
 
+                destCar.setSeller(user);
+                hbSession.saveOrUpdate(destCar);
+
                 hbSession.saveOrUpdate(user);
                 savedId = destCar.getId();
                 tx.commit();

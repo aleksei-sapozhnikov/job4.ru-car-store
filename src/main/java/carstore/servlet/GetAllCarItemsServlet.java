@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -77,7 +77,10 @@ public class GetAllCarItemsServlet extends HttpServlet {
     }
 
     private Map<String, String> carToDescriptionsForItem(Car car) {
-        Map<String, String> descriptions = new HashMap<>();
+        Map<String, String> descriptions = new LinkedHashMap<>();
+        descriptions.put("Seller", String.join("; ",
+                car.getSeller().getLogin(),
+                car.getSeller().getPhone()));
         descriptions.put("Age", String.join("; ",
                 car.getAge().getNewness(),
                 String.valueOf(car.getAge().getManufactureYear()),

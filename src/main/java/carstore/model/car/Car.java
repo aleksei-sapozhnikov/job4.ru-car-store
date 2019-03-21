@@ -1,5 +1,6 @@
 package carstore.model.car;
 
+import carstore.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +36,10 @@ public class Car {
      */
     @Column(name = "price")
     private int price;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seller")
+    private User seller;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "car_image",
@@ -161,6 +166,25 @@ public class Car {
      */
     public Car setPrice(int price) {
         this.price = price;
+        return this;
+    }
+
+    /**
+     * Returns seller.
+     *
+     * @return Value of seller field.
+     */
+    public User getSeller() {
+        return this.seller;
+    }
+
+    /**
+     * Sets seller value.
+     *
+     * @param seller Value to set.
+     */
+    public Car setSeller(User seller) {
+        this.seller = seller;
         return this;
     }
 
