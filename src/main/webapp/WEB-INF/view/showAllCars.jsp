@@ -103,7 +103,11 @@
         <a href="login">
             <button class="btn btn-primary" id="button_login">Login</button>
         </a>
+        <form action="logout" method="POST">
+            <input type="submit" class="btn btn-primary" id="button_logout" value="Logout"/>
+        </form>
     </div>
+
 
     <div class="row row-centered" id="cars-table">
         Loading items...
