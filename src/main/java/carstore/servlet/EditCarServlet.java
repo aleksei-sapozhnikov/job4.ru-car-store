@@ -1,6 +1,7 @@
 package carstore.servlet;
 
 import carstore.constants.ServletContextAttributes;
+import carstore.model.User;
 import carstore.model.car.*;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
@@ -47,12 +48,12 @@ public class EditCarServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var id = req.getParameter("id");
-        if (id != null && id.matches("\\d+")) {
+        var carId = req.getParameter("id");
+        if (carId != null && carId.matches("\\d+")) {
             try (var session = this.factory.openSession()) {
                 var tx = session.beginTransaction();
                 try {
-                    var editCar = session.get(Car.class, Long.valueOf(id));
+                    var editCar = session.get(Car.class, Long.valueOf(carId));
                     if (editCar != null) {
                         req.setAttribute("editCar", editCar);
                     }
@@ -70,25 +71,34 @@ public class EditCarServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
+
         var values = new TreeMap<String, String>();
         var images = new ArrayList<Image>();
         this.fillParametersMaps(req, values, images);
-        long storeId = 0;
+        long carStoreId = 0;
         var strStoreId = values.get("storeId");
         if (strStoreId != null && strStoreId.matches("\\d+")) {
-            storeId = Long.parseLong(strStoreId);
+            carStoreId = Long.parseLong(strStoreId);
         }
         long savedId;
-        try (var session = this.factory.openSession()) {
-            var tx = session.beginTransaction();
+        try (var hbSession = this.factory.openSession()) {
+            var tx = hbSession.beginTransaction();
             try {
-                var car = session.get(Car.class, storeId);
-                if (car == null) {
-                    car = new Car();
-                }
-                this.setCarParameters(car, values, images);
-                session.saveOrUpdate(car);
-                savedId = car.getId();
+                var user = hbSession.get(User.class, userId);
+                final long finalCarStoreId = carStoreId;
+                Car destCar = user.getCars().stream()
+                        .filter(c -> c.getId() == finalCarStoreId)
+                        .findFirst()
+                        .orElseGet(() -> {
+                            var c = new Car();
+                            user.getCars().add(c);
+                            return c;
+                        });
+                this.setCarParameters(destCar, values, images);
+
+                hbSession.saveOrUpdate(user);
+                savedId = destCar.getId();
                 tx.commit();
             } catch (Exception e) {
                 tx.rollback();
