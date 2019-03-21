@@ -92,6 +92,25 @@ public class User {
     }
 
     /**
+     * Returns password.
+     *
+     * @return Value of password field.
+     */
+    public String getPassword() {
+        return this.password;
+    }
+
+    /**
+     * Sets password value.
+     *
+     * @param password Value to set.
+     */
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    /**
      * Returns phone.
      *
      * @return Value of phone field.

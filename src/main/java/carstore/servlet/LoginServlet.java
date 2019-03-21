@@ -1,7 +1,6 @@
 package carstore.servlet;
 
 import carstore.constants.ServletContextAttributes;
-import carstore.model.User;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,22 +12,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
- * Servlet to add and edit users.
+ * Servlet to log in.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
  * @since 0.1
  */
-@WebServlet({"/addUser", "/editUser"})
-public class EditUserServlet extends HttpServlet {
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
-    private static final Logger LOG = LogManager.getLogger(EditUserServlet.class);
+    private static final Logger LOG = LogManager.getLogger(LoginServlet.class);
 
     private final Gson gson = new Gson();
     private SessionFactory factory;
@@ -42,33 +40,24 @@ public class EditUserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/view" + "/editUser.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/view" + "/loginUser.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var values = new HashMap<String, String>();
-        values.put("userId", req.getParameter("user_id"));
-        values.put("login", req.getParameter("user_login"));
-        values.put("password", req.getParameter("user_password"));
-        values.put("phone", req.getParameter("user_phone"));
-        long userId = 0;
-        var strUserId = values.get("userId");
-        if (strUserId != null && strUserId.matches("\\d+")) {
-            userId = Long.parseLong(strUserId);
-        }
+        var login = req.getParameter("login_login");
+        var password = req.getParameter("login_password");
         try (var session = this.factory.openSession()) {
             var tx = session.beginTransaction();
             try {
-                var user = session.get(User.class, userId);
-                if (user == null) {
-                    user = new User();
+                var found = session.createQuery("from User where login=:login and password=:password")
+                        .setParameter("login", login)
+                        .setParameter("password", password)
+                        .list();
+                if (found.size() == 1) {
+                    var httpSession = req.getSession();
+                    httpSession.setAttribute("loggedUser", found.get(0));
                 }
-                user.setLogin(values.get("login"));
-                user.setPassword(values.get("password"));
-                user.setPhone(values.get("phone"));
-                session.saveOrUpdate(user);
-                tx.commit();
             } catch (Exception e) {
                 tx.rollback();
                 throw e;

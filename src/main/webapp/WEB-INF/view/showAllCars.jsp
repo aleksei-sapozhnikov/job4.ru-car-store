@@ -1,5 +1,5 @@
 <%--@elvariable id="roles" type="java.util.List<Role>"--%>
-<%--@elvariable id="loggedUser" type="ru.job4j.crud.model.User"--%>
+<%--@elvariable id="loggedUser" type="carstore.model.User"--%>
 <%--@elvariable id="users" type="java.util.List<ru.job4j.crud.model.User>"--%>
 <%--@elvariable id="error" type="java.lang.String"--%>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -76,10 +76,8 @@
 
     <script>
         function showResponseIdIfPresent() {
-            let returnedId = getUrlParameter("id");
-            if (returnedId !== undefined) {
-                $("#alert-message").text('Car saved with id: ' + returnedId);
-            }
+            $("#alert-message")
+                .html(`<p style = "color:green">Logged user: id=${loggedUser.id}, login=${loggedUser.login}</p>`);
         }
     </script>
 
@@ -98,6 +96,12 @@
     <div class="row">
         <a href="addCar">
             <button class="btn btn-primary" id="button_add_item">Add car</button>
+        </a>
+        <a href="addUser">
+            <button class="btn btn-primary" id="button_add_user">Add user</button>
+        </a>
+        <a href="login">
+            <button class="btn btn-primary" id="button_login">Login</button>
         </a>
     </div>
 

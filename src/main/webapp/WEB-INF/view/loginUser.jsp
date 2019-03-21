@@ -11,7 +11,7 @@
         <c:set var="title" scope="page" value="Edit user"/>
     </c:when>
     <c:otherwise>
-        <c:set var="title" scope="page" value="Add user"/>
+        <c:set var="title" scope="page" value="Login"/>
     </c:otherwise>
 </c:choose>
 
@@ -58,13 +58,13 @@
 
 <div class="container">
     <p class="statusMsg"></p>
-    <form action="addUser" id="editForm" method="POST">
+    <form action="login" id="editForm" method="POST">
         <!--Login-->
         <div class="input-group mb-2">
             <div class="input-group-prepend">
                 <span class="input-group-text">Login</span>
             </div>
-            <input class="form-control" name="user_login" placeholder="Login (e.g. john2013)" required
+            <input class="form-control" name="login_login" placeholder="Login (e.g. john2013)" required
                    type="text">
         </div>
         <!--Password-->
@@ -72,15 +72,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">Password</span>
             </div>
-            <input class="form-control" name="user_password" placeholder="Password (e.g. qwerty1234)" required
-                   type="text">
-        </div>
-        <!--Phone-->
-        <div class="input-group mb-2">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Phone</span>
-            </div>
-            <input class="form-control" name="user_phone" placeholder="Phone (e.g. 1234567)" required
+            <input class="form-control" name="login_password" placeholder="Password (e.g. qwerty1234)" required
                    type="text">
         </div>
         <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>
