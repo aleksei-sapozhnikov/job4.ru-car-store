@@ -7,6 +7,7 @@ import carstore.model.car.*;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
@@ -96,12 +97,12 @@ public class EditCarServlet extends HttpServlet {
                             user.getCars().add(c);
                             return c;
                         });
-                this.setCarParameters(destCar, values, images);
-
+                this.setCarParameters(destCar, values);
                 destCar.setSeller(user);
+                this.setCarImages(images, hbSession, destCar);
+
                 hbSession.saveOrUpdate(destCar);
 
-                hbSession.saveOrUpdate(user);
                 savedId = destCar.getId();
                 tx.commit();
             } catch (Exception e) {
@@ -112,7 +113,16 @@ public class EditCarServlet extends HttpServlet {
         resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + savedId);
     }
 
-    private void setCarParameters(Car car, Map<String, String> values, List<Image> images) {
+    private void setCarImages(ArrayList<Image> images, Session hbSession, Car destCar) {
+        if (images.size() > 0 && images.get(0).getData().length > 0) {
+            for (var img : images) {
+                img.setCar(destCar);
+                hbSession.save(img);
+            }
+        }
+    }
+
+    private void setCarParameters(Car car, Map<String, String> values) {
         car.setMark(new Mark()
                 .setManufacturer(values.get("mark_manufacturer"))
                 .setModel(values.get("mark_model")));
@@ -129,9 +139,6 @@ public class EditCarServlet extends HttpServlet {
                 .setEngineType(values.get("engine_type"))
                 .setEngineVolume(Integer.parseInt(values.get("engine_volume"))));
         car.setPrice(Integer.parseInt(values.get("price")));
-        if (images.size() > 0 && images.get(0).getData().length > 0) {
-            car.setImages(images);
-        }
     }
 
     private void fillParametersMaps(HttpServletRequest req, Map<String, String> values, List<Image> images) throws IOException, ServletException {

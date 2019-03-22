@@ -1,5 +1,6 @@
 package carstore.model;
 
+import carstore.model.car.Car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,6 +34,12 @@ public class Image {
     @Lob
     @Column(name = "image_data")
     private byte[] data;
+    /**
+     * Car this image is associated with.
+     */
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_id")
+    private Car car;
 
     /**
      * Returns id.
@@ -69,6 +76,25 @@ public class Image {
      */
     public Image setData(byte[] data) {
         this.data = data;
+        return this;
+    }
+
+    /**
+     * Returns car.
+     *
+     * @return Value of car field.
+     */
+    public Car getCar() {
+        return this.car;
+    }
+
+    /**
+     * Sets car value.
+     *
+     * @param car Value to set.
+     */
+    public Image setCar(Car car) {
+        this.car = car;
         return this;
     }
 }
