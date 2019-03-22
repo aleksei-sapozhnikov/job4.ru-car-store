@@ -25,7 +25,7 @@ public class Chassis {
     /**
      * Transmission type (automatic, manual)
      */
-    @Column(name = "transmission_type")
+    @Column(name = "chassis_transmission_type")
     private String transmissionType;
 
     /* * * * * * * * * * * * * * * * * *

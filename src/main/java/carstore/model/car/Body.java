@@ -29,7 +29,7 @@ public class Body {
     /**
      * Body color (black, white, red)
      */
-    @Column(name = "color")
+    @Column(name = "body_color")
     private String color;
 
     /* * * * * * * * * * * * * * * * * *

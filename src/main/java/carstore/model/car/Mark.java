@@ -24,12 +24,12 @@ public class Mark {
     /**
      * Manufacturer (Ford, Mercedes)
      */
-    @Column(name = "manufacturer")
+    @Column(name = "mark_manufacturer")
     private String manufacturer;
     /**
      * Model (FX-1800, AMG-380)
      */
-    @Column(name = "model")
+    @Column(name = "mark_model")
     private String model;
 
     /* * * * * * * * * * * * * * * * * *

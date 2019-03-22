@@ -35,11 +35,11 @@ public class Car {
     /**
      * Price
      */
-    @Column(name = "price")
+    @Column(name = "car_price")
     private int price;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "seller")
+    @JoinColumn(name = "user_seller")
     private User seller;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

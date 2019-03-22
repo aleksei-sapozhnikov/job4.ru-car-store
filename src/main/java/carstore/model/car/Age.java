@@ -24,17 +24,17 @@ public class Age {
     /**
      * Year of manufacturing (2003).
      */
-    @Column(name = "manufacture_year")
+    @Column(name = "age_manufacture_year")
     private int manufactureYear;
     /**
      * Item newness (new, used).
      */
-    @Column(name = "newness")
+    @Column(name = "age_newness")
     private String newness;
     /**
      * Item mileage, kilometers (150 000)
      */
-    @Column(name = "mileage")
+    @Column(name = "age_mileage")
     private long mileage;
 
     /* * * * * * * * * * * * * * * * * *
