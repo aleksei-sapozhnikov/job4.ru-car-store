@@ -3,7 +3,8 @@ package carstore.model.car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
 /**
@@ -13,22 +14,13 @@ import java.util.Objects;
  * @version 0.1
  * @since 0.1
  */
-@Entity
-@Table(name = "chassis")
+@Embeddable
 public class Chassis {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Chassis.class);
-
-    /**
-     * Unique id.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chassis_id")
-    private long id;
 
     /**
      * Transmission type (automatic, manual)
@@ -55,8 +47,7 @@ public class Chassis {
             return false;
         }
         Chassis chassis = (Chassis) o;
-        return id == chassis.id
-                && Objects.equals(transmissionType, chassis.transmissionType);
+        return Objects.equals(transmissionType, chassis.transmissionType);
     }
 
     /**
@@ -66,7 +57,7 @@ public class Chassis {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, transmissionType);
+        return Objects.hash(transmissionType);
     }
 
     /**
@@ -77,32 +68,13 @@ public class Chassis {
     @Override
     public String toString() {
         return String.format(
-                "Chassis{id=%d, transmissionType='%s'}",
-                this.id, this.transmissionType);
+                "Chassis{transmissionType='%s'}",
+                this.transmissionType);
     }
 
     /* * * * * * * * * * * *
      * getters and setters
      * * * * * * * * * * * */
-
-    /**
-     * Returns id.
-     *
-     * @return Value of id field.
-     */
-    public long getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets id value.
-     *
-     * @param id Value to set.
-     */
-    public Chassis setId(long id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Returns transmissionType.

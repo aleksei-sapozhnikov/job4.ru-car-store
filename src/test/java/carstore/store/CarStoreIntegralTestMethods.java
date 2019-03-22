@@ -73,11 +73,6 @@ public class CarStoreIntegralTestMethods {
         isUpdate.setId(saved.getId());
         var updated = store.merge(isUpdate);
         var storedAfter = store.getAll().size();
-        isUpdate.getAge().setId(updated.getAge().getId());
-        isUpdate.getBody().setId(updated.getBody().getId());
-        isUpdate.getChassis().setId(updated.getChassis().getId());
-        isUpdate.getEngine().setId(updated.getEngine().getId());
-        isUpdate.getMark().setId(updated.getMark().getId());
         //
         assertEquals(saved.getId(), updated.getId());
         assertEquals(isUpdate, updated);

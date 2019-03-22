@@ -1,6 +1,7 @@
 package carstore.servlet;
 
 import carstore.constants.ServletContextAttributes;
+import carstore.model.Image;
 import carstore.model.User;
 import carstore.model.car.*;
 import com.google.gson.Gson;

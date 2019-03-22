@@ -4,7 +4,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Test;
 
 public class CarStoreAnnotationsTest {
 
@@ -23,11 +22,11 @@ public class CarStoreAnnotationsTest {
                 session.createQuery("delete from Car").executeUpdate());
     }
 
-    @Test
-    public void whenMergeNotStoredIdThenSavedWithNewIds() {
-        CarStoreIntegralTestMethods
-                .whenSaveNotStoredIdThenSavedWithNewIds(FACTORY);
-    }
+//    @Test
+//    public void whenMergeNotStoredIdThenSavedWithNewIds() {
+//        CarStoreIntegralTestMethods
+//                .whenSaveNotStoredIdThenSavedWithNewIds(FACTORY);
+//    }
 
 //    @Test
 //    public void whenMergeStoredIdThenUpdatedWithSameIds() {

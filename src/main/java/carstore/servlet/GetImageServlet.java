@@ -1,7 +1,7 @@
 package carstore.servlet;
 
 import carstore.constants.ServletContextAttributes;
-import carstore.model.car.Image;
+import carstore.model.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;

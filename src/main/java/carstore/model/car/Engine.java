@@ -3,7 +3,8 @@ package carstore.model.car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
 /**
@@ -13,23 +14,13 @@ import java.util.Objects;
  * @version 0.1
  * @since 0.1
  */
-@Entity
-@Table(name = "engine")
+@Embeddable
 public class Engine {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Engine.class);
-
-    /**
-     * Unique id.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "engine_id")
-    private long id;
-
     /**
      * Engine type (gasoline, kerosene, gas)
      */
@@ -60,8 +51,7 @@ public class Engine {
             return false;
         }
         Engine engine = (Engine) o;
-        return id == engine.id
-                && engineVolume == engine.engineVolume
+        return engineVolume == engine.engineVolume
                 && Objects.equals(engineType, engine.engineType);
     }
 
@@ -72,7 +62,7 @@ public class Engine {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, engineType, engineVolume);
+        return Objects.hash(engineType, engineVolume);
     }
 
     /**
@@ -83,32 +73,13 @@ public class Engine {
     @Override
     public String toString() {
         return String.format(
-                "Engine{id=%d, engineType='%s', engineVolume=%d}",
-                this.id, this.engineType, this.engineVolume);
+                "Engine{engineType='%s', engineVolume=%d}",
+                this.engineType, this.engineVolume);
     }
 
     /* * * * * * * * * * * *
      * getters and setters
      * * * * * * * * * * * */
-
-    /**
-     * Returns id.
-     *
-     * @return Value of id field.
-     */
-    public long getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets id value.
-     *
-     * @param id Value to set.
-     */
-    public Engine setId(long id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Returns engineType.

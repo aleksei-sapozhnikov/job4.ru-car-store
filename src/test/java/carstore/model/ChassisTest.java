@@ -11,11 +11,8 @@ public class ChassisTest {
     @Test
     public void testDefaultValuesGettersSetters() {
         Chassis chassis = new Chassis();
-        assertEquals(0, chassis.getId());
         assertNull(chassis.getTransmissionType());
         //
-        chassis.setId(15);
-        assertEquals(15, chassis.getId());
         chassis.setTransmissionType("automatic");
         assertEquals("automatic", chassis.getTransmissionType());
     }
@@ -23,17 +20,14 @@ public class ChassisTest {
     @Test
     public void testEqualsHashcode() {
         Chassis main =
-                new Chassis().setId(20).setTransmissionType("automatic");
+                new Chassis().setTransmissionType("automatic");
         Chassis copy =
-                new Chassis().setId(20).setTransmissionType("automatic");
-        Chassis otherId =
-                new Chassis().setId(99).setTransmissionType("automatic");
+                new Chassis().setTransmissionType("automatic");
         Chassis otherTransmissionType =
-                new Chassis().setId(20).setTransmissionType("manual");
+                new Chassis().setTransmissionType("manual");
         // not equal
         assertNotEquals(main, null);
         assertNotEquals(main, "main");
-        assertNotEquals(main, otherId);
         assertNotEquals(main, otherTransmissionType);
         // equal
         assertEquals(main, main);
@@ -45,11 +39,11 @@ public class ChassisTest {
     @Test
     public void testToString() {
         Chassis chassis =
-                new Chassis().setId(20).setTransmissionType("automatic");
+                new Chassis().setTransmissionType("automatic");
         var result = chassis.toString();
         var expected = String.format(
-                "Chassis{id=%d, transmissionType='%s'}",
-                chassis.getId(), chassis.getTransmissionType());
+                "Chassis{transmissionType='%s'}",
+                chassis.getTransmissionType());
         assertEquals(result, expected);
     }
 

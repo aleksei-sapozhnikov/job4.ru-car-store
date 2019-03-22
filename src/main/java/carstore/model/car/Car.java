@@ -1,5 +1,6 @@
 package carstore.model.car;
 
+import carstore.model.Image;
 import carstore.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,32 +50,22 @@ public class Car {
     /**
      * Mark info
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "mark_id")
     private Mark mark;
     /**
      * Body info
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "body_id")
     private Body body;
     /**
      * Age info
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "age_id")
     private Age age;
     /**
      * Engine info
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "engine_id")
     private Engine engine;
     /**
      * Chassis info
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "chassis_id")
     private Chassis chassis;
 
     /* * * * * * * * * * * * * * * * * *

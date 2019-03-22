@@ -3,7 +3,8 @@ package carstore.model.car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
 /**
@@ -13,23 +14,13 @@ import java.util.Objects;
  * @version 0.1
  * @since 0.1
  */
-@Entity
-@Table(name = "mark")
+@Embeddable
 public class Mark {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Mark.class);
-
-    /**
-     * Unique id.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mark_id")
-    private long id;
-
     /**
      * Manufacturer (Ford, Mercedes)
      */
@@ -60,8 +51,7 @@ public class Mark {
             return false;
         }
         Mark mark = (Mark) o;
-        return id == mark.id
-                && Objects.equals(manufacturer, mark.manufacturer)
+        return Objects.equals(manufacturer, mark.manufacturer)
                 && Objects.equals(model, mark.model);
     }
 
@@ -72,7 +62,7 @@ public class Mark {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, manufacturer, model);
+        return Objects.hash(manufacturer, model);
     }
 
     /**
@@ -83,32 +73,13 @@ public class Mark {
     @Override
     public String toString() {
         return String.format(
-                "Mark{id=%d, manufacturer='%s', model='%s'}",
-                this.id, this.manufacturer, this.model);
+                "Mark{manufacturer='%s', model='%s'}",
+                this.manufacturer, this.model);
     }
 
     /* * * * * * * * * * * *
      * getters and setters
      * * * * * * * * * * * */
-
-    /**
-     * Returns id.
-     *
-     * @return Value of id field.
-     */
-    public long getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets id value.
-     *
-     * @param id Value to set.
-     */
-    public Mark setId(long id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Returns manufacturer.

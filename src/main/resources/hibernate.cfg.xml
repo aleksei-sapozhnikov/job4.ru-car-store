@@ -19,7 +19,7 @@
         <mapping class="carstore.model.car.Chassis"/>
         <mapping class="carstore.model.car.Engine"/>
         <mapping class="carstore.model.car.Mark"/>
-        <mapping class="carstore.model.car.Image"/>
+        <mapping class="carstore.model.Image"/>
 
         <mapping class="carstore.model.User"/>
 

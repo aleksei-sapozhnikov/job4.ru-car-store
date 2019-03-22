@@ -1,9 +1,9 @@
 package carstore.servlet;
 
 import carstore.constants.ServletContextAttributes;
+import carstore.model.Image;
 import carstore.model.Item;
 import carstore.model.car.Car;
-import carstore.model.car.Image;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

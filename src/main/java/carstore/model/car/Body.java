@@ -3,7 +3,8 @@ package carstore.model.car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
 /**
@@ -13,23 +14,13 @@ import java.util.Objects;
  * @version 0.1
  * @since 0.1
  */
-@Entity
-@Table(name = "body")
+@Embeddable
 public class Body {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Body.class);
-
-    /**
-     * Unique id.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "body_id")
-    private long id;
-
     /**
      * Body type (sedan, track, SUV)
      */
@@ -60,8 +51,7 @@ public class Body {
             return false;
         }
         Body body = (Body) o;
-        return id == body.id
-                && Objects.equals(type, body.type)
+        return Objects.equals(type, body.type)
                 && Objects.equals(color, body.color);
     }
 
@@ -72,7 +62,7 @@ public class Body {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, color);
+        return Objects.hash(type, color);
     }
 
     /**
@@ -83,32 +73,13 @@ public class Body {
     @Override
     public String toString() {
         return String.format(
-                "Body{id=%d, type='%s', color='%s'}",
-                this.id, this.type, this.color);
+                "Body{type='%s', color='%s'}",
+                this.type, this.color);
     }
 
     /* * * * * * * * * * * *
      * getters and setters
      * * * * * * * * * * * */
-
-    /**
-     * Returns id.
-     *
-     * @return Value of id field.
-     */
-    public long getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets id value.
-     *
-     * @param id Value to set.
-     */
-    public Body setId(long id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Returns type.

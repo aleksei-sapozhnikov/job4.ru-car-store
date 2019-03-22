@@ -28,8 +28,8 @@ public class CarTest {
         assertEquals(new Body().setColor("black").setType("sedan"), car.getBody());
         car.setChassis(new Chassis().setTransmissionType("automatic"));
         assertEquals(new Chassis().setTransmissionType("automatic"), car.getChassis());
-        car.setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15));
-        assertEquals(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15), car.getEngine());
+        car.setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200));
+        assertEquals(new Engine().setEngineType("gasoline").setEngineVolume(1200), car.getEngine());
         car.setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         assertEquals(new Mark().setManufacturer("Ford").setModel("FX-1200"), car.getMark());
     }
@@ -41,63 +41,63 @@ public class CarTest {
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         Car copy =
                 new Car().setId(20).setPrice(1500)
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         Car otherId =
                 new Car().setId(99).setPrice(1500)
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         Car otherPrice =
                 new Car().setId(20).setPrice(9654)
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         Car otherAge =
                 new Car().setId(20).setPrice(1500)
                         .setAge(new Age().setNewness("new").setManufactureYear(1965).setMileage(434))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         Car otherBody =
                 new Car().setId(20).setPrice(1500)
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("yellow").setType("pickup"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         Car otherChassis =
                 new Car().setId(20).setPrice(1500)
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("manual"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         Car otherEngine =
                 new Car().setId(20).setPrice(1500)
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("kerosene").setEngineVolume(5400).setId(15))
+                        .setEngine(new Engine().setEngineType("kerosene").setEngineVolume(5400))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         Car otherMark =
                 new Car().setId(20).setPrice(1500)
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Mercedes").setModel("GLK-800"));
         // check constructors
         assertTrue(main.getId() == copy.getId()
@@ -180,7 +180,7 @@ public class CarTest {
                         .setAge(new Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
                         .setBody(new Body().setColor("black").setType("sedan"))
                         .setChassis(new Chassis().setTransmissionType("automatic"))
-                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200).setId(15))
+                        .setEngine(new Engine().setEngineType("gasoline").setEngineVolume(1200))
                         .setMark(new Mark().setManufacturer("Ford").setModel("FX-1200"));
         var result = car.toString();
         var expected = String.format(
