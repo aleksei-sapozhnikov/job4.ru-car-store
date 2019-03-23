@@ -5,11 +5,13 @@ import carstore.model.Item;
 import carstore.model.car.Car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -31,17 +33,19 @@ public class Transformer {
      * Static method implementing logic.
      * No danger for this to be overridden.
      *
-     * @param car Car object.
+     * @param session Hibernate session.
+     * @param car     Car object.
      * @return Item object.
      */
-    private static Item staticCarToItem(Car car) {
+    private static Item staticCarToItem(Session session, Car car) {
+        car = session.get(Car.class, car.getId());
         var item = new Item();
         item.setTitle(String.format("%s %s",
                 car.getMark().getManufacturer(),
                 car.getMark().getModel()));
         item.setStoreId(car.getId());
         item.setPrice(car.getPrice());
-        item.setDescriptions(Transformer.carToDescriptionsForItem(car));
+        item.setDescriptions(Transformer.carToDescriptionsForItem(session, car));
         item.setImagesIds(Transformer.imagesToIds(car.getImages()));
         return item;
     }
@@ -49,10 +53,12 @@ public class Transformer {
     /**
      * Converts Car attributes to Item's map of descriptions.
      *
-     * @param car Cra object.
+     * @param session Hibernate session.
+     * @param car     Cra object.
      * @return Map of descriptions for Item.
      */
-    private static Map<String, String> carToDescriptionsForItem(Car car) {
+    private static Map<String, String> carToDescriptionsForItem(Session session, Car car) {
+        car = session.get(Car.class, car.getId());
         Map<String, String> descriptions = new LinkedHashMap<>();
         descriptions.put("Seller", String.join("; ",
                 car.getSeller().getLogin(),
@@ -73,6 +79,20 @@ public class Transformer {
     }
 
     /**
+     * Transforms collection of cars to collection of Items.
+     *
+     * @param ses  Current Hibernate session.
+     * @param cars List of Car objects.
+     * @return List of Item objects.
+     */
+    public Collection<Item> carToItem(Session ses, Collection<Car> cars) {
+        return this.doTransactionWithRollback(ses,
+                session -> cars.stream()
+                        .map(car -> Transformer.staticCarToItem(session, car))
+                        .collect(Collectors.toList()));
+    }
+
+    /**
      * Converts collection of images to collection of their id's.
      *
      * @param images Collection of images.
@@ -84,25 +104,16 @@ public class Transformer {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Transforms one Car to Item.
-     *
-     * @param car Car object.
-     * @return Item object.
-     */
-    public Item carToItem(Car car) {
-        return Transformer.staticCarToItem(car);
-    }
-
-    /**
-     * Tranforms collection of cars to collection of Items.
-     *
-     * @param cars List of Car objects.
-     * @return List of Item objects.
-     */
-    public Collection<Item> carToItem(Collection<Car> cars) {
-        return cars.stream()
-                .map(Transformer::staticCarToItem)
-                .collect(Collectors.toList());
+    private <T> T doTransactionWithRollback(Session session, Function<Session, T> operations) {
+        T result;
+        var tx = session.beginTransaction();
+        try {
+            result = operations.apply(session);
+            tx.rollback();
+        } catch (Exception e) {
+            tx.rollback();
+            throw e;
+        }
+        return result;
     }
 }
