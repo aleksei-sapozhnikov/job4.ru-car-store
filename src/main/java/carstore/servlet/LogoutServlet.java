@@ -3,7 +3,6 @@ package carstore.servlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +24,16 @@ public class LogoutServlet extends HttpServlet {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(LogoutServlet.class);
 
+    /**
+     * Invalidates current active session.
+     *
+     * @param req  Request object.
+     * @param resp Response object.
+     * @throws IOException In case of problems.
+     */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var session = req.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.getSession().invalidate();
         resp.sendRedirect(req.getContextPath());
     }
 }

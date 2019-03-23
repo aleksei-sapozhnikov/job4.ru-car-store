@@ -25,6 +25,14 @@ public class MainPageServlet extends HttpServlet {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(MainPageServlet.class);
 
+    /**
+     * Displays webapp-root page.
+     *
+     * @param req  Request object.
+     * @param resp Response object.
+     * @throws ServletException In case of problems.
+     * @throws IOException      In case of problems.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/" + "showAllCars.jsp").forward(req, resp);
