@@ -6,6 +6,7 @@ import carstore.store.NewImageStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
+import util.Utils;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -35,32 +36,7 @@ public class GetImageServlet extends HttpServlet {
     /**
      * Image returned in case if asked image was not found.
      */
-    private static byte[] NOT_FOUND_IMAGE;
-
-    /*
-     * Read image as bytes and assign it to static variable.
-     */
-    static {
-        try (var in = GetImageServlet.class.getClassLoader().getResourceAsStream("carstore/store/image-not-found.png");
-             var out = new ByteArrayOutputStream()
-        ) {
-            if (in == null) {
-                throw new RuntimeException("Input resource is null");
-            }
-            var buf = new byte[1024];
-            var read = in.read(buf);
-            while (read > -1) {
-                out.write(buf, 0, read);
-                read = in.read(buf);
-            }
-            NOT_FOUND_IMAGE = out.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException(
-                    "Error loading resource: image-not-found picture",
-                    e);
-        }
-    }
-
+    private static final byte[] NOT_FOUND_IMAGE = GetImageServlet.readResource("carstore/store/image-not-found.png");
     /**
      * Hibernate session factoru.
      */
@@ -69,6 +45,27 @@ public class GetImageServlet extends HttpServlet {
      * Image store object.
      */
     private NewImageStore imageStore;
+
+    /**
+     * Reads and returns resource as byte array,
+     *
+     * @param path Resource path.
+     * @return Resource as byte array.
+     */
+    private static byte[] readResource(String path) {
+        byte[] result = new byte[0];
+        try (var in = GetImageServlet.class.getClassLoader().getResourceAsStream(path);
+             var out = new ByteArrayOutputStream()) {
+            if (in == null) {
+                throw new RuntimeException("Input resource is null");
+            }
+            Utils.readFullInput(in, out);
+            result = out.toByteArray();
+        } catch (Exception e) {
+            LOG.fatal(e.getMessage(), e);
+        }
+        return result;
+    }
 
     /**
      * Initializes fields.
