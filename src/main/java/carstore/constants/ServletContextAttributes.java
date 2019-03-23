@@ -2,7 +2,8 @@ package carstore.constants;
 
 public enum ServletContextAttributes {
     SESSION_FACTORY("sessionFactory"),
-    USER_STORE("userStore");
+    USER_STORE("userStore"),
+    IMAGE_STORE("imageStore");
 
     private final String value;
 
