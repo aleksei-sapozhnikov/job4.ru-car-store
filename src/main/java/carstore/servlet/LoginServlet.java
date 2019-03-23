@@ -1,6 +1,7 @@
 package carstore.servlet;
 
 import carstore.constants.ServletContextAttributes;
+import carstore.model.User;
 import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -73,14 +74,42 @@ public class LoginServlet extends HttpServlet {
         try (var session = this.hbFactory.openSession()) {
             var user = this.userStore.getByCredentials(session, login, password);
             if (user != null) {
-                req.getSession().setAttribute("loggedUser", user);
-                resp.sendRedirect(req.getContextPath());
+                this.attachAndPass(req, resp, user);
             } else {
-                req.setAttribute("error", String.format(
-                        "No user (login: %s, password: %s) found",
-                        login, password));
-                this.doGet(req, resp);
+                this.forwardToLoginWithError(req, resp, login, password);
             }
         }
+    }
+
+    /**
+     * Forwards request back to login page
+     * with attached error message.
+     *
+     * @param req      Request object.
+     * @param resp     Response object.
+     * @param login    Given login (for error message).
+     * @param password Given password (for error message).
+     * @throws ServletException In case of problems.
+     * @throws IOException      In case of problems.
+     */
+    private void forwardToLoginWithError(HttpServletRequest req, HttpServletResponse resp, String login, String password) throws ServletException, IOException {
+        req.setAttribute("error", String.format(
+                "No user (login: %s, password: %s) found",
+                login, password));
+        this.doGet(req, resp);
+    }
+
+    /**
+     * Attaches found user to session and
+     * redirects back to application main page.
+     *
+     * @param req  Request object.
+     * @param resp Response object.
+     * @param user User object to attach to session.
+     * @throws IOException In case of problems.
+     */
+    private void attachAndPass(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
+        req.getSession().setAttribute("loggedUser", user);
+        resp.sendRedirect(req.getContextPath());
     }
 }
