@@ -57,7 +57,11 @@
 </div>
 
 <div class="container">
-    <p class="statusMsg"></p>
+    <p class="statusMsg">
+        <c:if test="${error != null}">
+            <span style="color:red"><b>Error: </b>${error}</span>
+        </c:if>
+    </p>
     <form action="login" id="editForm" method="POST">
         <!--Login-->
         <div class="input-group mb-2">
