@@ -1,6 +1,6 @@
 package carstore.listener;
 
-import carstore.constants.ServletContextAttributes;
+import carstore.constants.ConstContext;
 import carstore.store.NewImageStore;
 import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
@@ -31,16 +31,16 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         var sessionFactory = new Configuration().configure().buildSessionFactory();
         var context = sce.getServletContext();
-        context.setAttribute(ServletContextAttributes.SESSION_FACTORY.v(), sessionFactory);
-        context.setAttribute(ServletContextAttributes.USER_STORE.v(), new NewUserStore());
-        context.setAttribute(ServletContextAttributes.IMAGE_STORE.v(), new NewImageStore());
+        context.setAttribute(ConstContext.SESSION_FACTORY.v(), sessionFactory);
+        context.setAttribute(ConstContext.USER_STORE.v(), new NewUserStore());
+        context.setAttribute(ConstContext.IMAGE_STORE.v(), new NewImageStore());
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         var context = sce.getServletContext();
         var sessionFactory = (SessionFactory)
-                context.getAttribute(ServletContextAttributes.SESSION_FACTORY.v());
+                context.getAttribute(ConstContext.SESSION_FACTORY.v());
         sessionFactory.close();
     }
 }

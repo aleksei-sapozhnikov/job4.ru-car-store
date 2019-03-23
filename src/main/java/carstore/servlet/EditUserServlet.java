@@ -1,6 +1,6 @@
 package carstore.servlet;
 
-import carstore.constants.ServletContextAttributes;
+import carstore.constants.ConstContext;
 import carstore.model.User;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +37,7 @@ public class EditUserServlet extends HttpServlet {
     public void init() throws ServletException {
         var context = this.getServletContext();
         this.factory = (SessionFactory)
-                context.getAttribute(ServletContextAttributes.SESSION_FACTORY.v());
+                context.getAttribute(ConstContext.SESSION_FACTORY.v());
     }
 
     @Override

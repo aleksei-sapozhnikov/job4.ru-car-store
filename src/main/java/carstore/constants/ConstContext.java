@@ -1,13 +1,13 @@
 package carstore.constants;
 
-public enum ServletContextAttributes {
+public enum ConstContext {
     SESSION_FACTORY("sessionFactory"),
     USER_STORE("userStore"),
     IMAGE_STORE("imageStore");
 
     private final String value;
 
-    ServletContextAttributes(String value) {
+    ConstContext(String value) {
         this.value = value;
     }
 

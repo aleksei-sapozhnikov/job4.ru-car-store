@@ -1,6 +1,6 @@
 package carstore.servlet;
 
-import carstore.constants.ServletContextAttributes;
+import carstore.constants.ConstContext;
 import carstore.model.Image;
 import carstore.store.NewImageStore;
 import org.apache.logging.log4j.LogManager;
@@ -73,8 +73,8 @@ public class GetImageServlet extends HttpServlet {
     @Override
     public void init() {
         var context = this.getServletContext();
-        this.hbFactory = (SessionFactory) context.getAttribute(ServletContextAttributes.SESSION_FACTORY.v());
-        this.imageStore = (NewImageStore) context.getAttribute(ServletContextAttributes.IMAGE_STORE.v());
+        this.hbFactory = (SessionFactory) context.getAttribute(ConstContext.SESSION_FACTORY.v());
+        this.imageStore = (NewImageStore) context.getAttribute(ConstContext.IMAGE_STORE.v());
     }
 
     /**

@@ -1,6 +1,6 @@
 package carstore.filter;
 
-import carstore.constants.ServletContextAttributes;
+import carstore.constants.ConstContext;
 import carstore.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +33,7 @@ public class UserEditCarFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         var context = filterConfig.getServletContext();
         this.factory = (SessionFactory)
-                context.getAttribute(ServletContextAttributes.SESSION_FACTORY.v());
+                context.getAttribute(ConstContext.SESSION_FACTORY.v());
     }
 
     @Override

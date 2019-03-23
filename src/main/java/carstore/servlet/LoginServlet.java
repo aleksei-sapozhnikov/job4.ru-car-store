@@ -1,6 +1,6 @@
 package carstore.servlet;
 
-import carstore.constants.ServletContextAttributes;
+import carstore.constants.ConstContext;
 import carstore.model.User;
 import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
@@ -43,8 +43,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void init() {
         var ctx = this.getServletContext();
-        this.hbFactory = (SessionFactory) ctx.getAttribute(ServletContextAttributes.SESSION_FACTORY.v());
-        this.userStore = (NewUserStore) ctx.getAttribute(ServletContextAttributes.USER_STORE.v());
+        this.hbFactory = (SessionFactory) ctx.getAttribute(ConstContext.SESSION_FACTORY.v());
+        this.userStore = (NewUserStore) ctx.getAttribute(ConstContext.USER_STORE.v());
     }
 
     /**

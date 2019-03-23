@@ -1,6 +1,6 @@
 package carstore.servlet;
 
-import carstore.constants.ServletContextAttributes;
+import carstore.constants.ConstContext;
 import carstore.model.Image;
 import carstore.model.User;
 import carstore.model.car.*;
@@ -45,7 +45,7 @@ public class EditCarServlet extends HttpServlet {
     public void init() throws ServletException {
         var context = this.getServletContext();
         this.factory = (SessionFactory)
-                context.getAttribute(ServletContextAttributes.SESSION_FACTORY.v());
+                context.getAttribute(ConstContext.SESSION_FACTORY.v());
     }
 
     @Override
