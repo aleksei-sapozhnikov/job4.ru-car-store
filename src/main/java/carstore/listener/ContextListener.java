@@ -1,6 +1,8 @@
 package carstore.listener;
 
 import carstore.constants.ConstContext;
+import carstore.logic.Transformer;
+import carstore.store.NewCarStore;
 import carstore.store.NewImageStore;
 import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +29,11 @@ public class ContextListener implements ServletContextListener {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(ContextListener.class);
 
+    /**
+     * Initializes objects used by servlets and puts them as attributes.
+     *
+     * @param sce ServletContextEvent object (to get ServletContext).
+     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         var sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -34,13 +41,18 @@ public class ContextListener implements ServletContextListener {
         context.setAttribute(ConstContext.SESSION_FACTORY.v(), sessionFactory);
         context.setAttribute(ConstContext.USER_STORE.v(), new NewUserStore());
         context.setAttribute(ConstContext.IMAGE_STORE.v(), new NewImageStore());
+        context.setAttribute(ConstContext.CAR_STORE.v(), new NewCarStore());
+        context.setAttribute(ConstContext.TRANSFORMER.v(), new Transformer());
     }
 
+    /**
+     * Closes open resources on application shutdown.
+     *
+     * @param sce ServletContextEvent object (to get ServletContext).
+     */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         var context = sce.getServletContext();
-        var sessionFactory = (SessionFactory)
-                context.getAttribute(ConstContext.SESSION_FACTORY.v());
-        sessionFactory.close();
+        ((SessionFactory) context.getAttribute(ConstContext.SESSION_FACTORY.v())).close();
     }
 }

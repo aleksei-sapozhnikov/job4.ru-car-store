@@ -3,7 +3,9 @@ package carstore.constants;
 public enum ConstContext {
     SESSION_FACTORY("sessionFactory"),
     USER_STORE("userStore"),
-    IMAGE_STORE("imageStore");
+    IMAGE_STORE("imageStore"),
+    CAR_STORE("carStore"),
+    TRANSFORMER("transformer");
 
     private final String value;
 
