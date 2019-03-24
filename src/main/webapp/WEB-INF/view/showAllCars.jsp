@@ -69,16 +69,8 @@
 
     <script>
         $(function () {
-            showResponseIdIfPresent();
             showItems();
         });
-    </script>
-
-    <script>
-        function showResponseIdIfPresent() {
-            $("#alert-message")
-                .html(`<p style = "color:green">Logged user: id=${loggedUser.id}, login=${loggedUser.login}</p>`);
-        }
     </script>
 
     <title>Car store</title>
@@ -91,7 +83,14 @@
 </div>
 
 <div class="container">
-    <p id="alert-message" style="color: green"></p>
+    <p class="statusMsg">
+        <c:if test="${not empty param.success}">
+            <span style="color:green"><b>Success: </b>${param.success}</span>
+        </c:if>
+        <c:if test="${error != null}">
+            <span style="color:red"><b>Error: </b>${error}</span>
+        </c:if>
+    </p>
 
     <div class="row">
         <a href="addCar">

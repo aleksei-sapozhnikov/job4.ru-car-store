@@ -36,4 +36,19 @@ public class Utils {
             read = in.read(buf);
         }
     }
+
+    /**
+     * Parses id from string if it's possible.
+     *
+     * @param string   Given string.
+     * @param notFound Value to return if could not parse.
+     * @return Parsed id or <tt>notFound</tt> value.
+     */
+    public static long parseLong(String string, long notFound) {
+        long result = notFound;
+        if (string != null && string.matches("\\d+")) {
+            result = Long.parseLong(string);
+        }
+        return result;
+    }
 }
