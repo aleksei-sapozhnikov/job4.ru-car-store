@@ -29,7 +29,7 @@ import java.util.TreeMap;
  * @version 0.1
  * @since 0.1
  */
-@WebServlet({"/addCar", "/editCar"})
+@WebServlet("/editCar")
 @MultipartConfig
 public class EditCarServlet extends HttpServlet {
     /**

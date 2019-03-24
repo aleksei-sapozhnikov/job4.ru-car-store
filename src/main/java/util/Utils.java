@@ -2,10 +2,12 @@ package util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.function.Function;
 
 /**
  * Utilities for common methods.
@@ -51,4 +53,32 @@ public class Utils {
         }
         return result;
     }
+
+    public <T> T doTransactionWithRollback(Session session, Function<Session, T> operations) {
+        T result;
+        var tx = session.beginTransaction();
+        try {
+            result = operations.apply(session);
+            tx.rollback();
+        } catch (Exception e) {
+            tx.rollback();
+            throw e;
+        }
+        return result;
+    }
+
+    protected <T> T doTransactionWithCommit(Session session, Function<Session, T> operations) {
+        T result;
+        var tx = session.beginTransaction();
+        try {
+            result = operations.apply(session);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw e;
+        }
+        return result;
+    }
+
+
 }
