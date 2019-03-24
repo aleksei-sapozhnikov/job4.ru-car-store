@@ -6,8 +6,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Item bean.
@@ -42,8 +43,8 @@ public class Car {
     @JoinColumn(name = "user_seller")
     private User seller;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Image> images;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<Image> images = new LinkedHashSet<>();
     /**
      * Mark info
      */
@@ -181,7 +182,7 @@ public class Car {
      *
      * @return Value of images field.
      */
-    public List<Image> getImages() {
+    public Set<Image> getImages() {
         return this.images;
     }
 
@@ -190,7 +191,7 @@ public class Car {
      *
      * @param images Value to set.
      */
-    public Car setImages(List<Image> images) {
+    public Car setImages(Set<Image> images) {
         this.images = images;
         return this;
     }

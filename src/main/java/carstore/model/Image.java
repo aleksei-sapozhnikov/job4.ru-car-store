@@ -5,6 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Item image entity.
@@ -96,5 +98,24 @@ public class Image {
     public Image setCar(Car car) {
         this.car = car;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Image image = (Image) o;
+        return id == image.id &&
+                Arrays.equals(data, image.data) &&
+                Objects.equals(car, image.car);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, car);
+        result = 31 * result + Arrays.hashCode(data);
+        return result;
     }
 }

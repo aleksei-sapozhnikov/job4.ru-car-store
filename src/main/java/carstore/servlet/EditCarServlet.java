@@ -7,7 +7,6 @@ import carstore.model.car.*;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
@@ -88,21 +87,14 @@ public class EditCarServlet extends HttpServlet {
             var tx = hbSession.beginTransaction();
             try {
                 var user = hbSession.get(User.class, userId);
-                final long finalCarStoreId = carStoreId;
-                Car destCar = user.getCars().stream()
-                        .filter(c -> c.getId() == finalCarStoreId)
-                        .findFirst()
-                        .orElseGet(() -> {
-                            var c = new Car();
-                            user.getCars().add(c);
-                            return c;
-                        });
+                Car destCar = hbSession.get(Car.class, carStoreId);
+                if (destCar == null) {
+                    destCar = new Car();
+                    destCar.setSeller(user);
+                }
                 this.setCarParameters(destCar, values);
-                destCar.setSeller(user);
-                this.setCarImages(images, hbSession, destCar);
-
+                this.setCarImages(images, destCar);
                 hbSession.saveOrUpdate(destCar);
-
                 savedId = destCar.getId();
                 tx.commit();
             } catch (Exception e) {
@@ -113,12 +105,17 @@ public class EditCarServlet extends HttpServlet {
         resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + savedId);
     }
 
-    private void setCarImages(ArrayList<Image> images, Session hbSession, Car destCar) {
+    private void setCarImages(ArrayList<Image> images, Car destCar) {
         if (images.size() > 0 && images.get(0).getData().length > 0) {
+            var it = destCar.getImages().iterator();
+            while (it.hasNext()) {
+                it.next().setCar(null);
+                it.remove();
+            }
             for (var img : images) {
                 img.setCar(destCar);
-                hbSession.save(img);
             }
+            destCar.getImages().addAll(images);
         }
     }
 

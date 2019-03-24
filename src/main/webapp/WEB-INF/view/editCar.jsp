@@ -171,7 +171,10 @@
             </div>
             <div class="item-image-div">
                 <img id="img_current" alt="current image" class="item-image-img"
-                     src="<c:choose><c:when test="${not empty editCar && editCar.images.size() > 0}">image?id=${editCar.images.get(0).id}</c:when><c:otherwise><c:url value="/item-default-image.jpg"/></c:otherwise></c:choose>"/>
+                     src="<c:choose>
+<c:when test="${not empty editCar && editCar.images.size() > 0}">image?id=${editCar.images.iterator().next().id}</c:when>
+<c:otherwise><c:url value="/item-default-image.jpg"/></c:otherwise>
+</c:choose>"/>
             </div>
             <div class="custom-file">
                 <input class="custom-file-input" id="car_image" name="image" type="file"

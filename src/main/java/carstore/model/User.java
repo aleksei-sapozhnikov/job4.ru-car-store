@@ -5,7 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User object. For authentication and info.
@@ -48,7 +49,7 @@ public class User {
      * List of cars the user sells.
      */
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Car> cars;
+    private Set<Car> cars = new HashSet<>();
 
     /**
      * Returns id.
@@ -131,7 +132,7 @@ public class User {
      *
      * @return Value of cars field.
      */
-    public List<Car> getCars() {
+    public Set<Car> getCars() {
         return this.cars;
     }
 
@@ -140,7 +141,7 @@ public class User {
      *
      * @param cars Value to set.
      */
-    public User setCars(List<Car> cars) {
+    public User setCars(Set<Car> cars) {
         this.cars = cars;
         return this;
     }
