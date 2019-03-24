@@ -3,6 +3,7 @@ package util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,20 +55,15 @@ public class Utils {
         return result;
     }
 
-    public <T> T doTransactionWithRollback(Session session, Function<Session, T> operations) {
+    public <T> T doTransactionWithCommit(SessionFactory factory, Function<Session, T> operations) {
         T result;
-        var tx = session.beginTransaction();
-        try {
-            result = operations.apply(session);
-            tx.rollback();
-        } catch (Exception e) {
-            tx.rollback();
-            throw e;
+        try (var session = factory.openSession()) {
+            result = this.doTransactionWithCommit(session, operations);
         }
         return result;
     }
 
-    protected <T> T doTransactionWithCommit(Session session, Function<Session, T> operations) {
+    public <T> T doTransactionWithCommit(Session session, Function<Session, T> operations) {
         T result;
         var tx = session.beginTransaction();
         try {
