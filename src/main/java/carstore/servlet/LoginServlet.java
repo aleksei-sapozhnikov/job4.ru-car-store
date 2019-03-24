@@ -69,16 +69,16 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        var login = req.getParameter("login_login");
-        var password = req.getParameter("login_password");
-        try (var session = this.hbFactory.openSession()) {
-            var user = this.userStore.getByCredentials(session, login, password);
-            if (user != null) {
-                this.attachAndPass(req, resp, user);
-            } else {
-                this.forwardToLoginWithError(req, resp, login, password);
-            }
-        }
+//        var login = req.getParameter("login_login");
+//        var password = req.getParameter("login_password");
+//        try (var session = this.hbFactory.openSession()) {
+//            var user = this.userStore.getByCredentials(session, login, password);
+//            if (user != null) {
+//                this.attachAndPass(req, resp, user);
+//            } else {
+//                this.forwardToLoginWithError(req, resp, login, password);
+//            }
+//        }
     }
 
     /**

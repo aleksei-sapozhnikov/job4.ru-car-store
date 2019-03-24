@@ -10,7 +10,7 @@
         <property name="hibernate.connection.username">${db.username}</property>
         <property name="hibernate.connection.password">${db.password}</property>
 
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <!--<property name="hibernate.hbm2ddl.auto">create-drop</property>-->
 
         <!-- List of Annotations-mapping classes -->
         <mapping class="carstore.model.car.Age"/>
@@ -20,7 +20,6 @@
         <mapping class="carstore.model.car.Engine"/>
         <mapping class="carstore.model.car.Mark"/>
         <mapping class="carstore.model.Image"/>
-
         <mapping class="carstore.model.User"/>
 
 

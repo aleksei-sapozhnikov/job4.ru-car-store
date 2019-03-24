@@ -6,7 +6,8 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * User in-session store class.
@@ -25,69 +26,43 @@ public class NewUserStore extends AbstractStore {
     /**
      * Finds user by his login and password.
      *
-     * @param ses      Hibernate session object.
      * @param login    User login.
      * @param password User password.
      * @return Found persistent user or <tt>null</tt> if not found.
      */
-    public User getByCredentials(Session ses, String login, String password) {
-        return this.doTransactionWithRollback(ses, session -> {
+    public Function<Session, User> getByCredentials(String login, String password) {
+        return session -> {
             @SuppressWarnings("unchecked")
             var found = (List<User>) session
-                    .createQuery("from User where login=:login and password=:password")
+                    .createQuery("from User where login = :login and password = :password")
                     .setParameter("login", login)
                     .setParameter("password", password)
                     .list();
-            this.checkLoginIsUnique(login, found.size());
             return found.isEmpty() ? null : found.get(0);
-        });
+        };
     }
 
     /**
-     * Checks whether there is user with such login stored or nor.
+     * Returns whether user with given login exists in database.
      *
-     * @param ses   Hibernate session.
      * @param login Login to search for.
      * @return <tt>true</tt> if login found, <tt>false</tt> if not.
      */
-    public boolean contains(Session ses, String login) {
-        return this.doTransactionWithRollback(ses, session -> {
+    public Function<Session, Boolean> contains(String login) {
+        return session -> {
             var found = session.createQuery("from User where login = :login")
                     .setParameter("login", login)
                     .list();
-            this.checkLoginIsUnique(login, found.size());
             return !(found.isEmpty());
-        });
+        };
     }
 
     /**
-     * Checks if result of finding by login is unique.
+     * Saves user to store.
      *
-     * @param login       Login searched for.
-     * @param amountFound How many elements were found with this login.
+     * @param user User to store.
      */
-    private void checkLoginIsUnique(String login, int amountFound) {
-        if (amountFound > 1) {
-            throw new RuntimeException(String.format(
-                    "Not unique login found: %s", login));
-        }
-    }
-
-    /**
-     * Creates user using given params.
-     *
-     * @param ses    Request object.
-     * @param params User parameters map.
-     * @return Persistent user object.
-     */
-    public User createAndStore(Session ses, Map<String, String> params) {
-        return this.doTransactionWithCommit(ses, (session) -> {
-            var user = new User();
-            session.save(user);
-            user.setLogin(params.get("login"));
-            user.setPassword(params.get("password"));
-            user.setPhone(params.get("phone"));
-            return user;
-        });
+    public Consumer<Session> save(User user) {
+        return session -> session.save(user);
     }
 }

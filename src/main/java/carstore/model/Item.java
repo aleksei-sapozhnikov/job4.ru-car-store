@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Item to send to frontend.
@@ -15,6 +17,35 @@ import java.util.Map;
  * @since 0.1
  */
 public class Item {
+    public static Item from(int price, String title, Map<String, String> descriptions, Set<Image> images) {
+        var item = new Item();
+        item.setPrice(price);
+        item.setTitle(title);
+        item.setDescriptions(descriptions);
+        item.setImagesIds(images.stream().map(Image::getId).collect(Collectors.toList()));
+        return item;
+    }
+
+    /**
+     * Parameters defining user.
+     */
+    public enum Params {
+        PRICE("price"),
+        TITLE("title"),
+        DESCRIPTIONS("descriptions"),
+        IMAGES_IDS("imagesIds");
+
+        private String value;
+
+        Params(String value) {
+            this.value = value;
+        }
+
+        public String v() {
+            return this.value;
+        }
+    }
+
     /**
      * Logger.
      */

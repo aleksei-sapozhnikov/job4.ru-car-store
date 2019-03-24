@@ -1,62 +1,28 @@
-create table mark (
-  mark_id      bigserial primary key,
-  manufacturer text,
-  model        text
-);
-
-create table body (
-  body_id   bigserial primary key,
-  body_type text,
-  color     text
-);
-
-create table age (
-  age_id           bigserial primary key,
-  manufacture_year int,
-  newness          text,
-  mileage          bigint
-);
-
-create table engine (
-  engine_id     bigserial primary key,
-  engine_type   text,
-  engine_volume int
-);
-
-create table chassis (
-  chassis_id        bigserial primary key,
-  transmission_type text
-);
-
-create table image (
-  image_id   bigserial primary key,
-  image_data oid
-);
-
-create table car (
-  car_id     bigserial primary key,
-  price      int,
-  mark_id    int references mark(mark_id),
-  body_id    int references body(body_id),
-  age_id     int references age(age_id),
-  engine_id  int references engine(engine_id),
-  chassis_id int references chassis(chassis_id)
-);
-
-create table car_image (
-  car_id   bigint,
-  image_id bigint
-);
-
 create table users (
   user_id  bigserial primary key,
-  login    text unique,
-  password text,
-  phone    text,
-  address  text
+  login    varchar(255) unique,
+  password varchar(255),
+  phone    varchar(255)
 );
 
-create table user_car (
-  user_id bigint,
-  car_id  bigint
+create table if not exists car (
+  car_id                    bigserial not null primary key,
+  age_manufacture_year      integer,
+  age_mileage               bigint,
+  age_newness               varchar(255),
+  body_color                varchar(255),
+  body_type                 varchar(255),
+  chassis_transmission_type varchar(255),
+  engine_type               varchar(255),
+  engine_volume             integer,
+  mark_manufacturer         varchar(255),
+  mark_model                varchar(255),
+  car_price                 integer,
+  user_seller               bigint references users(user_id)
+);
+
+create table if not exists image (
+  image_id   bigserial primary key,
+  image_data oid,
+  car_id     bigint references car(car_id)
 );
