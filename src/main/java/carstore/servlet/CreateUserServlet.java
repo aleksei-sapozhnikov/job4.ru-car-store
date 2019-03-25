@@ -73,7 +73,7 @@ public class CreateUserServlet extends HttpServlet {
         var login = req.getParameter("user_login");
         var password = req.getParameter("user_password");
         var phone = req.getParameter("user_phone");
-        var user = User.from(login, password, phone);
+        var user = User.of(login, password, phone);
         var saved = this.userStore.saveIfNotExists(user);
         if (saved) {
             var resultMsg = String.format("User (%s) created", login);

@@ -1,7 +1,7 @@
 package carstore.store;
 
 import carstore.model.Image;
-import carstore.model.car.Car;
+import carstore.model.car.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -71,19 +71,19 @@ public class NewCarStore extends AbstractStore {
     }
 
     private void sstParameters(Car car, Map<String, String> values) {
-        car.setMark(new Car.Mark()
+        car.setMark(new Mark()
                 .setManufacturer(values.get("mark_manufacturer"))
                 .setModel(values.get("mark_model")));
-        car.setAge(new Car.Age()
+        car.setAge(new Age()
                 .setMileage(Long.parseLong(values.get("age_mileage")))
                 .setManufactureYear(Integer.parseInt(values.get("age_manufactureYear")))
                 .setNewness(values.get("age_newness")));
-        car.setBody(new Car.Body()
+        car.setBody(new Body()
                 .setColor(values.get("body_color"))
                 .setType(values.get("body_type")));
-        car.setChassis(new Car.Chassis()
+        car.setChassis(new Chassis()
                 .setTransmissionType(values.get("chassis_type")));
-        car.setEngine(new Car.Engine()
+        car.setEngine(new Engine()
                 .setEngineType(values.get("engine_type"))
                 .setEngineVolume(Integer.parseInt(values.get("engine_volume"))));
         car.setPrice(Integer.parseInt(values.get("price")));

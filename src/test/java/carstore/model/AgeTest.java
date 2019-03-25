@@ -1,6 +1,6 @@
 package carstore.model;
 
-import carstore.model.car.Car;
+import carstore.model.car.Age;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -9,7 +9,7 @@ public class AgeTest {
 
     @Test
     public void testDefaultValuesGettersSetters() {
-        Car.Age age = new Car.Age();
+        Age age = new Age();
         assertEquals(0, age.getManufactureYear());
         assertEquals(0, age.getMileage());
         assertNull(age.getNewness());
@@ -23,17 +23,25 @@ public class AgeTest {
     }
 
     @Test
+    public void testCreationMethod() {
+        var age = Age.of(2010, "new", 150_000);
+        assertEquals(2010, age.getManufactureYear());
+        assertEquals("new", age.getNewness());
+        assertEquals(150_000, age.getMileage());
+    }
+
+    @Test
     public void testEqualsHashcode() {
-        Car.Age main =
-                new Car.Age().setMileage(15_000).setManufactureYear(2003).setNewness("used");
-        Car.Age copy =
-                new Car.Age().setMileage(15_000).setManufactureYear(2003).setNewness("used");
-        Car.Age otherMileage =
-                new Car.Age().setMileage(99_999).setManufactureYear(2003).setNewness("used");
-        Car.Age otherManufactureYear =
-                new Car.Age().setMileage(15_000).setManufactureYear(9999).setNewness("used");
-        Car.Age otherNewness =
-                new Car.Age().setMileage(15_000).setManufactureYear(2003).setNewness("new");
+        Age main =
+                new Age().setMileage(15_000).setManufactureYear(2003).setNewness("used");
+        Age copy =
+                new Age().setMileage(15_000).setManufactureYear(2003).setNewness("used");
+        Age otherMileage =
+                new Age().setMileage(99_999).setManufactureYear(2003).setNewness("used");
+        Age otherManufactureYear =
+                new Age().setMileage(15_000).setManufactureYear(9999).setNewness("used");
+        Age otherNewness =
+                new Age().setMileage(15_000).setManufactureYear(2003).setNewness("new");
         // not equal
         assertNotEquals(main, null);
         assertNotEquals(main, "main");
@@ -49,8 +57,8 @@ public class AgeTest {
 
     @Test
     public void testToString() {
-        Car.Age age =
-                new Car.Age().setMileage(15_000).setManufactureYear(2003).setNewness("used");
+        Age age =
+                new Age().setMileage(15_000).setManufactureYear(2003).setNewness("used");
         var result = age.toString();
         var expected = String.format(
                 "Age{manufactureYear=%d, newness='%s', mileage=%d}",

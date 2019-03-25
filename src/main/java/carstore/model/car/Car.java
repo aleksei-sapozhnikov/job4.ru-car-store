@@ -81,7 +81,7 @@ public class Car {
      * @param params Map of inner object parameters.
      * @return Car object.
      */
-    public static Car from(int price, User seller, Set<Image> images, Map<String, String> params) {
+    public static Car of(int price, User seller, Set<Image> images, Map<String, String> params) {
         var car = new Car();
         car.setPrice(price);
         car.setSeller(seller);
@@ -104,48 +104,6 @@ public class Car {
         car.setImages(images);
         return car;
     }
-
-    /**
-     * Enumerates parameters needed to create a car.
-     */
-    public enum Params {
-        MARK_MANUFACTURER("mark_manufacturer"),
-        MARK_MODEL("mark_model"),
-        BODY_COLOR("body_color"),
-        BODY_TYPE("body_type"),
-        AGE_MANUFACTURE_YEAR("age_manufactureYear"),
-        AGE_MILEAGE("age_mileage"),
-        AGE_NEWNESS("age_newness"),
-        ENGINE_TYPE("engine_type"),
-        ENGINE_VOLUME("engine_volume"),
-        CHASSIS_TRANSMISSION_TYPE("chassis_transmissionType");
-        /**
-         * String value holded.
-         */
-        private String v;
-
-        /**
-         * Constructor.
-         *
-         * @param v Value to store.
-         */
-        Params(String v) {
-            this.v = v;
-        }
-
-        /**
-         * Returns string value holded inside.
-         *
-         * @return Inner value.
-         */
-        public String v() {
-            return this.v;
-        }
-    }
-
-    /* * * * * * * * * * * * * * * * * *
-     * equals(), hashCode(), toString()
-     * * * * * * * * * * * * * * * * * */
 
     /**
      * Object.equals() method override.
@@ -171,6 +129,10 @@ public class Car {
                 && Objects.equals(chassis, car.chassis);
     }
 
+    /* * * * * * * * * * * * * * * * * *
+     * equals(), hashCode(), toString()
+     * * * * * * * * * * * * * * * * * */
+
     /**
      * Returns this object's hashcode.
      *
@@ -193,10 +155,6 @@ public class Car {
                 this.id, this.price, this.mark, this.body, this.age, this.engine, this.chassis);
     }
 
-    /* * * * * * * * * * * *
-     * getters and setters
-     * * * * * * * * * * * */
-
     /**
      * Returns id.
      *
@@ -205,6 +163,10 @@ public class Car {
     public long getId() {
         return this.id;
     }
+
+    /* * * * * * * * * * * *
+     * getters and setters
+     * * * * * * * * * * * */
 
     /**
      * Sets id value.
@@ -366,6 +328,44 @@ public class Car {
     public Car setChassis(Chassis chassis) {
         this.chassis = chassis;
         return this;
+    }
+
+    /**
+     * Enumerates parameters needed to create a car.
+     */
+    public enum Params {
+        MARK_MANUFACTURER("mark_manufacturer"),
+        MARK_MODEL("mark_model"),
+        BODY_COLOR("body_color"),
+        BODY_TYPE("body_type"),
+        AGE_MANUFACTURE_YEAR("age_manufactureYear"),
+        AGE_MILEAGE("age_mileage"),
+        AGE_NEWNESS("age_newness"),
+        ENGINE_TYPE("engine_type"),
+        ENGINE_VOLUME("engine_volume"),
+        CHASSIS_TRANSMISSION_TYPE("chassis_transmissionType");
+        /**
+         * String value holded.
+         */
+        private String v;
+
+        /**
+         * Constructor.
+         *
+         * @param v Value to store.
+         */
+        Params(String v) {
+            this.v = v;
+        }
+
+        /**
+         * Returns string value holded inside.
+         *
+         * @return Inner value.
+         */
+        public String v() {
+            return this.v;
+        }
     }
 
     /**

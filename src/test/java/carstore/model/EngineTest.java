@@ -1,6 +1,6 @@
 package carstore.model;
 
-import carstore.model.car.Car;
+import carstore.model.car.Engine;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -10,7 +10,7 @@ public class EngineTest {
 
     @Test
     public void testDefaultValuesGettersSetters() {
-        Car.Engine engine = new Car.Engine();
+        Engine engine = new Engine();
         assertEquals(0, engine.getEngineVolume());
         assertNull(engine.getEngineType());
         //
@@ -22,14 +22,14 @@ public class EngineTest {
 
     @Test
     public void testEqualsHashcode() {
-        Car.Engine main =
-                new Car.Engine().setEngineVolume(1200).setEngineType("gasoline");
-        Car.Engine copy =
-                new Car.Engine().setEngineVolume(1200).setEngineType("gasoline");
-        Car.Engine otherEngineVolume =
-                new Car.Engine().setEngineVolume(5000).setEngineType("gasoline");
-        Car.Engine otherEngineType =
-                new Car.Engine().setEngineVolume(1200).setEngineType("kerosene");
+        Engine main =
+                new Engine().setEngineVolume(1200).setEngineType("gasoline");
+        Engine copy =
+                new Engine().setEngineVolume(1200).setEngineType("gasoline");
+        Engine otherEngineVolume =
+                new Engine().setEngineVolume(5000).setEngineType("gasoline");
+        Engine otherEngineType =
+                new Engine().setEngineVolume(1200).setEngineType("kerosene");
         // not equal
         assertNotEquals(main, null);
         assertNotEquals(main, "main");
@@ -44,8 +44,8 @@ public class EngineTest {
 
     @Test
     public void testToString() {
-        Car.Engine engine =
-                new Car.Engine().setEngineVolume(1200).setEngineType("gasoline");
+        Engine engine =
+                new Engine().setEngineVolume(1200).setEngineType("gasoline");
         var result = engine.toString();
         var expected = String.format(
                 "Engine{engineType='%s', engineVolume=%d}",

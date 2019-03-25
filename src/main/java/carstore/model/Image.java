@@ -49,7 +49,7 @@ public class Image {
      * @param data Image data.
      * @return New image object.
      */
-    public static Image from(byte[] data) {
+    public static Image of(byte[] data) {
         var image = new Image();
         image.setData(data);
         return image;

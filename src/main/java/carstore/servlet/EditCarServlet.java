@@ -78,7 +78,7 @@ public class EditCarServlet extends HttpServlet {
         var values = new HashMap<String, String>();
         var images = new HashSet<Image>();
         this.fillParametersMaps(req, values, images);
-        var car = Car.from(Integer.parseInt(values.get("price")), user, images, values);
+        var car = Car.of(Integer.parseInt(values.get("price")), user, images, values);
         car.setId(id);
         this.carStore.update(car);
         resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + car.getId());

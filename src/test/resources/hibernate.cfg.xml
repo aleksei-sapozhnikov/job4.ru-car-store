@@ -13,12 +13,12 @@
         <property name="hibernate.hbm2ddl.auto">create</property>
 
         <!-- List of Annotations-mapping classes -->
-        <mapping class="carstore.model.car.Car$Age"/>
-        <mapping class="carstore.model.car.Car$Body"/>
+        <mapping class="carstore.model.car.Age"/>
+        <mapping class="carstore.model.car.Body"/>
         <mapping class="carstore.model.car.Car"/>
-        <mapping class="carstore.model.car.Car$Chassis"/>
-        <mapping class="carstore.model.car.Car$Engine"/>
-        <mapping class="carstore.model.car.Car$Mark"/>
+        <mapping class="carstore.model.car.Chassis"/>
+        <mapping class="carstore.model.car.Engine"/>
+        <mapping class="carstore.model.car.Mark"/>
 
         <mapping class="carstore.model.Image"/>
         <mapping class="carstore.model.User"/>

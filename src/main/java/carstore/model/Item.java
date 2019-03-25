@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @since 0.1
  */
 public class Item {
-    public static Item from(int price, String title, Map<String, String> descriptions, Set<Image> images) {
+    public static Item of(int price, String title, Map<String, String> descriptions, Set<Image> images) {
         var item = new Item();
         item.setPrice(price);
         item.setTitle(title);
