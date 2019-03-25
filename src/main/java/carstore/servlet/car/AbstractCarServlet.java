@@ -1,4 +1,4 @@
-package carstore.servlet;
+package carstore.servlet.car;
 
 import carstore.constants.ConstContext;
 import carstore.model.Image;
@@ -7,15 +7,12 @@ import carstore.model.car.Car;
 import carstore.store.NewCarStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
 import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,26 +21,21 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Controls adding car.
+ * General servlet for Car operations.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
  * @since 0.1
  */
-@WebServlet("/addCar")
 @MultipartConfig
-public class CreateCarServlet extends HttpServlet {
+public abstract class AbstractCarServlet extends HttpServlet {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
-    private static final Logger LOG = LogManager.getLogger(CreateCarServlet.class);
+    private static final Logger LOG = LogManager.getLogger(AbstractCarServlet.class);
     /**
-     * Hibernate session factory.
-     */
-    private SessionFactory hbFactory;
-    /**
-     * Utils to perform database transactions.
+     * Car store.
      */
     private NewCarStore carStore;
 
@@ -53,28 +45,22 @@ public class CreateCarServlet extends HttpServlet {
     @Override
     public void init() {
         var ctx = this.getServletContext();
-        this.hbFactory = (SessionFactory) ctx.getAttribute(ConstContext.SESSION_FACTORY.v());
         this.carStore = (NewCarStore) ctx.getAttribute(ConstContext.CAR_STORE.v());
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/view" + "/createCar.jsp").forward(req, resp);
+    protected NewCarStore getCarStore() {
+        return this.carStore;
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected Car createCarFromParameters(HttpServletRequest req) throws IOException, ServletException {
         var user = (User) req.getSession().getAttribute("loggedUser");
         var values = new HashMap<String, String>();
         var images = new HashSet<Image>();
-        this.fillParametersMaps(req, values, images);
-        var car = Car.of(Integer.parseInt(values.get("price")), user, images, values);
-        this.carStore.save(car);
-        resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + car.getId());
+        this.fillParameters(req, values, images);
+        return Car.of(user, images, values);
     }
 
-
-    private void fillParametersMaps(HttpServletRequest req, Map<String, String> values, Set<Image> images) throws IOException, ServletException {
+    private void fillParameters(HttpServletRequest req, Map<String, String> values, Set<Image> images) throws IOException, ServletException {
         for (var part : req.getParts()) {
             try (var in = part.getInputStream();
                  var out = new ByteArrayOutputStream()) {

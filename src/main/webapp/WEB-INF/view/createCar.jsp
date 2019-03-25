@@ -157,7 +157,8 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">Chassis</span>
             </div>
-            <input class="form-control" name="chassis_type" placeholder="Chassis type (e.g. automatic, manual)" required
+            <input class="form-control" name="chassis_transmissionType"
+                   placeholder="Transmission type (e.g. automatic, manual)" required
                    type="text" <c:if test="${not empty editCar}">value="${editCar.chassis.transmissionType}"</c:if>>
         </div>
         <!--

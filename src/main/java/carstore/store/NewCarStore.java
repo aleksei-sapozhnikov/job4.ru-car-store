@@ -1,14 +1,11 @@
 package carstore.store;
 
-import carstore.model.Image;
-import carstore.model.car.*;
+import carstore.model.car.Car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Car in-session storage.
@@ -39,7 +36,6 @@ public class NewCarStore extends AbstractStore {
                 session -> session.createQuery("from Car").list());
     }
 
-    @SuppressWarnings("unchecked")
     public Car get(long id) {
         return this.doTransaction(
                 session -> session.get(Car.class, id));
@@ -51,42 +47,16 @@ public class NewCarStore extends AbstractStore {
         );
     }
 
-    public void update(Car car) {
-        this.doTransaction(
-                session -> {
-                    session.update(car);
-                    return null;
-                }
-        );
+    public void update(Car newCar) {
+        this.doTransaction(session -> {
+            if (newCar.getImages().size() > 0) {
+                var persistent = session.get(Car.class, newCar.getId());
+                persistent.clearImages();
+                session.flush();
+                session.detach(persistent);
+            }
+            session.update(newCar);
+            return null;
+        });
     }
-
-
-    private boolean notEmpty(Set<Image> images) {
-        return images.stream().anyMatch(img -> img.getData().length > 0);
-    }
-
-    private void setImages(Car car, Set<Image> images) {
-        images.forEach(img -> img.setCar(car));
-        car.setImages(images);
-    }
-
-    private void sstParameters(Car car, Map<String, String> values) {
-        car.setMark(new Mark()
-                .setManufacturer(values.get("mark_manufacturer"))
-                .setModel(values.get("mark_model")));
-        car.setAge(new Age()
-                .setMileage(Long.parseLong(values.get("age_mileage")))
-                .setManufactureYear(Integer.parseInt(values.get("age_manufactureYear")))
-                .setNewness(values.get("age_newness")));
-        car.setBody(new Body()
-                .setColor(values.get("body_color"))
-                .setType(values.get("body_type")));
-        car.setChassis(new Chassis()
-                .setTransmissionType(values.get("chassis_type")));
-        car.setEngine(new Engine()
-                .setEngineType(values.get("engine_type"))
-                .setEngineVolume(Integer.parseInt(values.get("engine_volume"))));
-        car.setPrice(Integer.parseInt(values.get("price")));
-    }
-
 }

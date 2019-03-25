@@ -72,18 +72,18 @@ public class Car {
      */
     private Chassis chassis;
 
+
     /**
      * Creates Car object using map of given parameters.
      *
-     * @param price  Car price.
      * @param seller Car seller object.
      * @param images Set of car images.
      * @param params Map of inner object parameters.
      * @return Car object.
      */
-    public static Car of(int price, User seller, Set<Image> images, Map<String, String> params) {
+    public static Car of(User seller, Set<Image> images, Map<String, String> params) {
         var car = new Car();
-        car.setPrice(price);
+        car.setPrice(Integer.parseInt(params.get("price")));
         car.setSeller(seller);
         car.setMark(new Mark()
                 .setModel(params.get(MARK_MODEL.v()))
@@ -100,10 +100,30 @@ public class Car {
                 .setEngineVolume(Integer.parseInt(params.get(ENGINE_VOLUME.v()))));
         car.setChassis(new Chassis()
                 .setTransmissionType(params.get(CHASSIS_TRANSMISSION_TYPE.v())));
-        images.forEach(img -> img.setCar(car));
-        car.setImages(images);
+        images.forEach(car::addImage);
         return car;
     }
+
+    public void addImage(Image image) {
+        if (image.getData().length > 0) {
+            this.images.add(image);
+            image.setCar(this);
+        }
+    }
+
+    public void deleteImage(Image image) {
+        this.images.remove(image);
+        image.setCar(null);
+    }
+
+    public void clearImages() {
+        var it = this.images.iterator();
+        while (it.hasNext()) {
+            it.next().setCar(null);
+            it.remove();
+        }
+    }
+
 
     /**
      * Object.equals() method override.
@@ -231,6 +251,12 @@ public class Car {
      * @param images Value to set.
      */
     public Car setImages(Set<Image> images) {
+        images.forEach(img -> {
+            this.images.add(img);
+            img.setCar(this);
+        });
+
+
         this.images = images;
         return this;
     }

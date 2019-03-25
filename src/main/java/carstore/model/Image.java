@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -125,15 +124,11 @@ public class Image {
             return false;
         }
         Image image = (Image) o;
-        return id == image.id
-                && Arrays.equals(data, image.data)
-                && Objects.equals(car, image.car);
+        return id == image.id;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, car);
-        result = 31 * result + Arrays.hashCode(data);
-        return result;
+        return Objects.hash(id);
     }
 }
