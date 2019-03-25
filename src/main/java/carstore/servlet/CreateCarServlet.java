@@ -3,6 +3,7 @@ package carstore.servlet;
 import carstore.constants.ConstContext;
 import carstore.model.Image;
 import carstore.model.User;
+import carstore.model.car.Car;
 import carstore.store.NewCarStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,14 +68,9 @@ public class CreateCarServlet extends HttpServlet {
         var values = new HashMap<String, String>();
         var images = new HashSet<Image>();
         this.fillParametersMaps(req, values, images);
-
-
-        long savedId;
-        try (var hbSession = this.hbFactory.openSession()) {
-            var saved = this.carStore.createAndSave(hbSession, user, values, images);
-            savedId = saved.getId();
-        }
-        resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + savedId);
+        var car = Car.from(Integer.parseInt(values.get("price")), user, images, values);
+        this.carStore.save(car);
+        resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + car.getId());
     }
 
 

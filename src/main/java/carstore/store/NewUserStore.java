@@ -45,26 +45,22 @@ public class NewUserStore extends AbstractStore {
     }
 
     /**
-     * Returns whether user with given login exists in database.
-     *
-     * @param login Login to search for.
-     * @return <tt>true</tt> if login found, <tt>false</tt> if not.
-     */
-    public boolean contains(String login) {
-        return this.doTransaction(session -> {
-            var found = session.createQuery("from User where login = :login")
-                    .setParameter("login", login)
-                    .list();
-            return found.contains(login);
-        });
-    }
-
-    /**
      * Saves user to store.
      *
      * @param user User to store.
      */
-    public void save(User user) {
-        this.doTransaction(session -> session.save(user));
+    public boolean saveIfNotExists(User user) {
+        return this.doTransaction(session -> {
+            var login = user.getLogin();
+            var found = session.createQuery("from User where login = :login")
+                    .setParameter("login", login)
+                    .list();
+            var saved = false;
+            if (!(found.contains(login))) {
+                session.save(user);
+                saved = true;
+            }
+            return saved;
+        });
     }
 }

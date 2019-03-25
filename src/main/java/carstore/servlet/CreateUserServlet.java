@@ -6,7 +6,6 @@ import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
-import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Servlet to add and edit users.
@@ -59,7 +57,7 @@ public class CreateUserServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/view" + "/editUser.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/view" + "/createtUser.jsp").forward(req, resp);
     }
 
     /**
@@ -72,35 +70,17 @@ public class CreateUserServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        var params = this.getParametersMap(req);
-        var login = params.get("login");
-        try (var hbSession = this.hbFactory.openSession()) {
-            Utils.doTransactionWithCommit(session -> {
-                if (this.userStore.contains(login).apply(session)) {
-                    req.setAttribute("error", String.format("Login (%s) already exists", login));
-                    this.doGet(req, resp);
-                } else {
-                    var user = User.from(params);
-                    this.userStore.save(user).accept(session);
-                    var resultMsg = String.format("User (%s) created/updated", user.getLogin());
-                    resp.sendRedirect(String.format(
-                            "%s?success=%s", this.getServletContext().getContextPath(), resultMsg));
-                }
-            }).accept(hbSession);
+        var login = req.getParameter("user_login");
+        var password = req.getParameter("user_password");
+        var phone = req.getParameter("user_phone");
+        var user = User.from(login, password, phone);
+        var saved = this.userStore.saveIfNotExists(user);
+        if (saved) {
+            var resultMsg = String.format("User (%s) created", login);
+            resp.sendRedirect(String.format("%s?success=%s", req.getContextPath(), resultMsg));
+        } else {
+            req.setAttribute("error", String.format("Login (%s) already exists", login));
+            this.doGet(req, resp);
         }
-    }
-
-    /**
-     * Returns map with parameters for user creation.
-     *
-     * @param req Request object to take parameters from.
-     * @return Map of parameters.
-     */
-    private HashMap<String, String> getParametersMap(HttpServletRequest req) {
-        var params = new HashMap<String, String>();
-        params.put(User.Params.LOGIN.v(), req.getParameter("user_login"));
-        params.put(User.Params.PASSWORD.v(), req.getParameter("user_password"));
-        params.put(User.Params.PHONE.v(), req.getParameter("user_phone"));
-        return params;
     }
 }

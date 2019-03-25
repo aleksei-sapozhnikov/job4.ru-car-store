@@ -53,6 +53,14 @@ public class User {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Car> cars = new HashSet<>();
 
+    public static User from(String login, String password, String phone) {
+        var user = new User();
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setPhone(phone);
+        return user;
+    }
+
     /* * * * * * * * * * * * * * * * * *
      * equals(), hashCode(), toString()
      * * * * * * * * * * * * * * * * * */

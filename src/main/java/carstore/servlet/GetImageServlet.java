@@ -87,10 +87,8 @@ public class GetImageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         long id = this.getImageId(req);
-        try (var session = this.hbFactory.openSession()) {
-            var image = this.imageStore.get(session, id);
-            this.writeToResponse(resp, image);
-        }
+        var image = this.imageStore.get(id);
+        this.writeToResponse(resp, image);
     }
 
     /**

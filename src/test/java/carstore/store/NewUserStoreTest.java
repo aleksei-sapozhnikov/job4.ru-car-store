@@ -47,7 +47,7 @@ public class NewUserStoreTest {
             var login = "good_login";
             var password = "good_password";
             User saved = createUser(login, password, "some phone");
-            this.store.save(saved).accept(session);
+            this.store.saveIfNotExists(saved).accept(session);
             var found = this.store.getByCredentials(login, password).apply(session);
             assertEquals(saved, found);
         });
@@ -59,7 +59,7 @@ public class NewUserStoreTest {
             var login = "good login";
             User saved = createUser(login, "some password", "some phone");
             assertFalse(this.store.contains(login).apply(session));
-            this.store.save(saved).accept(session);
+            this.store.saveIfNotExists(saved).accept(session);
             assertTrue(this.store.contains(login).apply(session));
         });
     }
