@@ -76,5 +76,17 @@ public class Utils {
         return result;
     }
 
+    public static ConsumerEx<Session> doTransactionWithCommit(ConsumerEx<Session> operations) {
+        return session -> {
+            var tx = session.beginTransaction();
+            try {
+                operations.accept(session);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        };
+    }
 
 }

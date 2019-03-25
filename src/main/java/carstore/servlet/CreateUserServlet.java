@@ -1,10 +1,12 @@
 package carstore.servlet;
 
 import carstore.constants.ConstContext;
+import carstore.model.User;
 import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
+import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -70,19 +72,22 @@ public class CreateUserServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-//        var params = this.getParametersMap(req);
-//        var login = params.get("login");
-//        try (var session = this.hbFactory.openSession()) {
-//            if (this.userStore.contains(session, login)) {
-//                req.setAttribute("error", String.format("Login (%s) already exists", login));
-//                this.doGet(req, resp);
-//            } else {
-//                var changed = this.userStore.createAndStore(session, params);
-//                var resultMsg = String.format("User (%s) created/updated", changed.getLogin());
-//                resp.sendRedirect(String.format(
-//                        "%s?success=%s", this.getServletContext().getContextPath(), resultMsg));
-//            }
-//        }
+        var params = this.getParametersMap(req);
+        var login = params.get("login");
+        try (var hbSession = this.hbFactory.openSession()) {
+            Utils.doTransactionWithCommit(session -> {
+                if (this.userStore.contains(login).apply(session)) {
+                    req.setAttribute("error", String.format("Login (%s) already exists", login));
+                    this.doGet(req, resp);
+                } else {
+                    var user = User.from(params);
+                    this.userStore.save(user).accept(session);
+                    var resultMsg = String.format("User (%s) created/updated", user.getLogin());
+                    resp.sendRedirect(String.format(
+                            "%s?success=%s", this.getServletContext().getContextPath(), resultMsg));
+                }
+            }).accept(hbSession);
+        }
     }
 
     /**
@@ -93,9 +98,9 @@ public class CreateUserServlet extends HttpServlet {
      */
     private HashMap<String, String> getParametersMap(HttpServletRequest req) {
         var params = new HashMap<String, String>();
-        params.put("login", req.getParameter("user_login"));
-        params.put("password", req.getParameter("user_password"));
-        params.put("phone", req.getParameter("user_phone"));
+        params.put(User.Params.LOGIN.v(), req.getParameter("user_login"));
+        params.put(User.Params.PASSWORD.v(), req.getParameter("user_password"));
+        params.put(User.Params.PHONE.v(), req.getParameter("user_phone"));
         return params;
     }
 }
