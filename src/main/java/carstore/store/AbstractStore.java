@@ -21,44 +21,33 @@ public class AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(AbstractStore.class);
 
-    protected <T> T doTransactionWithCommit(SessionFactory factory, Function<Session, T> operations) {
+    private final SessionFactory factory;
+
+    protected AbstractStore(SessionFactory factory) {
+        this.factory = factory;
+    }
+
+
+    /**
+     * Returns factory.
+     *
+     * @return Value of factory field.
+     */
+    protected SessionFactory getFactory() {
+        return this.factory;
+    }
+
+    protected <T> T doTransaction(Function<Session, T> operations) {
         T result;
         try (var session = factory.openSession()) {
-            result = this.doTransactionWithCommit(session, operations);
-        }
-        return result;
-    }
-
-    protected <T> T doTransactionWithCommit(Session session, Function<Session, T> operations) {
-        T result;
-        var tx = session.beginTransaction();
-        try {
-            result = operations.apply(session);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-            throw e;
-        }
-        return result;
-    }
-
-    protected <T> T doTransactionWithRollback(SessionFactory factory, Function<Session, T> operations) {
-        T result;
-        try (var session = factory.openSession()) {
-            result = this.doTransactionWithRollback(session, operations);
-        }
-        return result;
-    }
-
-    protected <T> T doTransactionWithRollback(Session session, Function<Session, T> operations) {
-        T result;
-        var tx = session.beginTransaction();
-        try {
-            result = operations.apply(session);
-            tx.rollback();
-        } catch (Exception e) {
-            tx.rollback();
-            throw e;
+            var tx = session.beginTransaction();
+            try {
+                result = operations.apply(session);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
         }
         return result;
     }

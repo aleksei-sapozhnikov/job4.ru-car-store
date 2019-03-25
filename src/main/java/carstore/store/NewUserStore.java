@@ -3,11 +3,9 @@ package carstore.store;
 import carstore.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * User in-session store class.
@@ -23,6 +21,10 @@ public class NewUserStore extends AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(NewUserStore.class);
 
+    protected NewUserStore(SessionFactory factory) {
+        super(factory);
+    }
+
     /**
      * Finds user by his login and password.
      *
@@ -30,8 +32,8 @@ public class NewUserStore extends AbstractStore {
      * @param password User password.
      * @return Found persistent user or <tt>null</tt> if not found.
      */
-    public Function<Session, User> getByCredentials(String login, String password) {
-        return session -> {
+    public User getByCredentials(String login, String password) {
+        return this.doTransaction(session -> {
             @SuppressWarnings("unchecked")
             var found = (List<User>) session
                     .createQuery("from User where login = :login and password = :password")
@@ -39,7 +41,7 @@ public class NewUserStore extends AbstractStore {
                     .setParameter("password", password)
                     .list();
             return found.isEmpty() ? null : found.get(0);
-        };
+        });
     }
 
     /**
@@ -48,13 +50,13 @@ public class NewUserStore extends AbstractStore {
      * @param login Login to search for.
      * @return <tt>true</tt> if login found, <tt>false</tt> if not.
      */
-    public Function<Session, Boolean> contains(String login) {
-        return session -> {
+    public boolean contains(String login) {
+        return this.doTransaction(session -> {
             var found = session.createQuery("from User where login = :login")
                     .setParameter("login", login)
                     .list();
-            return !(found.isEmpty());
-        };
+            return found.contains(login);
+        });
     }
 
     /**
@@ -62,7 +64,7 @@ public class NewUserStore extends AbstractStore {
      *
      * @param user User to store.
      */
-    public Consumer<Session> save(User user) {
-        return session -> session.save(user);
+    public void save(User user) {
+        this.doTransaction(session -> session.save(user));
     }
 }

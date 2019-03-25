@@ -1,11 +1,10 @@
 package carstore.store;
 
 import carstore.model.Image;
-import carstore.model.User;
 import carstore.model.car.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -25,29 +24,25 @@ public class NewCarStore extends AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(NewCarStore.class);
 
+    protected NewCarStore(SessionFactory factory) {
+        super(factory);
+    }
+
     /**
      * Returns List of all cars stored.
      *
-     * @param ses Current session.
      * @return List of cars stored.
      */
     @SuppressWarnings("unchecked")
-    public List<Car> getAll(Session ses) {
-        return this.doTransactionWithRollback(ses,
+    public List<Car> getAll() {
+        return this.doTransaction(
                 session -> session.createQuery("from Car").list());
     }
 
-    public Car createAndSave(Session ses, User user, Map<String, String> values, Set<Image> images) {
-        return this.doTransactionWithCommit(ses, session -> {
-            var car = new Car();
-            car.setSeller(user);
-            this.sstParameters(car, values);
-            if (this.notEmpty(images)) {
-                this.setImages(car, images);
-            }
-            session.save(car);
-            return car;
-        });
+    public void save(Car car) {
+        this.doTransaction(
+                session -> session.save(car)
+        );
     }
 
 
