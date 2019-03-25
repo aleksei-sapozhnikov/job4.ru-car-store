@@ -18,12 +18,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "image")
 public class Image {
-    public static Image from(byte[] data) {
-        var image = new Image();
-        image.setData(data);
-        return image;
-    }
-
     /**
      * Logger.
      */
@@ -50,21 +44,20 @@ public class Image {
     private Car car;
 
     /**
-     * Parameters defining user.
+     * Static creation method.
+     *
+     * @param data Image data.
+     * @return New image object.
      */
-    public enum Params {
-        DATA("data");
-
-        private String value;
-
-        Params(String value) {
-            this.value = value;
-        }
-
-        public String v() {
-            return this.value;
-        }
+    public static Image from(byte[] data) {
+        var image = new Image();
+        image.setData(data);
+        return image;
     }
+
+    /* * * * * * * * * * * *
+     * getters and setters
+     * * * * * * * * * * * */
 
     /**
      * Returns id.

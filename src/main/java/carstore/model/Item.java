@@ -3,10 +3,7 @@ package carstore.model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,26 +21,6 @@ public class Item {
         item.setDescriptions(descriptions);
         item.setImagesIds(images.stream().map(Image::getId).collect(Collectors.toList()));
         return item;
-    }
-
-    /**
-     * Parameters defining user.
-     */
-    public enum Params {
-        PRICE("price"),
-        TITLE("title"),
-        DESCRIPTIONS("descriptions"),
-        IMAGES_IDS("imagesIds");
-
-        private String value;
-
-        Params(String value) {
-            this.value = value;
-        }
-
-        public String v() {
-            return this.value;
-        }
     }
 
     /**
@@ -75,6 +52,35 @@ public class Item {
      * Id's of images for this item.
      */
     private List<Long> imagesIds;
+
+    /* * * * * * * * * * * * * * * * * *
+     * equals(), hashCode(), toString()
+     * * * * * * * * * * * * * * * * * */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Item item = (Item) o;
+        return storeId == item.storeId
+                && price == item.price
+                && Objects.equals(title, item.title)
+                && Objects.equals(descriptions, item.descriptions)
+                && Objects.equals(imagesIds, item.imagesIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(storeId, price, title, descriptions, imagesIds);
+    }
+
+    /* * * * * * * * * * * *
+     * getters and setters
+     * * * * * * * * * * * */
 
     /**
      * Returns storeId.
