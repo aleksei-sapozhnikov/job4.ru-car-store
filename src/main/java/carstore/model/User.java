@@ -6,11 +6,9 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static carstore.model.User.Params.*;
 
 /**
  * User object. For authentication and info.
@@ -22,14 +20,6 @@ import static carstore.model.User.Params.*;
 @Entity
 @Table(name = "users")
 public class User {
-    public static User from(Map<String, String> params) {
-        var user = new User();
-        user.setLogin(params.get(LOGIN.v()));
-        user.setPassword(params.get(PASSWORD.v()));
-        user.setPhone(params.get(PHONE.v()));
-        return user;
-    }
-
     /**
      * Logger.
      */
@@ -63,24 +53,9 @@ public class User {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Car> cars = new HashSet<>();
 
-    /**
-     * Parameters defining user.
-     */
-    public enum Params {
-        LOGIN("login"),
-        PASSWORD("password"),
-        PHONE("phone");
-
-        private String value;
-
-        Params(String value) {
-            this.value = value;
-        }
-
-        public String v() {
-            return this.value;
-        }
-    }
+    /* * * * * * * * * * * * * * * * * *
+     * equals(), hashCode(), toString()
+     * * * * * * * * * * * * * * * * * */
 
     @Override
     public boolean equals(Object o) {
@@ -101,6 +76,10 @@ public class User {
     public int hashCode() {
         return Objects.hash(login, password, phone, cars);
     }
+
+    /* * * * * * * * * * * *
+     * getters and setters
+     * * * * * * * * * * * */
 
     /**
      * Returns id.
