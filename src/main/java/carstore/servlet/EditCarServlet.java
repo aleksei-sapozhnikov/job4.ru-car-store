@@ -3,7 +3,7 @@ package carstore.servlet;
 import carstore.constants.ConstContext;
 import carstore.model.Image;
 import carstore.model.User;
-import carstore.model.car.*;
+import carstore.model.car.Car;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -120,19 +120,19 @@ public class EditCarServlet extends HttpServlet {
     }
 
     private void setCarParameters(Car car, Map<String, String> values) {
-        car.setMark(new Mark()
+        car.setMark(new Car.Mark()
                 .setManufacturer(values.get("mark_manufacturer"))
                 .setModel(values.get("mark_model")));
-        car.setAge(new Age()
+        car.setAge(new Car.Age()
                 .setMileage(Long.parseLong(values.get("age_mileage")))
                 .setManufactureYear(Integer.parseInt(values.get("age_manufactureYear")))
                 .setNewness(values.get("age_newness")));
-        car.setBody(new Body()
+        car.setBody(new Car.Body()
                 .setColor(values.get("body_color"))
                 .setType(values.get("body_type")));
-        car.setChassis(new Chassis()
+        car.setChassis(new Car.Chassis()
                 .setTransmissionType(values.get("chassis_type")));
-        car.setEngine(new Engine()
+        car.setEngine(new Car.Engine()
                 .setEngineType(values.get("engine_type"))
                 .setEngineVolume(Integer.parseInt(values.get("engine_volume"))));
         car.setPrice(Integer.parseInt(values.get("price")));

@@ -1,6 +1,6 @@
 package carstore.model;
 
-import carstore.model.car.Chassis;
+import carstore.model.car.Car;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -10,7 +10,7 @@ public class ChassisTest {
 
     @Test
     public void testDefaultValuesGettersSetters() {
-        Chassis chassis = new Chassis();
+        Car.Chassis chassis = new Car.Chassis();
         assertNull(chassis.getTransmissionType());
         //
         chassis.setTransmissionType("automatic");
@@ -19,12 +19,12 @@ public class ChassisTest {
 
     @Test
     public void testEqualsHashcode() {
-        Chassis main =
-                new Chassis().setTransmissionType("automatic");
-        Chassis copy =
-                new Chassis().setTransmissionType("automatic");
-        Chassis otherTransmissionType =
-                new Chassis().setTransmissionType("manual");
+        Car.Chassis main =
+                new Car.Chassis().setTransmissionType("automatic");
+        Car.Chassis copy =
+                new Car.Chassis().setTransmissionType("automatic");
+        Car.Chassis otherTransmissionType =
+                new Car.Chassis().setTransmissionType("manual");
         // not equal
         assertNotEquals(main, null);
         assertNotEquals(main, "main");
@@ -38,8 +38,8 @@ public class ChassisTest {
 
     @Test
     public void testToString() {
-        Chassis chassis =
-                new Chassis().setTransmissionType("automatic");
+        Car.Chassis chassis =
+                new Car.Chassis().setTransmissionType("automatic");
         var result = chassis.toString();
         var expected = String.format(
                 "Chassis{transmissionType='%s'}",

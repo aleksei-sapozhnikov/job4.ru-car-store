@@ -68,6 +68,7 @@ public class CreateCarServlet extends HttpServlet {
         var images = new HashSet<Image>();
         this.fillParametersMaps(req, values, images);
 
+
         long savedId;
         try (var hbSession = this.hbFactory.openSession()) {
             var saved = this.carStore.createAndSave(hbSession, user, values, images);

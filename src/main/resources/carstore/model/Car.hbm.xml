@@ -4,11 +4,12 @@
             <generator class="identity"/>
         </id>
         <property name="price" column="price"/>
-        <many-to-one name="mark" column="mark_id" class="carstore.model.car.Mark" cascade="merge" lazy="false"/>
-        <many-to-one name="body" column="body_id" class="carstore.model.car.Body" cascade="merge" lazy="false"/>
-        <many-to-one name="age" column="age_id" class="carstore.model.car.Age" cascade="merge" lazy="false"/>
-        <many-to-one name="engine" column="engine_id" class="carstore.model.car.Engine" cascade="merge" lazy="false"/>
-        <many-to-one name="chassis" column="chassis_id" class="carstore.model.car.Chassis" cascade="merge"
+        <many-to-one name="mark" column="mark_id" class="carstore.model.car.Car$Mark" cascade="merge" lazy="false"/>
+        <many-to-one name="body" column="body_id" class="carstore.model.car.Car$Body" cascade="merge" lazy="false"/>
+        <many-to-one name="age" column="age_id" class="carstore.model.car.Car$Age" cascade="merge" lazy="false"/>
+        <many-to-one name="engine" column="engine_id" class="carstore.model.car.Car$Engine" cascade="merge"
+                     lazy="false"/>
+        <many-to-one name="chassis" column="chassis_id" class="carstore.model.car.Car$Chassis" cascade="merge"
                      lazy="false"/>
     </class>
 </hibernate-mapping>

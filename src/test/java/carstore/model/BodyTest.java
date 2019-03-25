@@ -1,6 +1,6 @@
 package carstore.model;
 
-import carstore.model.car.Body;
+import carstore.model.car.Car;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -10,7 +10,7 @@ public class BodyTest {
 
     @Test
     public void testDefaultValuesGettersSetters() {
-        Body body = new Body();
+        Car.Body body = new Car.Body();
         assertNull(body.getColor());
         assertNull(body.getType());
         //
@@ -22,14 +22,14 @@ public class BodyTest {
 
     @Test
     public void testEqualsHashcode() {
-        Body main =
-                new Body().setColor("yellow").setType("sedan");
-        Body copy =
-                new Body().setColor("yellow").setType("sedan");
-        Body otherColor =
-                new Body().setColor("red").setType("sedan");
-        Body otherType =
-                new Body().setColor("yellow").setType("pickup");
+        Car.Body main =
+                new Car.Body().setColor("yellow").setType("sedan");
+        Car.Body copy =
+                new Car.Body().setColor("yellow").setType("sedan");
+        Car.Body otherColor =
+                new Car.Body().setColor("red").setType("sedan");
+        Car.Body otherType =
+                new Car.Body().setColor("yellow").setType("pickup");
         // not equal
         assertNotEquals(main, null);
         assertNotEquals(main, "main");
@@ -44,8 +44,8 @@ public class BodyTest {
 
     @Test
     public void testToString() {
-        Body body =
-                new Body().setColor("yellow").setType("sedan");
+        Car.Body body =
+                new Car.Body().setColor("yellow").setType("sedan");
         var result = body.toString();
         var expected = String.format(
                 "Body{type='%s', color='%s'}",

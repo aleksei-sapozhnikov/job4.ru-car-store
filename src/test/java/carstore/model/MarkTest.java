@@ -1,6 +1,6 @@
 package carstore.model;
 
-import carstore.model.car.Mark;
+import carstore.model.car.Car;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class MarkTest {
     @Test
     public void testDefaultValuesGettersSetters() {
-        Mark mark = new Mark();
+        Car.Mark mark = new Car.Mark();
         assertNull(mark.getManufacturer());
         assertNull(mark.getModel());
         //
@@ -21,14 +21,14 @@ public class MarkTest {
 
     @Test
     public void testEqualsHashcode() {
-        Mark main =
-                new Mark().setManufacturer("Toyota").setModel("Prius FX-122");
-        Mark copy =
-                new Mark().setManufacturer("Toyota").setModel("Prius FX-122");
-        Mark otherManufacturer =
-                new Mark().setManufacturer("Mercedes").setModel("Prius FX-122");
-        Mark otherModel =
-                new Mark().setManufacturer("Toyota").setModel("Land Cruiser ML-12");
+        Car.Mark main =
+                new Car.Mark().setManufacturer("Toyota").setModel("Prius FX-122");
+        Car.Mark copy =
+                new Car.Mark().setManufacturer("Toyota").setModel("Prius FX-122");
+        Car.Mark otherManufacturer =
+                new Car.Mark().setManufacturer("Mercedes").setModel("Prius FX-122");
+        Car.Mark otherModel =
+                new Car.Mark().setManufacturer("Toyota").setModel("Land Cruiser ML-12");
         // not equal
         assertNotEquals(main, null);
         assertNotEquals(main, "main");
@@ -43,8 +43,8 @@ public class MarkTest {
 
     @Test
     public void testToString() {
-        Mark mark =
-                new Mark().setManufacturer("Toyota").setModel("Land Cruiser ML-12");
+        Car.Mark mark =
+                new Car.Mark().setManufacturer("Toyota").setModel("Land Cruiser ML-12");
         var result = mark.toString();
         var expected = String.format(
                 "Mark{manufacturer='%s', model='%s'}",
