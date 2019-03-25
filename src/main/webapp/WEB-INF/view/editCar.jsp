@@ -90,7 +90,7 @@
         </a>
     </div>
 
-    <form action="addCar" enctype="multipart/form-data" id="editCarForm" method="POST">
+    <form action="editCar" enctype="multipart/form-data" id="editCarForm" method="POST">
         <%--
         Hidden fields
         --%>

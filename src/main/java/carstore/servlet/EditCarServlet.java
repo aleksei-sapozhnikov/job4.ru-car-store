@@ -4,10 +4,11 @@ import carstore.constants.ConstContext;
 import carstore.model.Image;
 import carstore.model.User;
 import carstore.model.car.Car;
-import com.google.gson.Gson;
+import carstore.store.NewCarStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
+import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,13 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
 
 /**
- * Controls adding and editing car.
+ * Controls adding car.
  *
  * @author Aleksei Sapozhnikov (vermucht@gmail.com)
  * @version 0.1
@@ -37,118 +38,58 @@ public class EditCarServlet extends HttpServlet {
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(EditCarServlet.class);
-    private final Gson gson = new Gson();
-    private SessionFactory factory;
+    /**
+     * Hibernate session factory.
+     */
+    private SessionFactory hbFactory;
+    /**
+     * Utils to perform database transactions.
+     */
+    private NewCarStore carStore;
 
+    /**
+     * Initiates fields.
+     */
     @Override
-    public void init() throws ServletException {
-        var context = this.getServletContext();
-        this.factory = (SessionFactory)
-                context.getAttribute(ConstContext.SESSION_FACTORY.v());
+    public void init() {
+        var ctx = this.getServletContext();
+        this.hbFactory = (SessionFactory) ctx.getAttribute(ConstContext.SESSION_FACTORY.v());
+        this.carStore = (NewCarStore) ctx.getAttribute(ConstContext.CAR_STORE.v());
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var carId = req.getParameter("storeId");
-        if (carId != null && carId.matches("\\d+")) {
-            try (var session = this.factory.openSession()) {
-                var tx = session.beginTransaction();
-                try {
-                    var editCar = session.get(Car.class, Long.valueOf(carId));
-                    if (editCar != null) {
-                        req.setAttribute("editCar", editCar);
-                    }
-                    req.getRequestDispatcher("/WEB-INF/view" + "/editCar.jsp").forward(req, resp);
-                    tx.rollback();
-                } catch (Exception e) {
-                    tx.rollback();
-                    throw e;
-                }
-            }
-        } else {
-            req.getRequestDispatcher("/WEB-INF/view" + "/editCar.jsp").forward(req, resp);
+        var id = Utils.parseLong(req.getParameter("storeId"), -1);
+        if (id == -1) {
+            throw new ServletException("Id of car to edit not found in parameters");
         }
+        var car = this.carStore.get(id);
+        req.setAttribute("editCar", car);
+        req.getRequestDispatcher("/WEB-INF/view" + "/editCar.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
-
-        var values = new TreeMap<String, String>();
-        var images = new ArrayList<Image>();
+        var id = Utils.parseLong(req.getParameter("storeId"), -1);
+        if (id == -1) {
+            throw new ServletException("Id of car to edit not found in parameters");
+        }
+        var user = (User) req.getSession().getAttribute("loggedUser");
+        var values = new HashMap<String, String>();
+        var images = new HashSet<Image>();
         this.fillParametersMaps(req, values, images);
-        long carStoreId = 0;
-        var strStoreId = values.get("storeId");
-        if (strStoreId != null && strStoreId.matches("\\d+")) {
-            carStoreId = Long.parseLong(strStoreId);
-        }
-        long savedId;
-        try (var hbSession = this.factory.openSession()) {
-            var tx = hbSession.beginTransaction();
-            try {
-                var user = hbSession.get(User.class, userId);
-                Car destCar = hbSession.get(Car.class, carStoreId);
-                if (destCar == null) {
-                    destCar = new Car();
-                    destCar.setSeller(user);
-                }
-                this.setCarParameters(destCar, values);
-                this.setCarImages(images, destCar);
-                hbSession.saveOrUpdate(destCar);
-                savedId = destCar.getId();
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
-        resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + savedId);
+        var car = Car.from(Integer.parseInt(values.get("price")), user, images, values);
+        car.setId(id);
+        this.carStore.update(car);
+        resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + car.getId());
     }
 
-    private void setCarImages(ArrayList<Image> images, Car destCar) {
-        if (images.size() > 0 && images.get(0).getData().length > 0) {
-            var it = destCar.getImages().iterator();
-            while (it.hasNext()) {
-                it.next().setCar(null);
-                it.remove();
-            }
-            for (var img : images) {
-                img.setCar(destCar);
-            }
-            destCar.getImages().addAll(images);
-        }
-    }
 
-    private void setCarParameters(Car car, Map<String, String> values) {
-        car.setMark(new Car.Mark()
-                .setManufacturer(values.get("mark_manufacturer"))
-                .setModel(values.get("mark_model")));
-        car.setAge(new Car.Age()
-                .setMileage(Long.parseLong(values.get("age_mileage")))
-                .setManufactureYear(Integer.parseInt(values.get("age_manufactureYear")))
-                .setNewness(values.get("age_newness")));
-        car.setBody(new Car.Body()
-                .setColor(values.get("body_color"))
-                .setType(values.get("body_type")));
-        car.setChassis(new Car.Chassis()
-                .setTransmissionType(values.get("chassis_type")));
-        car.setEngine(new Car.Engine()
-                .setEngineType(values.get("engine_type"))
-                .setEngineVolume(Integer.parseInt(values.get("engine_volume"))));
-        car.setPrice(Integer.parseInt(values.get("price")));
-    }
-
-    private void fillParametersMaps(HttpServletRequest req, Map<String, String> values, List<Image> images) throws IOException, ServletException {
+    private void fillParametersMaps(HttpServletRequest req, Map<String, String> values, Set<Image> images) throws IOException, ServletException {
         for (var part : req.getParts()) {
             try (var in = part.getInputStream();
-                 var out = new ByteArrayOutputStream()
-            ) {
-                var buffer = new byte[1024];
-                var read = in.read(buffer);
-                while (read > -1) {
-                    out.write(buffer, 0, read);
-                    read = in.read(buffer);
-                }
+                 var out = new ByteArrayOutputStream()) {
+                Utils.readFullInput(in, out);
                 var name = part.getName();
                 if (name.startsWith("image")) {
                     images.add(new Image().setData(out.toByteArray()));
@@ -158,4 +99,6 @@ public class EditCarServlet extends HttpServlet {
             }
         }
     }
+
+
 }

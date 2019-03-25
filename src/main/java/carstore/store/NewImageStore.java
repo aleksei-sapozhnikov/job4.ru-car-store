@@ -19,7 +19,7 @@ public class NewImageStore extends AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(NewImageStore.class);
 
-    protected NewImageStore(SessionFactory factory) {
+    public NewImageStore(SessionFactory factory) {
         super(factory);
     }
 

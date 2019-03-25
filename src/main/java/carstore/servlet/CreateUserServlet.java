@@ -21,7 +21,7 @@ import java.io.IOException;
  * @version 0.1
  * @since 0.1
  */
-@WebServlet({"/addUser", "/editUser"})
+@WebServlet("/addUser")
 public class CreateUserServlet extends HttpServlet {
     /**
      * Logger.
@@ -57,7 +57,7 @@ public class CreateUserServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/view" + "/createtUser.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/view" + "/createUser.jsp").forward(req, resp);
     }
 
     /**

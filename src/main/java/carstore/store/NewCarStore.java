@@ -24,7 +24,7 @@ public class NewCarStore extends AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(NewCarStore.class);
 
-    protected NewCarStore(SessionFactory factory) {
+    public NewCarStore(SessionFactory factory) {
         super(factory);
     }
 
@@ -39,9 +39,24 @@ public class NewCarStore extends AbstractStore {
                 session -> session.createQuery("from Car").list());
     }
 
+    @SuppressWarnings("unchecked")
+    public Car get(long id) {
+        return this.doTransaction(
+                session -> session.get(Car.class, id));
+    }
+
     public void save(Car car) {
         this.doTransaction(
                 session -> session.save(car)
+        );
+    }
+
+    public void update(Car car) {
+        this.doTransaction(
+                session -> {
+                    session.update(car);
+                    return null;
+                }
         );
     }
 

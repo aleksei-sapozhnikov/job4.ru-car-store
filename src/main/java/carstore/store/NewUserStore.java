@@ -21,7 +21,7 @@ public class NewUserStore extends AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(NewUserStore.class);
 
-    protected NewUserStore(SessionFactory factory) {
+    public NewUserStore(SessionFactory factory) {
         super(factory);
     }
 
@@ -56,7 +56,7 @@ public class NewUserStore extends AbstractStore {
                     .setParameter("login", login)
                     .list();
             var saved = false;
-            if (!(found.contains(login))) {
+            if (found.size() == 0) {
                 session.save(user);
                 saved = true;
             }

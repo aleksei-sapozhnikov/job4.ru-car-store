@@ -88,6 +88,8 @@ public class Car {
                 .setEngineVolume(Integer.parseInt(params.get(ENGINE_VOLUME.v()))));
         car.setChassis(new Chassis()
                 .setTransmissionType(CHASSIS_TRANSMISSION_TYPE.v()));
+        images.forEach(img -> img.setCar(car));
+        car.setImages(images);
         return car;
     }
 

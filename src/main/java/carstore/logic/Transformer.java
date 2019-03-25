@@ -33,19 +33,17 @@ public class Transformer {
      * Static method implementing logic.
      * No danger for this to be overridden.
      *
-     * @param session Hibernate session.
-     * @param car     Car object.
+     * @param car Car object.
      * @return Item object.
      */
-    private static Item staticCarToItem(Session session, Car car) {
-        car = session.get(Car.class, car.getId());
+    private static Item staticCarToItem(Car car) {
         var item = new Item();
         item.setTitle(String.format("%s %s",
                 car.getMark().getManufacturer(),
                 car.getMark().getModel()));
         item.setStoreId(car.getId());
         item.setPrice(car.getPrice());
-        item.setDescriptions(Transformer.carToDescriptionsForItem(session, car));
+        item.setDescriptions(Transformer.carToDescriptionsForItem(car));
         item.setImagesIds(Transformer.imagesToIds(car.getImages()));
         return item;
     }
@@ -53,12 +51,10 @@ public class Transformer {
     /**
      * Converts Car attributes to Item's map of descriptions.
      *
-     * @param session Hibernate session.
-     * @param car     Cra object.
+     * @param car Cra object.
      * @return Map of descriptions for Item.
      */
-    private static Map<String, String> carToDescriptionsForItem(Session session, Car car) {
-        car = session.get(Car.class, car.getId());
+    private static Map<String, String> carToDescriptionsForItem(Car car) {
         Map<String, String> descriptions = new LinkedHashMap<>();
         descriptions.put("Seller", String.join("; ",
                 car.getSeller().getLogin(),
@@ -81,15 +77,13 @@ public class Transformer {
     /**
      * Transforms collection of cars to collection of Items.
      *
-     * @param ses  Current Hibernate session.
      * @param cars List of Car objects.
      * @return List of Item objects.
      */
-    public Collection<Item> carToItem(Session ses, Collection<Car> cars) {
-        return this.doTransactionWithRollback(ses,
-                session -> cars.stream()
-                        .map(car -> Transformer.staticCarToItem(session, car))
-                        .collect(Collectors.toList()));
+    public Collection<Item> carToItem(Collection<Car> cars) {
+        return cars.stream()
+                .map(Transformer::staticCarToItem)
+                .collect(Collectors.toList());
     }
 
     /**

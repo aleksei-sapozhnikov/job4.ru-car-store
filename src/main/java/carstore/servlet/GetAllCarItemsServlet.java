@@ -65,12 +65,10 @@ public class GetAllCarItemsServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try (var session = this.factory.openSession()) {
-            var cars = this.carStore.getAll(session);
-            var items = this.transformer.carToItem(session, cars);
-            try (var writer = resp.getWriter()) {
-                this.gson.toJson(items, writer);
-            }
+        var cars = this.carStore.getAll();
+        var items = this.transformer.carToItem(cars);
+        try (var writer = resp.getWriter()) {
+            this.gson.toJson(items, writer);
         }
     }
 }
