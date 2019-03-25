@@ -28,7 +28,6 @@ public class Car {
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Car.class);
-
     /**
      * Unique id.
      */
@@ -41,11 +40,15 @@ public class Car {
      */
     @Column(name = "car_price")
     private int price;
-
+    /**
+     * User who is selling the car.
+     */
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_seller")
     private User seller;
-
+    /**
+     * Set of this car images.
+     */
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Image> images = new LinkedHashSet<>();
     /**
@@ -69,6 +72,15 @@ public class Car {
      */
     private Chassis chassis;
 
+    /**
+     * Creates Car object using map of given parameters.
+     *
+     * @param price  Car price.
+     * @param seller Car seller object.
+     * @param images Set of car images.
+     * @param params Map of inner object parameters.
+     * @return Car object.
+     */
     public static Car from(int price, User seller, Set<Image> images, Map<String, String> params) {
         var car = new Car();
         car.setPrice(price);
@@ -87,7 +99,7 @@ public class Car {
                 .setEngineType(params.get(ENGINE_TYPE.v()))
                 .setEngineVolume(Integer.parseInt(params.get(ENGINE_VOLUME.v()))));
         car.setChassis(new Chassis()
-                .setTransmissionType(CHASSIS_TRANSMISSION_TYPE.v()));
+                .setTransmissionType(params.get(CHASSIS_TRANSMISSION_TYPE.v())));
         images.forEach(img -> img.setCar(car));
         car.setImages(images);
         return car;
@@ -107,18 +119,28 @@ public class Car {
         ENGINE_TYPE("engine_type"),
         ENGINE_VOLUME("engine_volume"),
         CHASSIS_TRANSMISSION_TYPE("chassis_transmissionType");
-
+        /**
+         * String value holded.
+         */
         private String v;
 
+        /**
+         * Constructor.
+         *
+         * @param v Value to store.
+         */
         Params(String v) {
             this.v = v;
         }
 
+        /**
+         * Returns string value holded inside.
+         *
+         * @return Inner value.
+         */
         public String v() {
             return this.v;
         }
-
-
     }
 
     /* * * * * * * * * * * * * * * * * *
