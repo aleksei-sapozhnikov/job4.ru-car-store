@@ -5,7 +5,6 @@ import carstore.model.Image;
 import carstore.store.NewImageStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
 import util.Utils;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -38,10 +37,6 @@ public class GetImageServlet extends HttpServlet {
      */
     private static final byte[] NOT_FOUND_IMAGE = GetImageServlet.readResource("carstore/store/image-not-found.png");
     /**
-     * Hibernate session factoru.
-     */
-    private SessionFactory hbFactory;
-    /**
      * Image store object.
      */
     private NewImageStore imageStore;
@@ -73,7 +68,6 @@ public class GetImageServlet extends HttpServlet {
     @Override
     public void init() {
         var context = this.getServletContext();
-        this.hbFactory = (SessionFactory) context.getAttribute(ConstContext.SESSION_FACTORY.v());
         this.imageStore = (NewImageStore) context.getAttribute(ConstContext.IMAGE_STORE.v());
     }
 
@@ -86,24 +80,9 @@ public class GetImageServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        long id = this.getImageId(req);
+        long id = Utils.parseLong(req.getParameter("id"), -1);
         var image = this.imageStore.get(id);
         this.writeToResponse(resp, image);
-    }
-
-    /**
-     * Tries to find image id from request.
-     *
-     * @param req Request object.
-     * @return Parsed id value or <tt>0</tt> if couldn't parse the parameter.
-     */
-    private long getImageId(HttpServletRequest req) {
-        var idStr = req.getParameter("id");
-        long id = -1;
-        if (idStr != null && idStr.matches("\\d+")) {
-            id = Long.parseLong(idStr);
-        }
-        return id;
     }
 
     /**

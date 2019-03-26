@@ -26,6 +26,20 @@ public class NewUserStore extends AbstractStore {
     }
 
     /**
+     * Finds user by id
+     *
+     * @param id User id.
+     * @return Found persistent user or <tt>null</tt> if not found.
+     */
+    public User get(long id) {
+        return this.doTransaction(session -> {
+            var result = session.get(User.class, id);
+            session.detach(result);
+            return result;
+        });
+    }
+
+    /**
      * Finds user by his login and password.
      *
      * @param login    User login.
@@ -40,7 +54,14 @@ public class NewUserStore extends AbstractStore {
                     .setParameter("login", login)
                     .setParameter("password", password)
                     .list();
-            return found.isEmpty() ? null : found.get(0);
+            User result;
+            if (found.isEmpty()) {
+                result = null;
+            } else {
+                result = found.get(0);
+                session.detach(result);
+            }
+            return result;
         });
     }
 
@@ -55,12 +76,12 @@ public class NewUserStore extends AbstractStore {
             var found = session.createQuery("from User where login = :login")
                     .setParameter("login", login)
                     .list();
-            var saved = false;
+            var isSaved = false;
             if (found.size() == 0) {
                 session.save(user);
-                saved = true;
+                isSaved = true;
             }
-            return saved;
+            return isSaved;
         });
     }
 }

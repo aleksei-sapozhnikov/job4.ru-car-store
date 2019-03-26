@@ -1,4 +1,4 @@
-<%--@elvariable id="editCar" type="carstore.model.car.Car"--%>
+<%--@elvariable id="error" type="java.lang.String"--%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -81,7 +81,17 @@
 <div class="container">
     <div align="center"><h3> ${title} </h3></div>
 
-    <p class="statusMsg"></p>
+    <p class="statusMsg">
+        <c:if test="${not empty param.success}">
+            <span style="color:green"><b>Success: </b>${param.success}</span>
+        </c:if>
+        <c:if test="${not empty param.error}">
+            <span style="color:red"><b>Error: </b>${param.error}</span>
+        </c:if>
+        <c:if test="${error != null}">
+            <span style="color:red"><b>Error: </b>${error}</span>
+        </c:if>
+    </p>
 
 
     <div class="row">

@@ -1,6 +1,3 @@
-<%--@elvariable id="editUser" type="java.util.List<Role>"--%>
-<%--@elvariable id="loggedUser" type="ru.job4j.crud.model.User"--%>
-<%--@elvariable id="users" type="java.util.List<ru.job4j.crud.model.User>"--%>
 <%--@elvariable id="error" type="java.lang.String"--%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -57,11 +54,21 @@
 </div>
 
 <div class="container">
+
+
     <p class="statusMsg">
+        <c:if test="${not empty param.success}">
+            <span style="color:green"><b>Success: </b>${param.success}</span>
+        </c:if>
+        <c:if test="${not empty param.error}">
+            <span style="color:red"><b>Error: </b>${param.error}</span>
+        </c:if>
         <c:if test="${error != null}">
             <span style="color:red"><b>Error: </b>${error}</span>
         </c:if>
     </p>
+
+
     <form action="login" id="editForm" method="POST">
         <!--Login-->
         <div class="input-group mb-2">

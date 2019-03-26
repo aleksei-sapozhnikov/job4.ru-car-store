@@ -5,7 +5,6 @@ import carstore.model.User;
 import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,10 +28,6 @@ public class LoginServlet extends HttpServlet {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(LoginServlet.class);
     /**
-     * Hibernate session factory.
-     */
-    private SessionFactory hbFactory;
-    /**
      * Utils to perform database transactions.
      */
     private NewUserStore userStore;
@@ -43,7 +38,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void init() {
         var ctx = this.getServletContext();
-        this.hbFactory = (SessionFactory) ctx.getAttribute(ConstContext.SESSION_FACTORY.v());
         this.userStore = (NewUserStore) ctx.getAttribute(ConstContext.USER_STORE.v());
     }
 
@@ -108,6 +102,7 @@ public class LoginServlet extends HttpServlet {
      */
     private void attachAndPass(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
         req.getSession().setAttribute("loggedUser", user);
-        resp.sendRedirect(req.getContextPath());
+        var msg = String.format("User (%s) logged in", user.getLogin());
+        resp.sendRedirect(String.format("%s?success=%s", req.getContextPath(), msg));
     }
 }

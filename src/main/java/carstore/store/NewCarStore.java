@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Car in-session storage.
@@ -37,14 +38,19 @@ public class NewCarStore extends AbstractStore {
     }
 
     public Car get(long id) {
-        return this.doTransaction(
-                session -> session.get(Car.class, id));
+        return this.doTransaction(session -> {
+            var result = session.get(Car.class, id);
+            session.detach(result);
+            return result;
+        });
     }
 
     public void save(Car car) {
-        this.doTransaction(
-                session -> session.save(car)
-        );
+        this.doTransaction(session -> {
+            session.save(car);
+            session.detach(car);
+            return null;
+        });
     }
 
     public void update(Car newCar) {
@@ -52,11 +58,28 @@ public class NewCarStore extends AbstractStore {
             if (newCar.getImages().size() > 0) {
                 var persistent = session.get(Car.class, newCar.getId());
                 persistent.clearImages();
-                session.flush();
                 session.detach(persistent);
+                session.flush();
             }
             session.update(newCar);
+            session.detach(newCar);
             return null;
+        });
+    }
+
+    public void detach(Set<Car> cars) {
+        this.doTransaction(session -> {
+            cars.forEach(session::detach);
+            return null;
+        });
+    }
+
+    public boolean containsSeller(long sellerId) {
+        return this.doTransaction(session -> {
+            var found = session.createQuery("from Car where seller.id = :sellerId")
+                    .setParameter("sellerId", sellerId)
+                    .list();
+            return found.size() > 0;
         });
     }
 }

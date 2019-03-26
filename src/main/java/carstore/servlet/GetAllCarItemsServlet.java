@@ -6,7 +6,6 @@ import carstore.store.NewCarStore;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,10 +32,6 @@ public class GetAllCarItemsServlet extends HttpServlet {
      */
     private final Gson gson = new Gson();
     /**
-     * Hibernate session factory.
-     */
-    private SessionFactory factory;
-    /**
      * Car store.
      */
     private NewCarStore carStore;
@@ -51,7 +46,6 @@ public class GetAllCarItemsServlet extends HttpServlet {
     @Override
     public void init() {
         var context = this.getServletContext();
-        this.factory = (SessionFactory) context.getAttribute(ConstContext.SESSION_FACTORY.v());
         this.carStore = (NewCarStore) context.getAttribute(ConstContext.CAR_STORE.v());
         this.transformer = (Transformer) context.getAttribute(ConstContext.TRANSFORMER.v());
     }
