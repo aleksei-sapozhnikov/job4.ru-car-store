@@ -1,12 +1,9 @@
 package carstore.model;
 
-import carstore.model.car.Car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -27,30 +24,19 @@ public class User {
     /**
      * Unique id.
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private long id;
     /**
      * User login to authenticate in system.
      */
-    @Column(name = "login", unique = true)
     private String login;
     /**
      * User password to authenticate in system.
      */
-    @Column(name = "password")
     private String password;
     /**
      * User phone.
      */
-    @Column(name = "phone")
     private String phone;
-    /**
-     * List of cars the user sells.
-     */
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Car> cars = new HashSet<>();
 
     public static User of(String login, String password, String phone) {
         var user = new User();
@@ -74,6 +60,9 @@ public class User {
      *
      * @return Value of id field.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     public long getId() {
         return this.id;
     }
@@ -142,25 +131,6 @@ public class User {
      */
     public User setPhone(String phone) {
         this.phone = phone;
-        return this;
-    }
-
-    /**
-     * Returns cars.
-     *
-     * @return Value of cars field.
-     */
-    public Set<Car> getCars() {
-        return this.cars;
-    }
-
-    /**
-     * Sets cars value.
-     *
-     * @param cars Value to set.
-     */
-    public User setCars(Set<Car> cars) {
-        this.cars = cars;
         return this;
     }
 }

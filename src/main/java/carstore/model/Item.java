@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Item to send to frontend.
@@ -19,7 +18,6 @@ public class Item {
         item.setPrice(price);
         item.setTitle(title);
         item.setDescriptions(descriptions);
-        item.setImagesIds(images.stream().map(Image::getId).collect(Collectors.toList()));
         return item;
     }
 

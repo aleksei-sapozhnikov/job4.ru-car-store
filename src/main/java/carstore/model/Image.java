@@ -1,11 +1,13 @@
 package carstore.model;
 
-import carstore.model.car.Car;
+import com.sun.istack.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.*;
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Lob;
+import java.util.Arrays;
 
 /**
  * Item image entity.
@@ -14,8 +16,7 @@ import java.util.Objects;
  * @version 0.1
  * @since 0.1
  */
-@Entity
-@Table(name = "image")
+@Embeddable
 public class Image {
     /**
      * Logger.
@@ -23,24 +24,9 @@ public class Image {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Image.class);
     /**
-     * Image id.
-     */
-    @Id
-    @Column(name = "image_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    /**
      * Image data.
      */
-    @Lob
-    @Column(name = "image_data")
     private byte[] data;
-    /**
-     * Car this image is associated with.
-     */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id")
-    private Car car;
 
     /**
      * Static creation method.
@@ -50,38 +36,43 @@ public class Image {
      */
     public static Image of(byte[] data) {
         var image = new Image();
-        image.setData(data);
+        image.data = data;
         return image;
     }
 
-    /* * * * * * * * * * * *
-     * getters and setters
-     * * * * * * * * * * * */
+    ////////////////////////////
+    // equals() and hashCode()
+    ////////////////////////////
 
-    /**
-     * Returns id.
-     *
-     * @return Value of id field.
-     */
-    public long getId() {
-        return this.id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Image image = (Image) o;
+        return Arrays.equals(data, image.data);
     }
 
-    /**
-     * Sets id value.
-     *
-     * @param id Value to set.
-     */
-    public Image setId(long id) {
-        this.id = id;
-        return this;
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(data);
     }
+
+    //////////////////////////////////
+    // standard getters and setters
+    //////////////////////////////////
 
     /**
      * Returns data.
      *
      * @return Value of data field.
      */
+    @Lob
+    @NotNull
+    @Column(name = "image_data", nullable = false)
     public byte[] getData() {
         return this.data;
     }
@@ -94,41 +85,5 @@ public class Image {
     public Image setData(byte[] data) {
         this.data = data;
         return this;
-    }
-
-    /**
-     * Returns car.
-     *
-     * @return Value of car field.
-     */
-    public Car getCar() {
-        return this.car;
-    }
-
-    /**
-     * Sets car value.
-     *
-     * @param car Value to set.
-     */
-    public Image setCar(Car car) {
-        this.car = car;
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Image image = (Image) o;
-        return id == image.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
