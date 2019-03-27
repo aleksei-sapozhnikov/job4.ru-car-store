@@ -1,10 +1,8 @@
 package carstore.servlet.car;
 
-import carstore.constants.ConstContext;
 import carstore.model.Image;
 import carstore.model.User;
 import carstore.model.car.Car;
-import carstore.store.NewCarStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import util.Utils;
@@ -34,10 +32,6 @@ public abstract class AbstractCarServlet extends HttpServlet {
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(AbstractCarServlet.class);
-    /**
-     * Car store.
-     */
-    private NewCarStore carStore;
 
     /**
      * Initiates fields.
@@ -45,11 +39,6 @@ public abstract class AbstractCarServlet extends HttpServlet {
     @Override
     public void init() {
         var ctx = this.getServletContext();
-        this.carStore = (NewCarStore) ctx.getAttribute(ConstContext.CAR_STORE.v());
-    }
-
-    protected NewCarStore getCarStore() {
-        return this.carStore;
     }
 
     protected Car createCarFromParameters(HttpServletRequest req) throws IOException, ServletException {
@@ -60,7 +49,7 @@ public abstract class AbstractCarServlet extends HttpServlet {
         return Car.of(user, images, values);
     }
 
-    private void fillParameters(HttpServletRequest req, Map<String, String> values, Set<Image> images) throws IOException, ServletException {
+    protected void fillParameters(HttpServletRequest req, Map<String, String> values, Set<Image> images) throws IOException, ServletException {
         for (var part : req.getParts()) {
             try (var in = part.getInputStream();
                  var out = new ByteArrayOutputStream()) {

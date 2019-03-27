@@ -124,43 +124,21 @@ public class Car {
         }
     }
 
-
-    /**
-     * Object.equals() method override.
-     *
-     * @param o Other object.
-     * @return <tt>true</tt> if this and given objects are equal, <tt>false</tt> if not.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Car car = (Car) o;
-        return id == car.id
-                && price == car.price
-                && Objects.equals(mark, car.mark)
-                && Objects.equals(body, car.body)
-                && Objects.equals(age, car.age)
-                && Objects.equals(engine, car.engine)
-                && Objects.equals(chassis, car.chassis);
-    }
-
     /* * * * * * * * * * * * * * * * * *
      * equals(), hashCode(), toString()
      * * * * * * * * * * * * * * * * * */
 
-    /**
-     * Returns this object's hashcode.
-     *
-     * @return Object's hashcode.
-     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return id == car.id;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, price, mark, body, age, engine, chassis);
+        return Objects.hash(id);
     }
 
     /**
@@ -171,7 +149,7 @@ public class Car {
     @Override
     public String toString() {
         return String.format(
-                "Item{id=%d, price=%d, mark=%s, body=%s, age=%s, engine=%s, chassis=%s}",
+                "Car{id=%d, price=%d, mark=%s, body=%s, age=%s, engine=%s, chassis=%s}",
                 this.id, this.price, this.mark, this.body, this.age, this.engine, this.chassis);
     }
 

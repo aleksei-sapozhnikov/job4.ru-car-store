@@ -6,6 +6,7 @@ import carstore.store.NewCarStore;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,10 +33,6 @@ public class GetAllCarItemsServlet extends HttpServlet {
      */
     private final Gson gson = new Gson();
     /**
-     * Car store.
-     */
-    private NewCarStore carStore;
-    /**
      * Transformer of classes one-to-another.
      */
     private Transformer transformer;
@@ -46,7 +43,6 @@ public class GetAllCarItemsServlet extends HttpServlet {
     @Override
     public void init() {
         var context = this.getServletContext();
-        this.carStore = (NewCarStore) context.getAttribute(ConstContext.CAR_STORE.v());
         this.transformer = (Transformer) context.getAttribute(ConstContext.TRANSFORMER.v());
     }
 
@@ -59,7 +55,8 @@ public class GetAllCarItemsServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        var cars = this.carStore.getAll();
+        var carStore = new NewCarStore((Session) req.getAttribute("hibernateSession"));
+        var cars = carStore.getAll();
         var items = this.transformer.carToItem(cars);
         try (var writer = resp.getWriter()) {
             this.gson.toJson(items, writer);

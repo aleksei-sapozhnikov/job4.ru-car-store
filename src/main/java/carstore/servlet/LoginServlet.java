@@ -1,10 +1,10 @@
 package carstore.servlet;
 
-import carstore.constants.ConstContext;
 import carstore.model.User;
 import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,10 +27,6 @@ public class LoginServlet extends HttpServlet {
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(LoginServlet.class);
-    /**
-     * Utils to perform database transactions.
-     */
-    private NewUserStore userStore;
 
     /**
      * Initiates fields.
@@ -38,7 +34,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void init() {
         var ctx = this.getServletContext();
-        this.userStore = (NewUserStore) ctx.getAttribute(ConstContext.USER_STORE.v());
     }
 
     /**
@@ -63,9 +58,10 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        var userStore = new NewUserStore((Session) req.getAttribute("hibernateSession"));
         var login = req.getParameter("login_login");
         var password = req.getParameter("login_password");
-        var user = this.userStore.getByCredentials(login, password);
+        var user = userStore.getByCredentials(login, password);
         if (user != null) {
             this.attachAndPass(req, resp, user);
         } else {

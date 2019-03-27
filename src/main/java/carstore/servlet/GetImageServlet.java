@@ -1,10 +1,10 @@
 package carstore.servlet;
 
-import carstore.constants.ConstContext;
 import carstore.model.Image;
 import carstore.store.NewImageStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import util.Utils;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -36,10 +36,6 @@ public class GetImageServlet extends HttpServlet {
      * Image returned in case if asked image was not found.
      */
     private static final byte[] NOT_FOUND_IMAGE = GetImageServlet.readResource("carstore/store/image-not-found.png");
-    /**
-     * Image store object.
-     */
-    private NewImageStore imageStore;
 
     /**
      * Reads and returns resource as byte array,
@@ -68,7 +64,6 @@ public class GetImageServlet extends HttpServlet {
     @Override
     public void init() {
         var context = this.getServletContext();
-        this.imageStore = (NewImageStore) context.getAttribute(ConstContext.IMAGE_STORE.v());
     }
 
     /**
@@ -80,8 +75,9 @@ public class GetImageServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        var imageStore = new NewImageStore((Session) req.getAttribute("hibernateSession"));
         long id = Utils.parseLong(req.getParameter("id"), -1);
-        var image = this.imageStore.get(id);
+        var image = imageStore.get(id);
         this.writeToResponse(resp, image);
     }
 

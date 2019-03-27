@@ -3,7 +3,7 @@ package carstore.store;
 import carstore.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ public class NewUserStore extends AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(NewUserStore.class);
 
-    public NewUserStore(SessionFactory factory) {
-        super(factory);
+    public NewUserStore(Session session) {
+        super(session);
     }
 
     /**
@@ -32,11 +32,7 @@ public class NewUserStore extends AbstractStore {
      * @return Found persistent user or <tt>null</tt> if not found.
      */
     public User get(long id) {
-        return this.doTransaction(session -> {
-            var result = session.get(User.class, id);
-            session.detach(result);
-            return result;
-        });
+        return this.doTransaction(session -> session.get(User.class, id));
     }
 
     /**
@@ -54,14 +50,7 @@ public class NewUserStore extends AbstractStore {
                     .setParameter("login", login)
                     .setParameter("password", password)
                     .list();
-            User result;
-            if (found.isEmpty()) {
-                result = null;
-            } else {
-                result = found.get(0);
-                session.detach(result);
-            }
-            return result;
+            return found.isEmpty() ? null : found.get(0);
         });
     }
 

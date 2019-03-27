@@ -1,10 +1,10 @@
 package carstore.servlet;
 
-import carstore.constants.ConstContext;
 import carstore.model.User;
 import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,10 +27,6 @@ public class CreateUserServlet extends HttpServlet {
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(CreateUserServlet.class);
-    /**
-     * Utils to perform database transactions.
-     */
-    private NewUserStore userStore;
 
     /**
      * Initiates fields.
@@ -38,7 +34,6 @@ public class CreateUserServlet extends HttpServlet {
     @Override
     public void init() {
         var ctx = this.getServletContext();
-        this.userStore = (NewUserStore) ctx.getAttribute(ConstContext.USER_STORE.v());
     }
 
     /**
@@ -64,8 +59,9 @@ public class CreateUserServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        var userStore = new NewUserStore((Session) req.getAttribute("hibernateSession"));
         User user = this.createUser(req);
-        var saved = this.userStore.saveIfNotExists(user);
+        var saved = userStore.saveIfNotExists(user);
         if (saved) {
             var resultMsg = String.format("User (%s) created", user.getLogin());
             resp.sendRedirect(String.format("%s?success=%s", req.getContextPath(), resultMsg));

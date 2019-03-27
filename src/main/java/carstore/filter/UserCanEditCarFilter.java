@@ -1,11 +1,10 @@
 package carstore.filter;
 
-import carstore.constants.ConstContext;
 import carstore.model.User;
 import carstore.store.NewCarStore;
-import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import util.Utils;
 
 import javax.servlet.*;
@@ -29,19 +28,15 @@ public class UserCanEditCarFilter implements Filter {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(UserCanEditCarFilter.class);
 
-    private NewUserStore userStore;
-    private NewCarStore carStore;
-
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         var context = filterConfig.getServletContext();
-        this.userStore = (NewUserStore) context.getAttribute(ConstContext.USER_STORE.v());
-        this.carStore = (NewCarStore) context.getAttribute(ConstContext.CAR_STORE.v());
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        var carStore = new NewCarStore((Session) request.getAttribute("hibernateSession"));
         var req = (HttpServletRequest) request;
         var resp = (HttpServletResponse) response;
         var loggedUser = (User) req.getSession(false).getAttribute("loggedUser");
@@ -49,7 +44,7 @@ public class UserCanEditCarFilter implements Filter {
         if (carStoreId == -1) {
             throw new ServletException("Id parameter not found");
         }
-        var canEdit = this.carStore.containsSeller(loggedUser.getId());
+        var canEdit = carStore.containsSeller(loggedUser.getId());
         if (canEdit) {
             chain.doFilter(req, resp);
         } else {

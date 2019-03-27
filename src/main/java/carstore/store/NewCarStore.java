@@ -3,10 +3,9 @@ package carstore.store;
 import carstore.model.car.Car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Car in-session storage.
@@ -22,8 +21,8 @@ public class NewCarStore extends AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(NewCarStore.class);
 
-    public NewCarStore(SessionFactory factory) {
-        super(factory);
+    public NewCarStore(Session session) {
+        super(session);
     }
 
     /**
@@ -33,16 +32,11 @@ public class NewCarStore extends AbstractStore {
      */
     @SuppressWarnings("unchecked")
     public List<Car> getAll() {
-        return this.doTransaction(
-                session -> session.createQuery("from Car").list());
+        return this.doTransaction(session -> session.createQuery("from Car").list());
     }
 
     public Car get(long id) {
-        return this.doTransaction(session -> {
-            var result = session.get(Car.class, id);
-            session.detach(result);
-            return result;
-        });
+        return this.doTransaction(session -> session.get(Car.class, id));
     }
 
     public void save(Car car) {
@@ -55,21 +49,7 @@ public class NewCarStore extends AbstractStore {
 
     public void update(Car newCar) {
         this.doTransaction(session -> {
-            if (newCar.getImages().size() > 0) {
-                var persistent = session.get(Car.class, newCar.getId());
-                persistent.clearImages();
-                session.detach(persistent);
-                session.flush();
-            }
             session.update(newCar);
-            session.detach(newCar);
-            return null;
-        });
-    }
-
-    public void detach(Set<Car> cars) {
-        this.doTransaction(session -> {
-            cars.forEach(session::detach);
             return null;
         });
     }

@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 
@@ -65,25 +64,6 @@ public class User {
      * equals(), hashCode(), toString()
      * * * * * * * * * * * * * * * * * */
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        User user = (User) o;
-        return Objects.equals(login, user.login)
-                && Objects.equals(password, user.password)
-                && Objects.equals(phone, user.phone)
-                && Objects.equals(cars, user.cars);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(login, password, phone, cars);
-    }
 
     /* * * * * * * * * * * *
      * getters and setters

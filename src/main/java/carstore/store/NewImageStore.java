@@ -3,7 +3,7 @@ package carstore.store;
 import carstore.model.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 
 /**
  * Image in-session store.
@@ -19,8 +19,8 @@ public class NewImageStore extends AbstractStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(NewImageStore.class);
 
-    public NewImageStore(SessionFactory factory) {
-        super(factory);
+    public NewImageStore(Session session) {
+        super(session);
     }
 
     public Image get(long id) {
