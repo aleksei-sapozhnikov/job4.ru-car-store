@@ -56,12 +56,10 @@ public class EditCarServlet extends AbstractCarServlet {
         var car = session.get(Car.class, id);
 
         // update car parameters
-        var user = (User) req.getSession().getAttribute("loggedUser");
         var values = new HashMap<String, String>();
         var images = new HashSet<Image>();
         this.fillParameters(req, values, images);
         car.setPrice(Integer.parseInt(values.get("price")));
-        car.setSeller(user);
         car.setMark(new Car.Mark()
                 .setModel(values.get(MARK_MODEL.v()))
                 .setManufacturer(values.get(MARK_MANUFACTURER.v())));
@@ -77,7 +75,14 @@ public class EditCarServlet extends AbstractCarServlet {
                 .setEngineVolume(Integer.parseInt(values.get(ENGINE_VOLUME.v()))));
         car.setChassis(new Car.Chassis()
                 .setTransmissionType(values.get(CHASSIS_TRANSMISSION_TYPE.v())));
-        images.forEach(car::addImage);
+        //
+        var imgIt = images.iterator();
+        var real = imgIt.hasNext() && imgIt.next().getData().length > 0;
+        if (real) {
+            car.clearImages();
+            images.forEach(car::addImage);
+        }
+        session.update(car);
 
         tx.commit();
         resp.sendRedirect(this.getServletContext().getContextPath() + "?id=" + car.getId());

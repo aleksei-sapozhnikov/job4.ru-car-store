@@ -32,7 +32,7 @@ public class UserIsLoggedFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         var req = (HttpServletRequest) request;
         var resp = (HttpServletResponse) response;
-        var logged = req.getSession(false).getAttribute("loggedUser");
+        var logged = req.getSession(false).getAttribute("loggedUserId");
         if (logged != null) {
             chain.doFilter(request, response);
         } else {

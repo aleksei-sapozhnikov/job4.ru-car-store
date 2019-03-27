@@ -49,7 +49,7 @@ public class User {
     /**
      * List of cars the user sells.
      */
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Car> cars = new HashSet<>();
 
     public static User of(String login, String password, String phone) {

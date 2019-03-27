@@ -38,7 +38,7 @@ public class Image {
     /**
      * Car this image is associated with.
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
 

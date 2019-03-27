@@ -97,7 +97,8 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException In case of problems.
      */
     private void attachAndPass(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
-        req.getSession().setAttribute("loggedUser", user);
+        var loggedUserId = user.getId();
+        req.getSession().setAttribute("loggedUserId", loggedUserId);
         var msg = String.format("User (%s) logged in", user.getLogin());
         resp.sendRedirect(String.format("%s?success=%s", req.getContextPath(), msg));
     }

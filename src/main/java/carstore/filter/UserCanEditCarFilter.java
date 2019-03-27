@@ -1,7 +1,7 @@
 package carstore.filter;
 
-import carstore.model.User;
 import carstore.store.NewCarStore;
+import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -37,19 +37,21 @@ public class UserCanEditCarFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         var carStore = new NewCarStore((Session) request.getAttribute("hibernateSession"));
+        var userStore = new NewUserStore((Session) request.getAttribute("hibernateSession"));
         var req = (HttpServletRequest) request;
         var resp = (HttpServletResponse) response;
-        var loggedUser = (User) req.getSession(false).getAttribute("loggedUser");
+        var loggedUserId = (long) req.getSession(false).getAttribute("loggedUserId");
         var carStoreId = Utils.parseLong(req.getParameter("storeId"), -1);
         if (carStoreId == -1) {
             throw new ServletException("Id parameter not found");
         }
-        var canEdit = carStore.containsSeller(loggedUser.getId());
+        var user = userStore.get(loggedUserId);
+        var canEdit = user.getCars().stream().anyMatch(car -> car.getId() == carStoreId);
         if (canEdit) {
             chain.doFilter(req, resp);
         } else {
             var msg = "You are not allowed to edit this car";
-            resp.sendRedirect(String.format("%s/login?error=%s", req.getContextPath(), msg));
+            resp.sendRedirect(String.format("%s?error=%s", req.getContextPath(), msg));
         }
     }
 

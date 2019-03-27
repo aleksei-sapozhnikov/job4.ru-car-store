@@ -1,10 +1,11 @@
 package carstore.servlet.car;
 
 import carstore.model.Image;
-import carstore.model.User;
 import carstore.model.car.Car;
+import carstore.store.NewUserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import util.Utils;
 
 import javax.servlet.ServletException;
@@ -42,7 +43,11 @@ public abstract class AbstractCarServlet extends HttpServlet {
     }
 
     protected Car createCarFromParameters(HttpServletRequest req) throws IOException, ServletException {
-        var user = (User) req.getSession().getAttribute("loggedUser");
+        var session = (Session) req.getAttribute("hibernateSession");
+        var userStore = new NewUserStore(session);
+
+        var loggedUserId = (long) req.getSession().getAttribute("loggedUserId");
+        var user = userStore.get(loggedUserId);
         var values = new HashMap<String, String>();
         var images = new HashSet<Image>();
         this.fillParameters(req, values, images);
