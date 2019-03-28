@@ -1,191 +1,130 @@
-//package carstore.model;
-//
-//import org.junit.Test;
-//
-//import static org.junit.Assert.*;
-//
-//
-//public class CarTest {
-//    @Test
-//    public void testDefaultValuesGettersSetters() {
-//        Car car = new Car();
-//        assertEquals(0, car.getId());
-//        assertEquals(0, car.getPrice());
-//        assertNull(car.getAge());
-//        assertNull(car.getBody());
-//        assertNull(car.getChassis());
-//        assertNull(car.getEngine());
-//        assertNull(car.getMark());
-//        //
-//        car.setId(15);
-//        assertEquals(15, car.getId());
-//        car.setPrice(1500);
-//        assertEquals(1500, car.getPrice());
-//        car.setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000));
-//        assertEquals(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000), car.getAge());
-//        car.setBody(new Car.Body().setColor("black").setType("sedan"));
-//        assertEquals(new Car.Body().setColor("black").setType("sedan"), car.getBody());
-//        car.setChassis(new Car.Chassis().setTransmissionType("automatic"));
-//        assertEquals(new Car.Chassis().setTransmissionType("automatic"), car.getChassis());
-//        car.setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200));
-//        assertEquals(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200), car.getEngine());
-//        car.setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        assertEquals(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"), car.getMark());
-//    }
-//
-//    @Test
-//    public void testEqualsHashcode() {
-//        Car main =
-//                new Car().setId(20).setPrice(1500)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        Car copy =
-//                new Car().setId(20).setPrice(1500)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        Car otherId =
-//                new Car().setId(99).setPrice(1500)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        Car otherPrice =
-//                new Car().setId(20).setPrice(9654)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        Car otherAge =
-//                new Car().setId(20).setPrice(1500)
-//                        .setAge(new Car.Age().setNewness("new").setManufactureYear(1965).setMileage(434))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        Car otherBody =
-//                new Car().setId(20).setPrice(1500)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("yellow").setType("pickup"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        Car otherChassis =
-//                new Car().setId(20).setPrice(1500)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("manual"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        Car otherEngine =
-//                new Car().setId(20).setPrice(1500)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("kerosene").setEngineVolume(5400))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        Car otherMark =
-//                new Car().setId(20).setPrice(1500)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Mercedes").setModel("GLK-800"));
-//        // check constructors
-//        assertTrue(main.getId() == copy.getId()
-//                && main.getPrice() == copy.getPrice()
-//                && main.getAge().equals(copy.getAge())
-//                && main.getBody().equals(copy.getBody())
-//                && main.getChassis().equals(copy.getChassis())
-//                && main.getEngine().equals(copy.getEngine())
-//                && main.getMark().equals(copy.getMark()));
-//        assertTrue(main.getId() != otherId.getId()
-//                && main.getPrice() == otherId.getPrice()
-//                && main.getAge().equals(otherId.getAge())
-//                && main.getBody().equals(otherId.getBody())
-//                && main.getChassis().equals(otherId.getChassis())
-//                && main.getEngine().equals(otherId.getEngine())
-//                && main.getMark().equals(otherId.getMark()));
-//        assertTrue(main.getId() == otherPrice.getId()
-//                && !(main.getPrice() == otherPrice.getPrice())
-//                && main.getAge().equals(otherPrice.getAge())
-//                && main.getBody().equals(otherPrice.getBody())
-//                && main.getChassis().equals(otherPrice.getChassis())
-//                && main.getEngine().equals(otherPrice.getEngine())
-//                && main.getMark().equals(otherPrice.getMark()));
-//        assertTrue(main.getId() == otherAge.getId()
-//                && main.getPrice() == otherAge.getPrice()
-//                && !(main.getAge().equals(otherAge.getAge()))
-//                && main.getBody().equals(otherAge.getBody())
-//                && main.getChassis().equals(otherAge.getChassis())
-//                && main.getEngine().equals(otherAge.getEngine())
-//                && main.getMark().equals(otherAge.getMark()));
-//        assertTrue(main.getId() == otherBody.getId()
-//                && main.getPrice() == otherBody.getPrice()
-//                && main.getAge().equals(otherBody.getAge())
-//                && !(main.getBody().equals(otherBody.getBody()))
-//                && main.getChassis().equals(otherBody.getChassis())
-//                && main.getEngine().equals(otherBody.getEngine())
-//                && main.getMark().equals(otherBody.getMark()));
-//        assertTrue(main.getId() == otherChassis.getId()
-//                && main.getPrice() == otherChassis.getPrice()
-//                && main.getAge().equals(otherChassis.getAge())
-//                && main.getBody().equals(otherChassis.getBody())
-//                && !(main.getChassis().equals(otherChassis.getChassis()))
-//                && main.getEngine().equals(otherChassis.getEngine())
-//                && main.getMark().equals(otherChassis.getMark()));
-//        assertTrue(main.getId() == otherEngine.getId()
-//                && main.getPrice() == otherEngine.getPrice()
-//                && main.getAge().equals(otherEngine.getAge())
-//                && main.getBody().equals(otherEngine.getBody())
-//                && main.getChassis().equals(otherEngine.getChassis())
-//                && !(main.getEngine().equals(otherEngine.getEngine()))
-//                && main.getMark().equals(otherEngine.getMark()));
-//        assertTrue(main.getId() == otherMark.getId()
-//                && main.getPrice() == otherMark.getPrice()
-//                && main.getAge().equals(otherMark.getAge())
-//                && main.getBody().equals(otherMark.getBody())
-//                && main.getChassis().equals(otherMark.getChassis())
-//                && main.getEngine().equals(otherMark.getEngine())
-//                && !(main.getMark().equals(otherMark.getMark())));
-//        // not equal
-//        assertNotEquals(main, null);
-//        assertNotEquals(main, "main");
-//        assertNotEquals(main, otherId);
-//        assertNotEquals(main, otherPrice);
-//        assertNotEquals(main, otherAge);
-//        assertNotEquals(main, otherBody);
-//        assertNotEquals(main, otherChassis);
-//        assertNotEquals(main, otherEngine);
-//        assertNotEquals(main, otherMark);
-//        // equal
-//        assertEquals(main, main);
-//        assertEquals(main.hashCode(), main.hashCode());
-//        assertEquals(main, copy);
-//        assertEquals(main.hashCode(), copy.hashCode());
-//    }
-//
-//    @Test
-//    public void testToString() {
-//        Car car =
-//                new Car().setId(20)
-//                        .setAge(new Car.Age().setNewness("used").setManufactureYear(2003).setMileage(15000))
-//                        .setBody(new Car.Body().setColor("black").setType("sedan"))
-//                        .setChassis(new Car.Chassis().setTransmissionType("automatic"))
-//                        .setEngine(new Car.Engine().setEngineType("gasoline").setEngineVolume(1200))
-//                        .setMark(new Car.Mark().setManufacturer("Ford").setModel("FX-1200"));
-//        var result = car.toString();
-//        var expected = String.format(
-//                "Item{id=%d, price=%d, mark=%s, body=%s, age=%s, engine=%s, chassis=%s}",
-//                car.getId(), car.getPrice(), car.getMark(), car.getBody(), car.getAge(), car.getEngine(), car.getChassis());
-//        assertEquals(result, expected);
-//    }
-//
-//}
+package carstore.model;
+
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+
+public class CarTest {
+
+    private Map<Car.IntParam, Integer> createDefaultIntParams() {
+        var result = new HashMap<Car.IntParam, Integer>();
+        result.put(Car.IntParam.PRICE, 1);
+        result.put(Car.IntParam.YEAR_MANUFACTURED, 2);
+        result.put(Car.IntParam.MILEAGE, 3);
+        result.put(Car.IntParam.ENGINE_VOLUME, 4);
+        assertEquals(result.size(), Car.IntParam.values().length);
+        return result;
+    }
+
+    private Map<Car.StrParam, String> createDefaultStrParams() {
+        var result = new HashMap<Car.StrParam, String>();
+        result.put(Car.StrParam.MANUFACTURER, "manufacturer");
+        result.put(Car.StrParam.MODEL, "model");
+        result.put(Car.StrParam.NEWNESS, "newness");
+        result.put(Car.StrParam.BODY_TYPE, "bodyType");
+        result.put(Car.StrParam.COLOR, "color");
+        result.put(Car.StrParam.ENGINE_FUEL, "engineFuel");
+        result.put(Car.StrParam.TRANSMISSION_TYPE, "transmissionType");
+        assertEquals(result.size(), Car.StrParam.values().length);
+        return result;
+    }
+
+    @Test
+    public void whenCreatedUsingStaticOfMethodThenGetValuesRight() {
+        var strParams = this.createDefaultStrParams();
+        var intParams = this.createDefaultIntParams();
+        var owner = Mockito.mock(User.class);
+        var mainImage = Mockito.mock(Image.class);
+        @SuppressWarnings("unchecked") var otherImages = (Set<Image>) Mockito.mock(Set.class);
+        var car = Car.of(owner, strParams, intParams, mainImage, otherImages);
+        // initialized by default
+        assertEquals(car.getId(), 0);
+        // object references
+        assertSame(car.getOwner(), owner);
+        assertSame(car.getMainImage(), mainImage);
+        assertSame(car.getOtherImages(), otherImages);
+        // integer params
+        assertEquals(car.getPrice(), (int) intParams.get(Car.IntParam.PRICE));
+        assertEquals(car.getEngineVolume(), (int) intParams.get(Car.IntParam.ENGINE_VOLUME));
+        assertEquals(car.getMileage(), (int) intParams.get(Car.IntParam.MILEAGE));
+        assertEquals(car.getYearManufactured(), (int) intParams.get(Car.IntParam.YEAR_MANUFACTURED));
+        // string params
+        assertEquals(car.getManufacturer(), strParams.get(Car.StrParam.MANUFACTURER));
+        assertEquals(car.getModel(), strParams.get(Car.StrParam.MODEL));
+        assertEquals(car.getNewness(), strParams.get(Car.StrParam.NEWNESS));
+        assertEquals(car.getBodyType(), strParams.get(Car.StrParam.BODY_TYPE));
+        assertEquals(car.getColor(), strParams.get(Car.StrParam.COLOR));
+        assertEquals(car.getEngineFuel(), strParams.get(Car.StrParam.ENGINE_FUEL));
+        assertEquals(car.getTransmissionType(), strParams.get(Car.StrParam.TRANSMISSION_TYPE));
+    }
+
+    @Test
+    public void whenValuesSetBySettersThenGetNewValues() {
+        var strParams = this.createDefaultStrParams();
+        var intParams = this.createDefaultIntParams();
+        var owner = Mockito.mock(User.class);
+        var mainImage = Mockito.mock(Image.class);
+        @SuppressWarnings("unchecked") var otherImages = (Set<Image>) Mockito.mock(Set.class);
+        var car = Car.of(owner, strParams, intParams, mainImage, otherImages);
+        // initialized by default
+        car.setId(56);
+        assertEquals(car.getId(), 56);
+        // object references
+        var newOwner = Mockito.mock(User.class);
+        car.setOwner(newOwner);
+        assertSame(car.getOwner(), newOwner);
+        var newMainImage = Mockito.mock(Image.class);
+        car.setMainImage(newMainImage);
+        assertSame(car.getMainImage(), newMainImage);
+        @SuppressWarnings("unchecked") var newOtherImages = (Set<Image>) Mockito.mock(Set.class);
+        car.setOtherImages(newOtherImages);
+        assertSame(car.getOtherImages(), newOtherImages);
+        // integer params
+        int count = 0;
+        car.setPrice(100);
+        assertEquals(100, car.getPrice());
+        count++;
+        car.setEngineVolume(200);
+        assertEquals(200, car.getEngineVolume());
+        count++;
+        car.setMileage(300);
+        assertEquals(300, car.getMileage());
+        count++;
+        car.setYearManufactured(400);
+        assertEquals(400, car.getYearManufactured());
+        count++;
+        assertEquals(count, Car.IntParam.values().length);
+        // string params
+        count = 0;
+        car.setManufacturer("new_manufacturer");
+        assertEquals("new_manufacturer", car.getManufacturer());
+        count++;
+        car.setModel("new_model");
+        assertEquals("new_model", car.getModel());
+        count++;
+        car.setNewness("new_newness");
+        assertEquals("new_newness", car.getNewness());
+        count++;
+        car.setBodyType("new_bodyType");
+        assertEquals("new_bodyType", car.getBodyType());
+        count++;
+        car.setColor("new_color");
+        assertEquals("new_color", car.getColor());
+        count++;
+        car.setEngineFuel("new_engineFuel");
+        assertEquals("new_engineFuel", car.getEngineFuel());
+        count++;
+        car.setTransmissionType("new_transmissionType");
+        assertEquals("new_transmissionType", car.getTransmissionType());
+        count++;
+        assertEquals(count, Car.StrParam.values().length);
+    }
+
+}

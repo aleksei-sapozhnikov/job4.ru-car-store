@@ -11,6 +11,8 @@
         <property name="hibernate.connection.password">${db.password}</property>
 
         <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="format_sql">true</property>
 
         <!-- List of Annotations-mapping classes -->
         <mapping class="carstore.model.Car"/>

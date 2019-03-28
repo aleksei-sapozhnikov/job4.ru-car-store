@@ -104,7 +104,7 @@ public class Car {
      *
      * @return Value of owner field.
      */
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "owner")
     public User getOwner() {
         return this.owner;
@@ -163,6 +163,10 @@ public class Car {
     //////////////////////////////////////////////////////////////////
     // custom getters and setters for properties held in map objects
     //////////////////////////////////////////////////////////////////
+
+    /* * * * * * * * * * *
+     * integer parameters
+     * * * * * * * * * * */
 
     /**
      * Returns price.
@@ -225,9 +229,9 @@ public class Car {
     }
 
     /**
-     * Returns mileage.
+     * Returns engineVolume.
      *
-     * @return Value of mileage field.
+     * @return Value of engineVolume field.
      */
     @Column(name = "engine_volume", nullable = false)
     public int getEngineVolume() {
@@ -243,6 +247,151 @@ public class Car {
         this.intParams.put(IntParam.ENGINE_VOLUME, engineVolume);
         return this;
     }
+
+    /* * * * * * * * * * *
+     * string parameters
+     * * * * * * * * * * */
+
+    /**
+     * Returns manufacturer.
+     *
+     * @return Value of manufacturer field.
+     */
+    @Column(name = "manufacturer", nullable = false)
+    public String getManufacturer() {
+        return this.strParams.get(StrParam.MANUFACTURER);
+    }
+
+    /**
+     * Sets manufacturer value.
+     *
+     * @param manufacturer Value to set.
+     */
+    public Car setManufacturer(String manufacturer) {
+        this.strParams.put(StrParam.MANUFACTURER, manufacturer);
+        return this;
+    }
+
+    /**
+     * Returns model.
+     *
+     * @return Value of model field.
+     */
+    @Column(name = "model", nullable = false)
+    public String getModel() {
+        return this.strParams.get(StrParam.MODEL);
+    }
+
+    /**
+     * Sets model value.
+     *
+     * @param model Value to set.
+     */
+    public Car setModel(String model) {
+        this.strParams.put(StrParam.MODEL, model);
+        return this;
+    }
+
+    /**
+     * Returns color.
+     *
+     * @return Value of color field.
+     */
+    @Column(name = "color", nullable = false)
+    public String getColor() {
+        return this.strParams.get(StrParam.COLOR);
+    }
+
+    /**
+     * Sets color value.
+     *
+     * @param color Value to set.
+     */
+    public Car setColor(String color) {
+        this.strParams.put(StrParam.COLOR, color);
+        return this;
+    }
+
+    /**
+     * Returns bodyType.
+     *
+     * @return Value of bodyType field.
+     */
+    @Column(name = "body_type", nullable = false)
+    public String getBodyType() {
+        return this.strParams.get(StrParam.BODY_TYPE);
+    }
+
+    /**
+     * Sets bodyType value.
+     *
+     * @param bodyType Value to set.
+     */
+    public Car setBodyType(String bodyType) {
+        this.strParams.put(StrParam.BODY_TYPE, bodyType);
+        return this;
+    }
+
+    /**
+     * Returns newness.
+     *
+     * @return Value of newness field.
+     */
+    @Column(name = "newness", nullable = false)
+    public String getNewness() {
+        return this.strParams.get(StrParam.NEWNESS);
+    }
+
+    /**
+     * Sets newness value.
+     *
+     * @param newness Value to set.
+     */
+    public Car setNewness(String newness) {
+        this.strParams.put(StrParam.NEWNESS, newness);
+        return this;
+    }
+
+    /**
+     * Returns engineFuel.
+     *
+     * @return Value of engineFuel field.
+     */
+    @Column(name = "engine_fuel", nullable = false)
+    public String getEngineFuel() {
+        return this.strParams.get(StrParam.ENGINE_FUEL);
+    }
+
+    /**
+     * Sets engineFuel value.
+     *
+     * @param engineFuel Value to set.
+     */
+    public Car setEngineFuel(String engineFuel) {
+        this.strParams.put(StrParam.ENGINE_FUEL, engineFuel);
+        return this;
+    }
+
+    /**
+     * Returns transmissionType.
+     *
+     * @return Value of transmissionType field.
+     */
+    @Column(name = "transmission_type", nullable = false)
+    public String getTransmissionType() {
+        return this.strParams.get(StrParam.TRANSMISSION_TYPE);
+    }
+
+    /**
+     * Sets transmissionType value.
+     *
+     * @param transmissionType Value to set.
+     */
+    public Car setTransmissionType(String transmissionType) {
+        this.strParams.put(StrParam.TRANSMISSION_TYPE, transmissionType);
+        return this;
+    }
+
 
     ////////////////////////////
     // equals() and hashCode()
@@ -262,7 +411,7 @@ public class Car {
         BODY_TYPE,
         NEWNESS,
         ENGINE_FUEL,
-        TRANSMISSION_TYPE;
+        TRANSMISSION_TYPE
     }
 
     /**
@@ -272,7 +421,7 @@ public class Car {
         PRICE,
         YEAR_MANUFACTURED,
         MILEAGE,
-        ENGINE_VOLUME;
+        ENGINE_VOLUME
     }
 
 }
