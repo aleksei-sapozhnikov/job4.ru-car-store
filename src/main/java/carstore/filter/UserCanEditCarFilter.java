@@ -11,6 +11,7 @@ import util.Utils;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -29,6 +30,8 @@ public class UserCanEditCarFilter implements Filter {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(UserCanEditCarFilter.class);
 
+    private CarStore carStore;
+
     /**
      * Initializes on filter creation.
      *
@@ -36,24 +39,40 @@ public class UserCanEditCarFilter implements Filter {
      */
     @Override
     public void init(FilterConfig filterConfig) {
+        var ctx = filterConfig.getServletContext();
+        this.carStore = (CarStore) ctx.getAttribute(Attributes.CAR_STORE.v());
     }
 
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        Car car = this.getCarFromStorage(request);
-        if (12 == car.getOwner().getId()) {
-            chain.doFilter(request, response);
+        var req = (HttpServletRequest) request;
+        var resp = (HttpServletResponse) response;
+        var userId = this.getLoggedUserId(req);
+        var car = this.getCarFromStorage(req);
+        var owner = car.getOwner();
+        if (userId == owner.getId()) {
+            chain.doFilter(req, response);
         } else {
-            var errorMsg = String.format("User (%s) is not allowed to edit this car", car.getOwner().getLogin());
+            var errorMsg = String.format("User (%s) is not allowed to edit this car", owner.getLogin());
             var redirectPath = new StringBuilder()
                     .append(WebApp.BASEDIR.v())
                     .append("?")
-                    .append(WebApp.ERROR_MSG).append(errorMsg)
+                    .append(WebApp.ERROR_MSG.v()).append("=").append(errorMsg)
                     .toString();
-            var resp = (HttpServletResponse) response;
             resp.sendRedirect(redirectPath);
         }
+    }
+
+    /**
+     * Returns user id stored in session.
+     *
+     * @param req Request object.
+     * @return Logged user id.
+     */
+    private Long getLoggedUserId(HttpServletRequest req) {
+        var session = req.getSession(false);
+        return (Long) (session.getAttribute(Attributes.LOGGED_USER_ID.v()));
     }
 
     /**
@@ -72,7 +91,7 @@ public class UserCanEditCarFilter implements Filter {
                     "Car id: parameter (%s) not found or could not be parsed as number.", carIdStr));
         }
         var session = (Session) request.getAttribute(Attributes.HB_SESSION.v());
-        var car = new CarStore().get(carId).apply(session);
+        var car = this.carStore.get(carId).apply(session);
         if (car == null) {
             throw new ServletException(String.format(
                     "Car with given id (%s) not found in storage.", carId));
@@ -85,6 +104,5 @@ public class UserCanEditCarFilter implements Filter {
      */
     @Override
     public void destroy() {
-
     }
 }
