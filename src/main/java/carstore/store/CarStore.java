@@ -21,7 +21,25 @@ public class CarStore {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(CarStore.class);
 
+    private <T> Function<Session, T> doTransaction(Function<Session, T> operations) {
+        return session -> {
+            T result;
+            var tx = session.beginTransaction();
+            try {
+                result = operations.apply(session);
+                tx.commit();
+            } catch (
+                    Exception e) {
+                tx.rollback();
+                throw e;
+            }
+            return result;
+        };
+    }
+
     public Function<Session, Car> get(long id) {
-        return session -> session.get(Car.class, id);
+        return this.doTransaction(
+                session -> session.get(Car.class, id)
+        );
     }
 }

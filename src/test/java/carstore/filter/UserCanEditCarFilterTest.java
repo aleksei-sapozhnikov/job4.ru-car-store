@@ -66,6 +66,7 @@ public class UserCanEditCarFilterTest {
         filter.destroy();
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     public void whenLoggedIdEqualsCarOwnerIdThenDoFilter() throws IOException, ServletException {
         when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn(111L);
@@ -98,6 +99,7 @@ public class UserCanEditCarFilterTest {
         );
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     public void whenLoggedIdNotEqualToCarOwnerIdThenResponseToMainPageWithError() throws IOException, ServletException {
         when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn(111L);
