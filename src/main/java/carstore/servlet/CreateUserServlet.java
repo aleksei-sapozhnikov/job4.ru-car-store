@@ -1,12 +1,15 @@
 package carstore.servlet;
 
+import carstore.constants.Attributes;
+import carstore.constants.WebApp;
 import carstore.model.User;
-import carstore.store.NewUserStore;
+import carstore.store.UserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +30,10 @@ public class CreateUserServlet extends HttpServlet {
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(CreateUserServlet.class);
+    /**
+     * User store.
+     */
+    private UserStore userStore;
 
     /**
      * Initiates fields.
@@ -34,6 +41,7 @@ public class CreateUserServlet extends HttpServlet {
     @Override
     public void init() {
         var ctx = this.getServletContext();
+        this.userStore = (UserStore) ctx.getAttribute(Attributes.ATR_USER_STORE.v());
     }
 
     /**
@@ -46,7 +54,9 @@ public class CreateUserServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/view" + "/createUser.jsp").forward(req, resp);
+        req.getRequestDispatcher(
+                String.join("/", WebApp.VIEW_ROOT.v(), WebApp.PG_CREATE_USER.v())
+        ).forward(req, resp);
     }
 
     /**
@@ -59,22 +69,34 @@ public class CreateUserServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        var userStore = new NewUserStore((Session) req.getAttribute("hibernateSession"));
         User user = this.createUser(req);
-        var saved = userStore.saveIfNotExists(user);
+        var hbSession = (Session) req.getAttribute(Attributes.ATR_HB_SESSION.v());
+        var saved = this.userStore.saveIfNotExists(user).apply(hbSession);
         if (saved) {
             var resultMsg = String.format("User (%s) created", user.getLogin());
-            resp.sendRedirect(String.format("%s?success=%s", req.getContextPath(), resultMsg));
+            var redirectPath = new StringBuilder()
+                    .append(WebApp.BASEDIR.v())
+                    .append("?")
+                    .append(WebApp.MSG_SUCCESS.v()).append("=").append(resultMsg)
+                    .toString();
+            resp.sendRedirect(redirectPath);
         } else {
-            req.setAttribute("error", String.format("Login (%s) already exists", user.getLogin()));
+            var resultMsg = String.format("Login (%s) already exists", user.getLogin());
+            req.setAttribute(WebApp.MSG_ERROR.v(), resultMsg);
             this.doGet(req, resp);
         }
     }
 
-    private User createUser(HttpServletRequest req) {
-        var login = req.getParameter("user_login");
-        var password = req.getParameter("user_password");
-        var phone = req.getParameter("user_phone");
+    /**
+     * Creates new user useing request parameters.
+     *
+     * @param req Request object.
+     * @return User created.
+     */
+    private User createUser(ServletRequest req) {
+        var login = req.getParameter(Attributes.PRM_USER_LOGIN.v());
+        var password = req.getParameter(Attributes.PRM_USER_PASSWORD.v());
+        var phone = req.getParameter(Attributes.PRM_USER_PHONE.v());
         return User.of(login, password, phone);
     }
 }
