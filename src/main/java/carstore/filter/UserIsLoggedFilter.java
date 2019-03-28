@@ -51,14 +51,28 @@ public class UserIsLoggedFilter implements Filter {
         var resp = (HttpServletResponse) response;
         var loggedId = req.getSession(false).getAttribute(Attributes.LOGGED_USER_ID.v());
         if (loggedId != null) {
+            this.checkIsLong(loggedId);
             chain.doFilter(request, response);
         } else {
             var redirectPath = new StringBuilder()
                     .append(WebApp.BASEDIR.v()).append("/").append(WebApp.SRV_LOGIN.v())
                     .append("?")
-                    .append(WebApp.ERROR_MSG.v()).append("Please log in to add or edit cars")
+                    .append(WebApp.ERROR_MSG.v()).append("=").append("Please log in to add or edit cars")
                     .toString();
             resp.sendRedirect(redirectPath);
+        }
+    }
+
+    /**
+     * Checks if given object is of type long.
+     *
+     * @param userId User id object to check.
+     * @throws ServletException If Object is not of type long.
+     */
+    private void checkIsLong(Object userId) throws ServletException {
+        if (!(userId instanceof Long)) {
+            throw new ServletException(String.format(
+                    "Logged user id in session (%s) is not of type Long", userId));
         }
     }
 

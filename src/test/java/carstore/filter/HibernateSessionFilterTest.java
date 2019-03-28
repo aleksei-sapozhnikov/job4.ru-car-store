@@ -46,6 +46,12 @@ public class HibernateSessionFilterTest {
     }
 
     @Test
+    public void justForCoverageDestroy() {
+        var filter = new HibernateSessionFilter();
+        filter.destroy();
+    }
+
+    @Test
     public void whenNoSessionFoundThenCreatingNewSession() throws IOException, ServletException {
         when(this.req.getAttribute(Attributes.HB_SESSION.v())).thenReturn(null);
         var newSession = mock(Session.class);
@@ -70,8 +76,6 @@ public class HibernateSessionFilterTest {
                 this.sContext, this.fConfig, this.sFactory,
                 this.session, this.req, this.resp, this.chain, newSession
         );
-        // just for coverage
-        filter.destroy();
     }
 
     @Test
