@@ -36,7 +36,7 @@ public class Image {
      */
     public static Image of(byte[] data) {
         var image = new Image();
-        image.data = data;
+        image.setData(data);
         return image;
     }
 
@@ -74,7 +74,7 @@ public class Image {
     @NotNull
     @Column(name = "image_data", nullable = false)
     public byte[] getData() {
-        return this.data;
+        return Arrays.copyOf(this.data, this.data.length);
     }
 
     /**
@@ -83,7 +83,7 @@ public class Image {
      * @param data Value to set.
      */
     public Image setData(byte[] data) {
-        this.data = data;
+        this.data = Arrays.copyOf(data, data.length);
         return this;
     }
 }
