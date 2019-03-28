@@ -38,6 +38,14 @@ public class User {
      */
     private String phone;
 
+    /**
+     * Creates new User object by given parameters.
+     *
+     * @param login    Login.
+     * @param password Password.
+     * @param phone    Phone.
+     * @return New object.
+     */
     public static User of(String login, String password, String phone) {
         var user = new User();
         user.setLogin(login);
