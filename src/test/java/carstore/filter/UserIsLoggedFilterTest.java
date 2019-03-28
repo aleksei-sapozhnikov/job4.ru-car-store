@@ -43,6 +43,12 @@ public class UserIsLoggedFilterTest {
     }
 
     @Test
+    public void justForCoverageDestroy() {
+        var filter = new UserIsLoggedFilter();
+        filter.destroy();
+    }
+
+    @Test
     public void whenNoLoggedUserThenRedirectToLoginWithError() throws IOException, ServletException {
         when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn(null);
         // initialize
@@ -63,13 +69,11 @@ public class UserIsLoggedFilterTest {
                 this.sContext, this.fConfig, this.httpSession,
                 this.req, this.resp, this.chain
         );
-        // just for coverage
-        filter.destroy();
     }
 
     @Test
     public void whenIsLoggedUserParameterThenDoFilter() throws IOException, ServletException {
-        when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn("some_id");
+        when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn(12L);
         // initialize
         var filter = new UserIsLoggedFilter();
         filter.init(this.fConfig);
@@ -78,6 +82,29 @@ public class UserIsLoggedFilterTest {
         verify(this.req).getSession(false);
         verify(this.httpSession).getAttribute(Attributes.LOGGED_USER_ID.v());
         verify(this.chain).doFilter(this.req, this.resp);
+        // must happen nothing more
+        verifyNoMoreInteractions(
+                this.sContext, this.fConfig, this.httpSession,
+                this.req, this.resp, this.chain
+        );
+    }
+
+    @Test
+    public void whenIdIsNotOfTypeLongThenServletException() throws IOException, ServletException {
+        when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn("not_long");
+        // initialize
+        var filter = new UserIsLoggedFilter();
+        filter.init(this.fConfig);
+        // do filter
+        var wasException = new boolean[]{false};
+        try {
+            filter.doFilter(this.req, this.resp, this.chain);
+        } catch (ServletException e) {
+            wasException[0] = true;
+        }
+        assertTrue(wasException[0]);
+        verify(this.req).getSession(false);
+        verify(this.httpSession).getAttribute(Attributes.LOGGED_USER_ID.v());
         // must happen nothing more
         verifyNoMoreInteractions(
                 this.sContext, this.fConfig, this.httpSession,
