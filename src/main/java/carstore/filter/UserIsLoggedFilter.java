@@ -56,7 +56,7 @@ public class UserIsLoggedFilter implements Filter {
             var redirectPath = new StringBuilder()
                     .append(WebApp.BASEDIR.v()).append("/").append(WebApp.SRV_LOGIN.v())
                     .append("?")
-                    .append(WebApp.ERROR_MSG).append("Please log in to add or edit cars")
+                    .append(WebApp.ERROR_MSG.v()).append("Please log in to add or edit cars")
                     .toString();
             resp.sendRedirect(redirectPath);
         }
