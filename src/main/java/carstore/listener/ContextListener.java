@@ -1,6 +1,6 @@
 //package carstore.listener;
 //
-//import carstore.constants.ConstContext;
+//import carstore.constants.Attributes;
 //import carstore.logic.Transformer;
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
@@ -35,8 +35,8 @@
 //    public void contextInitialized(ServletContextEvent sce) {
 //        var sessionFactory = new Configuration().configure().buildSessionFactory();
 //        var context = sce.getServletContext();
-//        context.setAttribute(ConstContext.SESSION_FACTORY.v(), sessionFactory);
-//        context.setAttribute(ConstContext.TRANSFORMER.v(), new Transformer());
+//        context.setAttribute(Attributes.HB_FACTORY.v(), sessionFactory);
+//        context.setAttribute(Attributes.TRANSFORMER.v(), new Transformer());
 //    }
 //
 //    /**
@@ -47,6 +47,6 @@
 //    @Override
 //    public void contextDestroyed(ServletContextEvent sce) {
 //        var context = sce.getServletContext();
-//        ((SessionFactory) context.getAttribute(ConstContext.SESSION_FACTORY.v())).close();
+//        ((SessionFactory) context.getAttribute(Attributes.HB_FACTORY.v())).close();
 //    }
 //}

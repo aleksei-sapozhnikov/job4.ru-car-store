@@ -1,6 +1,6 @@
 //package carstore.servlet;
 //
-//import carstore.constants.ConstContext;
+//import carstore.constants.Attributes;
 //import carstore.logic.Transformer;
 //import carstore.store.NewCarStore;
 //import com.google.gson.Gson;
@@ -43,7 +43,7 @@
 //    @Override
 //    public void init() {
 //        var context = this.getServletContext();
-//        this.transformer = (Transformer) context.getAttribute(ConstContext.TRANSFORMER.v());
+//        this.transformer = (Transformer) context.getAttribute(Attributes.TRANSFORMER.v());
 //    }
 //
 //    /**
