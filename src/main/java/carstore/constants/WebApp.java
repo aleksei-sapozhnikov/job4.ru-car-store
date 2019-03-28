@@ -1,7 +1,9 @@
 package carstore.constants;
 
+import java.util.Optional;
+
 public enum WebApp {
-    BASEDIR(System.getProperty("catalina.base")),
+    BASEDIR(Optional.ofNullable(System.getProperty("catalina.base")).orElse("basedir")),
     VIEW_ROOT("/WEB-INF/view"),
     ERROR_MSG("error"),
     SRV_LOGIN("loginServlet"),
