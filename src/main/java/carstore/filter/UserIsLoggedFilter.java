@@ -49,7 +49,7 @@ public class UserIsLoggedFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         var req = (HttpServletRequest) request;
         var resp = (HttpServletResponse) response;
-        var loggedId = req.getSession(false).getAttribute(Attributes.LOGGED_USER_ID.v());
+        var loggedId = req.getSession(false).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
         if (loggedId != null) {
             this.checkIsLong(loggedId);
             chain.doFilter(request, response);
@@ -57,7 +57,7 @@ public class UserIsLoggedFilter implements Filter {
             var redirectPath = new StringBuilder()
                     .append(WebApp.BASEDIR.v()).append("/").append(WebApp.SRV_LOGIN.v())
                     .append("?")
-                    .append(WebApp.ERROR_MSG.v()).append("=").append("Please log in to add or edit cars")
+                    .append(WebApp.MSG_ERROR.v()).append("=").append("Please log in to add or edit cars")
                     .toString();
             resp.sendRedirect(redirectPath);
         }

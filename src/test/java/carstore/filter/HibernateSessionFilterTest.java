@@ -42,7 +42,7 @@ public class HibernateSessionFilterTest {
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
         when(this.fConfig.getServletContext()).thenReturn(this.sContext);
-        when(this.sContext.getAttribute(Attributes.HB_FACTORY.v())).thenReturn(this.sFactory);
+        when(this.sContext.getAttribute(Attributes.ATR_HB_FACTORY.v())).thenReturn(this.sFactory);
     }
 
     @Test
@@ -53,22 +53,22 @@ public class HibernateSessionFilterTest {
 
     @Test
     public void whenNoSessionFoundThenCreatingNewSession() throws IOException, ServletException {
-        when(this.req.getAttribute(Attributes.HB_SESSION.v())).thenReturn(null);
+        when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(null);
         var newSession = mock(Session.class);
         when(sFactory.openSession()).thenReturn(newSession);
         // initialize
         var filter = new HibernateSessionFilter();
         filter.init(this.fConfig);
         verify(this.fConfig).getServletContext();
-        verify(this.sContext).getAttribute(Attributes.HB_FACTORY.v());
+        verify(this.sContext).getAttribute(Attributes.ATR_HB_FACTORY.v());
         // do filter
         filter.doFilter(this.req, this.resp, this.chain);
-        verify(this.req).getAttribute(Attributes.HB_SESSION.v());
+        verify(this.req).getAttribute(Attributes.ATR_HB_SESSION.v());
         verify(sFactory).openSession();
-        verify(req).setAttribute(Attributes.HB_SESSION.v(), newSession);
+        verify(req).setAttribute(Attributes.ATR_HB_SESSION.v(), newSession);
         verify(this.chain).doFilter(this.req, this.resp);
         verify(newSession).close();
-        verify(this.req).removeAttribute(Attributes.HB_SESSION.v());
+        verify(this.req).removeAttribute(Attributes.ATR_HB_SESSION.v());
         // must happen nothing more
         verify(this.session, never()).clear();
         verify(newSession, never()).clear();
@@ -80,18 +80,18 @@ public class HibernateSessionFilterTest {
 
     @Test
     public void whenSessionExistsThenNotCreatingNewSession() throws IOException, ServletException {
-        when(this.req.getAttribute(Attributes.HB_SESSION.v())).thenReturn(this.session);
+        when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.session);
         // initialize
         var filter = new HibernateSessionFilter();
         filter.init(this.fConfig);
         verify(this.fConfig).getServletContext();
-        verify(this.sContext).getAttribute(Attributes.HB_FACTORY.v());
+        verify(this.sContext).getAttribute(Attributes.ATR_HB_FACTORY.v());
         // do filter
         filter.doFilter(this.req, this.resp, this.chain);
-        verify(this.req).getAttribute(Attributes.HB_SESSION.v());
+        verify(this.req).getAttribute(Attributes.ATR_HB_SESSION.v());
         verify(this.chain).doFilter(this.req, this.resp);
         verify(this.session).close();
-        verify(this.req).removeAttribute(Attributes.HB_SESSION.v());
+        verify(this.req).removeAttribute(Attributes.ATR_HB_SESSION.v());
         // must happen nothing more
         verify(this.session, never()).clear();
         verifyNoMoreInteractions(
@@ -102,24 +102,24 @@ public class HibernateSessionFilterTest {
 
     @Test
     public void whenExceptionThrownThenSessionClearAndThrowTheException() throws IOException, ServletException {
-        when(this.req.getAttribute(Attributes.HB_SESSION.v())).thenReturn(this.session);
+        when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.session);
         Mockito.doThrow(new ServletException("expected")).when(this.chain).doFilter(any(), any());
         // initialize
         var filter = new HibernateSessionFilter();
         filter.init(this.fConfig);
         verify(this.fConfig).getServletContext();
-        verify(this.sContext).getAttribute(Attributes.HB_FACTORY.v());
+        verify(this.sContext).getAttribute(Attributes.ATR_HB_FACTORY.v());
         // do filter
         try {
             filter.doFilter(this.req, this.resp, this.chain);
         } catch (Exception e) {
             assertEquals("expected", e.getMessage());
         }
-        verify(this.req).getAttribute(Attributes.HB_SESSION.v());
+        verify(this.req).getAttribute(Attributes.ATR_HB_SESSION.v());
         verify(this.chain).doFilter(this.req, this.resp);
         verify(this.session).clear();
         verify(this.session).close();
-        verify(this.req).removeAttribute(Attributes.HB_SESSION.v());
+        verify(this.req).removeAttribute(Attributes.ATR_HB_SESSION.v());
         // must happen nothing more
         verifyNoMoreInteractions(
                 this.sContext, this.fConfig, this.sFactory,

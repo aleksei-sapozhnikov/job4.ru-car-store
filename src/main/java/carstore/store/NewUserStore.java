@@ -53,24 +53,4 @@ public class NewUserStore extends AbstractStore {
             return found.isEmpty() ? null : found.get(0);
         });
     }
-
-    /**
-     * Saves user to store.
-     *
-     * @param user User to store.
-     */
-    public boolean saveIfNotExists(User user) {
-        return this.doTransaction(session -> {
-            var login = user.getLogin();
-            var found = session.createQuery("from User where login = :login")
-                    .setParameter("login", login)
-                    .list();
-            var isSaved = false;
-            if (found.size() == 0) {
-                session.save(user);
-                isSaved = true;
-            }
-            return isSaved;
-        });
-    }
 }

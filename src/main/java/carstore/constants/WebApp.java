@@ -4,10 +4,15 @@ import java.util.Optional;
 
 public enum WebApp {
     BASEDIR(Optional.ofNullable(System.getProperty("catalina.base")).orElse("basedir")),
-    VIEW_ROOT("/WEB-INF/view"),
-    ERROR_MSG("error"),
+
+    MSG_ERROR("error"),
+    MSG_SUCCESS("success"),
+
     SRV_LOGIN("loginServlet"),
-    EDIT_CAR(String.join("/", VIEW_ROOT.v(), "editCar.jsp"));
+
+    VIEW_ROOT("/WEB-INF/view"),
+    PG_CREATE_USER("createUser.jsp"),
+    PG_EDIT_CAR("editCar.jsp");
 
     private final String value;
 

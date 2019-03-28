@@ -50,20 +50,20 @@ public class UserIsLoggedFilterTest {
 
     @Test
     public void whenNoLoggedUserThenRedirectToLoginWithError() throws IOException, ServletException {
-        when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn(null);
+        when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(null);
         // initialize
         var filter = new UserIsLoggedFilter();
         filter.init(this.fConfig);
         // do filter
         filter.doFilter(this.req, this.resp, this.chain);
         verify(this.req).getSession(false);
-        verify(this.httpSession).getAttribute(Attributes.LOGGED_USER_ID.v());
+        verify(this.httpSession).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
         // get redirect string
         ArgumentCaptor<String> redirectCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.resp).sendRedirect(redirectCaptor.capture());
         var redirect = redirectCaptor.getValue();
         assertTrue(redirect.contains(WebApp.SRV_LOGIN.v()));
-        assertTrue(redirect.contains(WebApp.ERROR_MSG.v()));
+        assertTrue(redirect.contains(WebApp.MSG_ERROR.v()));
         // must happen nothing more
         verifyNoMoreInteractions(
                 this.sContext, this.fConfig, this.httpSession,
@@ -73,14 +73,14 @@ public class UserIsLoggedFilterTest {
 
     @Test
     public void whenIsLoggedUserParameterThenDoFilter() throws IOException, ServletException {
-        when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn(12L);
+        when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(12L);
         // initialize
         var filter = new UserIsLoggedFilter();
         filter.init(this.fConfig);
         // do filter
         filter.doFilter(this.req, this.resp, this.chain);
         verify(this.req).getSession(false);
-        verify(this.httpSession).getAttribute(Attributes.LOGGED_USER_ID.v());
+        verify(this.httpSession).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
         verify(this.chain).doFilter(this.req, this.resp);
         // must happen nothing more
         verifyNoMoreInteractions(
@@ -91,7 +91,7 @@ public class UserIsLoggedFilterTest {
 
     @Test
     public void whenIdIsNotOfTypeLongThenServletException() throws IOException, ServletException {
-        when(this.httpSession.getAttribute(Attributes.LOGGED_USER_ID.v())).thenReturn("not_long");
+        when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn("not_long");
         // initialize
         var filter = new UserIsLoggedFilter();
         filter.init(this.fConfig);
@@ -104,7 +104,7 @@ public class UserIsLoggedFilterTest {
         }
         assertTrue(wasException[0]);
         verify(this.req).getSession(false);
-        verify(this.httpSession).getAttribute(Attributes.LOGGED_USER_ID.v());
+        verify(this.httpSession).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
         // must happen nothing more
         verifyNoMoreInteractions(
                 this.sContext, this.fConfig, this.httpSession,

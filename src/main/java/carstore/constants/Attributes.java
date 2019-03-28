@@ -1,16 +1,21 @@
 package carstore.constants;
 
 public enum Attributes {
-    HB_FACTORY("hibernateSessionFactory"),
-    HB_SESSION("hibernateSession"),
-    LOGGED_USER_ID("userLoggedInTheSessionId"),
-    USER_STORE("userStore"),
-    IMAGE_STORE("imageStore"),
-    CAR_STORE("carStore"),
-    TRANSFORMER("transformer"),
+    ATR_HB_FACTORY("hibernateSessionFactory"),
+    ATR_HB_SESSION("hibernateSession"),
 
+    ATR_LOGGED_USER_ID("userLoggedInTheSessionId"),
 
-    CAR_STORE_ID("storeId");
+    ATR_USER_STORE("userStore"),
+    ATR_IMAGE_STORE("imageStore"),
+    ATR_CAR_STORE("carStore"),
+    ATR_TRANSFORMER("transformer"),
+
+    PRM_USER_LOGIN("user_login"),
+    PRM_USER_PASSWORD("user_password"),
+    PRM_USER_PHONE("user_phone"),
+
+    PRM_CAR_STORE_ID("storeId");
 
     private final String value;
 

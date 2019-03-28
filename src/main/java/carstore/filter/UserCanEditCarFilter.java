@@ -40,7 +40,7 @@ public class UserCanEditCarFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
         var ctx = filterConfig.getServletContext();
-        this.carStore = (CarStore) ctx.getAttribute(Attributes.CAR_STORE.v());
+        this.carStore = (CarStore) ctx.getAttribute(Attributes.ATR_CAR_STORE.v());
     }
 
 
@@ -58,7 +58,7 @@ public class UserCanEditCarFilter implements Filter {
             var redirectPath = new StringBuilder()
                     .append(WebApp.BASEDIR.v())
                     .append("?")
-                    .append(WebApp.ERROR_MSG.v()).append("=").append(errorMsg)
+                    .append(WebApp.MSG_ERROR.v()).append("=").append(errorMsg)
                     .toString();
             resp.sendRedirect(redirectPath);
         }
@@ -72,7 +72,7 @@ public class UserCanEditCarFilter implements Filter {
      */
     private Long getLoggedUserId(HttpServletRequest req) {
         var session = req.getSession(false);
-        return (Long) (session.getAttribute(Attributes.LOGGED_USER_ID.v()));
+        return (Long) (session.getAttribute(Attributes.ATR_LOGGED_USER_ID.v()));
     }
 
     /**
@@ -84,13 +84,13 @@ public class UserCanEditCarFilter implements Filter {
      *                          If car was not found in storage.
      */
     private Car getCarFromStorage(ServletRequest request) throws ServletException {
-        var carIdStr = request.getParameter(Attributes.CAR_STORE_ID.v());
+        var carIdStr = request.getParameter(Attributes.PRM_CAR_STORE_ID.v());
         var carId = Utils.parseLong(carIdStr, -1);
         if (carId == -1) {
             throw new ServletException(String.format(
                     "Car id: parameter (%s) not found or could not be parsed as number.", carIdStr));
         }
-        var session = (Session) request.getAttribute(Attributes.HB_SESSION.v());
+        var session = (Session) request.getAttribute(Attributes.ATR_HB_SESSION.v());
         var car = this.carStore.get(carId).apply(session);
         if (car == null) {
             throw new ServletException(String.format(

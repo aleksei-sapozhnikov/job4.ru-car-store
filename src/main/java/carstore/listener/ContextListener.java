@@ -35,8 +35,8 @@
 //    public void contextInitialized(ServletContextEvent sce) {
 //        var sessionFactory = new Configuration().configure().buildSessionFactory();
 //        var context = sce.getServletContext();
-//        context.setAttribute(Attributes.HB_FACTORY.v(), sessionFactory);
-//        context.setAttribute(Attributes.TRANSFORMER.v(), new Transformer());
+//        context.setAttribute(Attributes.ATR_HB_FACTORY.v(), sessionFactory);
+//        context.setAttribute(Attributes.ATR_TRANSFORMER.v(), new Transformer());
 //    }
 //
 //    /**
@@ -47,6 +47,6 @@
 //    @Override
 //    public void contextDestroyed(ServletContextEvent sce) {
 //        var context = sce.getServletContext();
-//        ((SessionFactory) context.getAttribute(Attributes.HB_FACTORY.v())).close();
+//        ((SessionFactory) context.getAttribute(Attributes.ATR_HB_FACTORY.v())).close();
 //    }
 //}

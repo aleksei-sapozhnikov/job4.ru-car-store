@@ -37,7 +37,7 @@ public class HibernateSessionFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
         var ctx = filterConfig.getServletContext();
-        this.hbFactory = (SessionFactory) ctx.getAttribute(Attributes.HB_FACTORY.v());
+        this.hbFactory = (SessionFactory) ctx.getAttribute(Attributes.ATR_HB_FACTORY.v());
     }
 
     /**
@@ -52,19 +52,19 @@ public class HibernateSessionFilter implements Filter {
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        var session = (Session) request.getAttribute(Attributes.HB_SESSION.v());
+        var session = (Session) request.getAttribute(Attributes.ATR_HB_SESSION.v());
         if (session == null) {
             session = this.hbFactory.openSession();
-            request.setAttribute(Attributes.HB_SESSION.v(), session);
+            request.setAttribute(Attributes.ATR_HB_SESSION.v(), session);
         }
         try {
             chain.doFilter(request, response);
             session.close();
-            request.removeAttribute(Attributes.HB_SESSION.v());
+            request.removeAttribute(Attributes.ATR_HB_SESSION.v());
         } catch (Exception e) {
             session.clear();
             session.close();
-            request.removeAttribute(Attributes.HB_SESSION.v());
+            request.removeAttribute(Attributes.ATR_HB_SESSION.v());
             throw e;
         }
     }
