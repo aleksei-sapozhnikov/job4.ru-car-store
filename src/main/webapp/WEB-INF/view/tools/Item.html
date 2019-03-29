@@ -7,31 +7,37 @@
      */
     class Item {
         /** Store id */
-        storeId;
+        carId;
         /** Title */
         title;
         /** Price */
         price;
+        /** Seller */
+        seller;
+        /** Contacts */
+        contacts;
         /** Descriptions */
         descriptions;
         /** Ids of images for this item */
-        imagesIds;
+        imageIds;
 
-        /**
-         * Constructs new car object.
-         * @param {number} storeId
-         * @param {string} title
-         * @param {number} price
-         * @param descriptions
-         * @param imagesIds
-         */
-        constructor(storeId, title, price, descriptions, imagesIds) {
-            this.storeId = storeId;
-            this.title = title;
-            this.price = price;
-            this.descriptions = descriptions;
-            this.imagesIds = imagesIds;
-        }
+        // /**
+        //  * Constructs new car object.
+        //  * @param {number} storeId
+        //  * @param {string} title
+        //  * @param {number} price
+        //  * @param descriptions
+        //  * @param imagesIds
+        //  */
+        // constructor(storeId, title, price, seller, contect, descriptions, imagesIds) {
+        //     this.carId = storeId;
+        //     this.title = title;
+        //     this.price = price;
+        //     this.seller = seller;
+        //     this.contacts = contect
+        //     this.descriptions = descriptions;
+        //     this.imagesIds = imagesIds;
+        // }
 
         /**
          * Formats item to html.
@@ -41,19 +47,20 @@
             let res = '<div class="item-div">';
             res += '<div class="item-image-div">'
                 + '<img class="item-image-img"'
-                + ` src="${this.imagesIds.length > 0 ? `image?id=${this.imagesIds[0]}` : defaultCarImage}"`
+                + ` src="${this.imageIds.length > 0 ? `image?id=${this.imageIds[0]}` : defaultCarImage}"`
                 + ` alt="${this.title}">`
                 + '</div>';
-            res += `<a class="item-link" href="${carEditPage}?storeId=${this.storeId}"><div>`;
-            res += `<p class="item-title" >${this.title}</p>`
-                + `<p class="item-price" >${this.price.toLocaleString()}</p>`;
-            res += '</div></a>';
+            // res += `<a class="item-link" href="${carEditPage}?storeId=${this.carId}"><div>`;
+            res += `<p class="item-title" >${this.title}</p>`;
+            res += `<p class="item-price" >${this.price}</p>`;
+            // res += '</div></a>';
             for (const [key, value] of Object.entries(this.descriptions)) {
                 res += '<p class="item-description-text">'
                     + `<span class = "item-description-title" >${key}: </span> ${value}`
                     + '</p>';
             }
-            res += '</div>'
+            res += `<p class="item-seller">${this.seller}. ${this.contacts}</p>`;
+            res += '</div>';
             return res;
         }
     }
@@ -83,6 +90,14 @@
         font-size: 1.3em;
         font-weight: 600;
         text-align: center;
+    }
+
+    .item-seller {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 1em;
+        text-align: center;
+        color: #322dff
     }
 
     .item-description-title {
