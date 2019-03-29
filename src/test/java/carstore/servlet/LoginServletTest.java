@@ -31,8 +31,6 @@ import static org.mockito.Mockito.when;
 
 public class LoginServletTest {
     @Mock
-    User user;
-    @Mock
     private ServletContext sContext;
     @Mock
     private ServletConfig sConfig;
@@ -48,6 +46,8 @@ public class LoginServletTest {
     private RequestDispatcher rDispatcher;
     @Mock
     private UserStore userStore;
+    @Mock
+    private User user;
 
     @Before
     public void initMocks() {
