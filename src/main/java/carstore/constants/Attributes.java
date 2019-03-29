@@ -9,7 +9,6 @@ public enum Attributes {
     ATR_USER_STORE("userStore"),
     ATR_IMAGE_STORE("imageStore"),
     ATR_CAR_STORE("carStore"),
-    ATR_TRANSFORMER("transformer"),
 
     PRM_USER_LOGIN("user_login"),
     PRM_USER_PASSWORD("user_password"),
@@ -17,7 +16,7 @@ public enum Attributes {
 
     PRM_IMAGE_ID("id"),
 
-    PRM_CAR_STORE_ID("storeId");
+    PRM_CAR_STORE_ID("carId");
 
     private final String value;
 

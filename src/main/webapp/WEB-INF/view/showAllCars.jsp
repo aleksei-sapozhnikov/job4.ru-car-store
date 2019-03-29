@@ -67,7 +67,21 @@
 
     <script>
         $(function () {
-            showItems();
+            drawItems([
+                {
+                    "title": "manufacturer model",
+                    "price": "1 $",
+                    "seller": "Vasily",
+                    "contacts": "tel: 564-345-23",
+                    "descriptions": {
+                        "Body": "bodyType; color",
+                        "Age": "newness; 2 y.m.; 3 km",
+                        "Engine": "engineFuel; 4 cm³",
+                        "Transmission": "transmissionType"
+                    },
+                    "imageIds": [0]
+                }
+            ]);
         });
     </script>
 

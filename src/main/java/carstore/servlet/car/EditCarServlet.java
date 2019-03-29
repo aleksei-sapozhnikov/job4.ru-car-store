@@ -88,7 +88,7 @@
 //    }
 //
 //    private long getId(HttpServletRequest req) throws ServletException {
-//        var id = Utils.parseLong(req.getParameter("storeId"), -1);
+//        var id = Utils.parseLong(req.getParameter("carId"), -1);
 //        if (id == -1) {
 //            throw new ServletException("Could not parse id parameter");
 //        }
