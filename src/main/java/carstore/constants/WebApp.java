@@ -11,6 +11,7 @@ public enum WebApp {
     SRV_LOGIN("loginServlet"),
 
     VIEW_ROOT("/WEB-INF/view"),
+    PG_SHOW_ALL_CARS("showAllCars.jsp"),
     PG_CREATE_USER("createUser.jsp"),
     PG_EDIT_CAR("editCar.jsp"),
     PG_LOGIN("loginUser.jsp");
