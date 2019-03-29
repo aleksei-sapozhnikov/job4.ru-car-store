@@ -1,5 +1,6 @@
 package carstore.servlet;
 
+import carstore.constants.WebApp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +18,7 @@ import java.io.IOException;
  * @version 0.1
  * @since 0.1
  */
-@WebServlet("")
+@WebServlet(value = "", loadOnStartup = 0)
 public class MainPageServlet extends HttpServlet {
     /**
      * Logger.
@@ -35,7 +36,8 @@ public class MainPageServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.getServletContext().getRequestDispatcher("/WEB-INF/view/" + "showAllCars.jsp").forward(req, resp);
-
+        req.getRequestDispatcher(
+                String.join("/", WebApp.VIEW_ROOT.v(), WebApp.PG_SHOW_ALL_CARS.v())
+        ).forward(req, resp);
     }
 }
