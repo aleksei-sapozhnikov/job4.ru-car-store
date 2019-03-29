@@ -12,7 +12,8 @@ public enum WebApp {
 
     VIEW_ROOT("/WEB-INF/view"),
     PG_CREATE_USER("createUser.jsp"),
-    PG_EDIT_CAR("editCar.jsp");
+    PG_EDIT_CAR("editCar.jsp"),
+    PG_LOGIN("loginUser.jsp");
 
     private final String value;
 

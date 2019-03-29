@@ -1,7 +1,9 @@
 package carstore.servlet;
 
+import carstore.constants.Attributes;
+import carstore.constants.WebApp;
 import carstore.model.User;
-import carstore.store.NewUserStore;
+import carstore.store.UserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -27,6 +29,10 @@ public class LoginServlet extends HttpServlet {
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(LoginServlet.class);
+    /**
+     * User store.
+     */
+    private UserStore userStore;
 
     /**
      * Initiates fields.
@@ -34,6 +40,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void init() {
         var ctx = this.getServletContext();
+        this.userStore = (UserStore) ctx.getAttribute(Attributes.ATR_USER_STORE.v());
     }
 
     /**
@@ -46,7 +53,9 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("WEB-INF/view" + "/loginUser.jsp").forward(req, resp);
+        req.getRequestDispatcher(
+                String.join("/", WebApp.VIEW_ROOT.v(), WebApp.PG_LOGIN.v())
+        ).forward(req, resp);
     }
 
     /**
@@ -58,15 +67,36 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        var userStore = new NewUserStore((Session) req.getAttribute("hibernateSession"));
-        var login = req.getParameter("login_login");
-        var password = req.getParameter("login_password");
-        var user = userStore.getByCredentials(login, password);
+        var login = req.getParameter(Attributes.PRM_USER_LOGIN.v());
+        var password = req.getParameter(Attributes.PRM_USER_PASSWORD.v());
+        var hbSession = (Session) req.getAttribute(Attributes.ATR_HB_SESSION.v());
+        var user = userStore.getByCredentials(login, password).apply(hbSession);
         if (user != null) {
             this.attachAndPass(req, resp, user);
         } else {
             this.forwardToLoginWithError(req, resp, login, password);
         }
+    }
+
+    /**
+     * Attaches found user to session and
+     * redirects back to application main page.
+     *
+     * @param req  Request object.
+     * @param resp Response object.
+     * @param user User object to attach to session.
+     * @throws IOException In case of problems.
+     */
+    private void attachAndPass(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
+        var loggedUserId = user.getId();
+        req.getSession().setAttribute(Attributes.ATR_LOGGED_USER_ID.v(), loggedUserId);
+        var msg = String.format("User (%s) logged in", user.getLogin());
+        var redirectPath = new StringBuilder()
+                .append(WebApp.BASEDIR.v())
+                .append("?")
+                .append(WebApp.MSG_SUCCESS.v()).append("=").append(msg)
+                .toString();
+        resp.sendRedirect(redirectPath);
     }
 
     /**
@@ -81,25 +111,9 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException      In case of problems.
      */
     private void forwardToLoginWithError(HttpServletRequest req, HttpServletResponse resp, String login, String password) throws ServletException, IOException {
-        req.setAttribute("error", String.format(
-                "No user (login: %s, password: %s) found",
-                login, password));
+        req.setAttribute(
+                WebApp.MSG_ERROR.v(),
+                String.format("No user (login: %s, password: %s) found", login, password));
         this.doGet(req, resp);
-    }
-
-    /**
-     * Attaches found user to session and
-     * redirects back to application main page.
-     *
-     * @param req  Request object.
-     * @param resp Response object.
-     * @param user User object to attach to session.
-     * @throws IOException In case of problems.
-     */
-    private void attachAndPass(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
-        var loggedUserId = user.getId();
-        req.getSession().setAttribute("loggedUserId", loggedUserId);
-        var msg = String.format("User (%s) logged in", user.getLogin());
-        resp.sendRedirect(String.format("%s?success=%s", req.getContextPath(), msg));
     }
 }

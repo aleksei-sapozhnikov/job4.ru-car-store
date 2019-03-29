@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -41,4 +42,25 @@ public class UserStore implements Store {
             return isSaved;
         });
     }
+
+
+    /**
+     * Finds user by his login and password.
+     *
+     * @param login    User login.
+     * @param password User password.
+     * @return Found persistent user or <tt>null</tt> if not found.
+     */
+    @SuppressWarnings("unchecked")
+    public Function<Session, User> getByCredentials(String login, String password) {
+        return Store.doTransaction(session -> {
+            var found = (List<User>) session
+                    .createQuery("from User where login = :login and password = :password")
+                    .setParameter("login", login)
+                    .setParameter("password", password)
+                    .list();
+            return found.isEmpty() ? null : found.get(0);
+        });
+    }
+
 }

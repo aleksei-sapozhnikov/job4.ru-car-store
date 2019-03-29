@@ -18,17 +18,20 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class CreateUserServletTest {
-
+public class LoginServletTest {
+    @Mock
+    User user;
     @Mock
     private ServletContext sContext;
     @Mock
@@ -39,6 +42,8 @@ public class CreateUserServletTest {
     private HttpServletRequest req;
     @Mock
     private HttpServletResponse resp;
+    @Mock
+    private HttpSession httpSession;
     @Mock
     private RequestDispatcher rDispatcher;
     @Mock
@@ -51,74 +56,74 @@ public class CreateUserServletTest {
         when(this.sContext.getAttribute(Attributes.ATR_USER_STORE.v())).thenReturn(this.userStore);
         when(this.req.getRequestDispatcher(any(String.class))).thenReturn(this.rDispatcher);
         when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.hbSession);
+        when(this.req.getSession()).thenReturn(this.httpSession);
     }
 
     @Test
     public void justForCoverageDestroy() {
-        var servlet = new CreateUserServlet();
+        var servlet = new LoginServlet();
         servlet.destroy();
     }
 
     @Test
-    public void whenDoGetThenForwardToCreateUserPage() throws ServletException, IOException {
-        var servlet = new CreateUserServlet();
+    public void whenDoGetThenForwardToLoginPage() throws ServletException, IOException {
+        var servlet = new LoginServlet();
         servlet.doGet(req, resp);
         ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.req).getRequestDispatcher(pathCaptor.capture());
         var path = pathCaptor.getValue();
         assertTrue(path.contains(WebApp.VIEW_ROOT.v()));
-        assertTrue(path.contains(WebApp.PG_CREATE_USER.v()));
+        assertTrue(path.contains(WebApp.PG_LOGIN.v()));
         verify(this.rDispatcher).forward(req, resp);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void whenDoPostThenUserCreatedAndRedirectMainPage() throws ServletException, IOException {
-        when(this.req.getParameter(Attributes.PRM_USER_LOGIN.v())).thenReturn("userLogin");
-        when(this.req.getParameter(Attributes.PRM_USER_PASSWORD.v())).thenReturn("userPassword");
-        when(this.req.getParameter(Attributes.PRM_USER_PHONE.v())).thenReturn("userPhone");
-        var saveFunction = (Function<Session, Boolean>) Mockito.mock(Function.class);
-        when(this.userStore.saveIfNotExists(any(User.class))).thenReturn(saveFunction);
-        when(saveFunction.apply(this.hbSession)).thenReturn(true);   // user saved
-        //
-        var servlet = new CreateUserServlet();
+    public void whenRightLoginAndPasswordThenAttachUserIdToSession() throws ServletException, IOException {
+        var login = "userLogin";
+        var password = "userPassword";
+        when(this.req.getParameter(Attributes.PRM_USER_LOGIN.v())).thenReturn(login);
+        when(this.req.getParameter(Attributes.PRM_USER_PASSWORD.v())).thenReturn(password);
+        var getFunction = (Function<Session, User>) Mockito.mock(Function.class);
+        when(this.userStore.getByCredentials(login, password)).thenReturn(getFunction);
+        when(getFunction.apply(this.hbSession)).thenReturn(this.user);   // user found
+        var userId = 115L;
+        when(this.user.getId()).thenReturn(userId);
+        // actions
+        var servlet = new LoginServlet();
         servlet.init(this.sConfig);
         servlet.doPost(this.req, this.resp);
-        //
+        // verify
         ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.resp).sendRedirect(pathCaptor.capture());
         var path = pathCaptor.getValue();
         assertTrue(path.contains(WebApp.BASEDIR.v()));
         assertTrue(path.contains(WebApp.MSG_SUCCESS.v()));
+        verify(this.httpSession).setAttribute(Attributes.ATR_LOGGED_USER_ID.v(), userId);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void whenDoPostButUserNotCreatedThenRedirectMainPageWithError() throws ServletException, IOException {
-        // init mocks
-        when(this.req.getParameter(Attributes.PRM_USER_LOGIN.v())).thenReturn("userLogin");
-        when(this.req.getParameter(Attributes.PRM_USER_PASSWORD.v())).thenReturn("userPassword");
-        when(this.req.getParameter(Attributes.PRM_USER_PHONE.v())).thenReturn("userPhone");
-        var saveFunction = (Function<Session, Boolean>) Mockito.mock(Function.class);
-        when(this.userStore.saveIfNotExists(any(User.class))).thenReturn(saveFunction);
-        when(saveFunction.apply(this.hbSession)).thenReturn(false);     // user not saved
-        // create servlet. Overriding doGet do check if it was called
-        var servlet = new CreateUserServlet() {
+    public void whenWrongLoginAndPasswordThenErrorAndDoGet() throws ServletException, IOException {
+        var login = "userLogin";
+        var password = "userPassword";
+        when(this.req.getParameter(Attributes.PRM_USER_LOGIN.v())).thenReturn(login);
+        when(this.req.getParameter(Attributes.PRM_USER_PASSWORD.v())).thenReturn(password);
+        var getFunction = (Function<Session, User>) Mockito.mock(Function.class);
+        when(this.userStore.getByCredentials(login, password)).thenReturn(getFunction);
+        when(getFunction.apply(this.hbSession)).thenReturn(null);   // user not found
+        // actions
+        var servlet = new LoginServlet() {
             @Override
             public void doGet(HttpServletRequest req, HttpServletResponse resp) {
-                req.setAttribute("Was called", true);
+                req.setAttribute("Entered doGet method", true);
             }
         };
-        // do actions
         servlet.init(this.sConfig);
         servlet.doPost(this.req, this.resp);
-        // verify Error attribute set
-        ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
-        verify(this.req).setAttribute(pathCaptor.capture(), any(String.class));
-        var path = pathCaptor.getValue();
-        assertTrue(path.contains(WebApp.MSG_ERROR.v()));
-        // verify calling of this.doGet()
-        verify(this.req).setAttribute("Was called", true);
+        // verify
+        verify(this.req).setAttribute(eq(WebApp.MSG_ERROR.v()), any(String.class));
+        verify(this.req).setAttribute("Entered doGet method", true);
     }
 
 }
