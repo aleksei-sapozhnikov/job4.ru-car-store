@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -24,6 +25,18 @@ public class CarStore implements Store {
     public Function<Session, Car> get(long id) {
         return Store.doTransaction(
                 session -> session.get(Car.class, id)
+        );
+    }
+
+    /**
+     * Returns List of all cars stored.
+     *
+     * @return List of cars stored.
+     */
+    @SuppressWarnings("unchecked")
+    public Function<Session, List<Car>> getAll() {
+        return Store.doTransaction(
+                session -> session.createQuery("from Car").list()
         );
     }
 }

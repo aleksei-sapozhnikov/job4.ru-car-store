@@ -6,9 +6,11 @@ public enum Attributes {
 
     ATR_LOGGED_USER_ID("userLoggedInTheSessionId"),
 
+    ATR_JSON_PARSER("gson"),
     ATR_USER_STORE("userStore"),
     ATR_IMAGE_STORE("imageStore"),
     ATR_CAR_STORE("carStore"),
+    ATR_ITEM_FACTORY("frontItemFactory"),
 
     PRM_USER_LOGIN("user_login"),
     PRM_USER_PASSWORD("user_password"),
