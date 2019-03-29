@@ -15,6 +15,8 @@ public enum Attributes {
     PRM_USER_PASSWORD("user_password"),
     PRM_USER_PHONE("user_phone"),
 
+    PRM_IMAGE_ID("id"),
+
     PRM_CAR_STORE_ID("storeId");
 
     private final String value;

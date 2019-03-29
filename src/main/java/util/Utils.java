@@ -3,6 +3,7 @@ package util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,6 +49,28 @@ public class Utils {
         long result = notFound;
         if (string != null && string.matches("\\d+")) {
             result = Long.parseLong(string);
+        }
+        return result;
+    }
+
+    /**
+     * Reads and returns resource as byte array,
+     *
+     * @param callerClass Object which is calling the resource (.class object).
+     * @param path        Resource path.
+     * @return Resource as byte array.
+     */
+    public static byte[] readResource(Class<?> callerClass, String path) {
+        byte[] result = new byte[0];
+        try (var in = callerClass.getClassLoader().getResourceAsStream(path);
+             var out = new ByteArrayOutputStream()) {
+            if (in == null) {
+                throw new RuntimeException("Input resource is null");
+            }
+            Utils.readFullInput(in, out);
+            result = out.toByteArray();
+        } catch (Exception e) {
+            LOG.fatal(e.getMessage(), e);
         }
         return result;
     }
