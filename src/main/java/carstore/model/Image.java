@@ -4,9 +4,7 @@ import com.sun.istack.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import java.util.Arrays;
 
 /**
@@ -16,17 +14,37 @@ import java.util.Arrays;
  * @version 0.1
  * @since 0.1
  */
-@Embeddable
+@Entity
+@Table(name = "images")
 public class Image {
     /**
      * Logger.
      */
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(Image.class);
+
+    private long id;
     /**
      * Image data.
      */
     private byte[] data;
+    /**
+     * Car of this image.
+     */
+    private Car car;
+
+    /**
+     * Static creation method.
+     *
+     * @param data Image data.
+     * @return New image object.
+     */
+    public static Image of(byte[] data, Car car) {
+        var image = new Image();
+        image.setData(data);
+        image.setCar(car);
+        return image;
+    }
 
     /**
      * Static creation method.
@@ -35,35 +53,56 @@ public class Image {
      * @return New image object.
      */
     public static Image of(byte[] data) {
-        var image = new Image();
-        image.setData(data);
-        return image;
+        return of(data, null);
     }
+
 
     ////////////////////////////
     // equals() and hashCode()
     ////////////////////////////
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Image image = (Image) o;
-        return Arrays.equals(data, image.data);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(data);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//        Image image = (Image) o;
+//        return Arrays.equals(data, image.data);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Arrays.hashCode(data);
+//    }
 
     //////////////////////////////////
     // standard getters and setters
     //////////////////////////////////
+
+
+    /**
+     * Returns id.
+     *
+     * @return Value of id field.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long getId() {
+        return this.id;
+    }
+
+    /**
+     * Sets id value.
+     *
+     * @param id Value to set.
+     */
+    public Image setId(long id) {
+        this.id = id;
+        return this;
+    }
 
     /**
      * Returns data.
@@ -84,6 +123,26 @@ public class Image {
      */
     public Image setData(byte[] data) {
         this.data = Arrays.copyOf(data, data.length);
+        return this;
+    }
+
+    /**
+     * Returns car.
+     *
+     * @return Value of car field.
+     */
+    @ManyToOne
+    public Car getCar() {
+        return this.car;
+    }
+
+    /**
+     * Sets car value.
+     *
+     * @param car Value to set.
+     */
+    public Image setCar(Car car) {
+        this.car = car;
         return this;
     }
 }

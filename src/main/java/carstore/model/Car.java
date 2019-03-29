@@ -5,9 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -41,35 +39,22 @@ public class Car {
      * Car owner entity object.
      */
     private User owner;
-    /**
-     * Main image.
-     */
-    private Image mainImage;
-    /**
-     * Set of this car images.
-     */
-    private Set<Image> otherImages = new LinkedHashSet<>();
 
     /**
      * Creates Car object using map of given parameters.
      *
-     * @param owner       Car owner entity object.
-     * @param strParams   Map of car string-type parameters.
-     * @param intParams   Map of car integer-type parameters.
-     * @param mainImage   Car main image.
-     * @param otherImages Set of car other images.
+     * @param owner     Car owner entity object.
+     * @param strParams Map of car string-type parameters.
+     * @param intParams Map of car integer-type parameters.
      * @return Car object.
      */
     public static Car of(User owner,
                          Map<StrParam, String> strParams,
-                         Map<IntParam, Integer> intParams,
-                         Image mainImage, Set<Image> otherImages) {
+                         Map<IntParam, Integer> intParams) {
         var car = new Car();
         car.owner = owner;
         car.strParams = strParams;
         car.intParams = intParams;
-        car.mainImage = mainImage;
-        car.otherImages = otherImages;
         return car;
     }
 
@@ -120,45 +105,6 @@ public class Car {
         return this;
     }
 
-    /**
-     * Returns mainImage.
-     *
-     * @return Value of mainImage field.
-     */
-    @AttributeOverride(name = "data", column = @Column(name = "main_image", nullable = false))
-    public Image getMainImage() {
-        return this.mainImage;
-    }
-
-    /**
-     * Sets mainImage value.
-     *
-     * @param mainImage Value to set.
-     */
-    public Car setMainImage(Image mainImage) {
-        this.mainImage = mainImage;
-        return this;
-    }
-
-    /**
-     * Returns otherImages.
-     *
-     * @return Value of otherImages field.
-     */
-    @ElementCollection
-    public Set<Image> getOtherImages() {
-        return this.otherImages;
-    }
-
-    /**
-     * Sets otherImages value.
-     *
-     * @param otherImages Value to set.
-     */
-    public Car setOtherImages(Set<Image> otherImages) {
-        this.otherImages = otherImages;
-        return this;
-    }
 
     //////////////////////////////////////////////////////////////////
     // custom getters and setters for properties held in map objects
@@ -391,7 +337,6 @@ public class Car {
         this.strParams.put(StrParam.TRANSMISSION_TYPE, transmissionType);
         return this;
     }
-
 
     ////////////////////////////
     // equals() and hashCode()

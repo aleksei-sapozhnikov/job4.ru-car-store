@@ -5,7 +5,6 @@ import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -41,15 +40,11 @@ public class CarTest {
         var strParams = this.createDefaultStrParams();
         var intParams = this.createDefaultIntParams();
         var owner = Mockito.mock(User.class);
-        var mainImage = Mockito.mock(Image.class);
-        @SuppressWarnings("unchecked") var otherImages = (Set<Image>) Mockito.mock(Set.class);
-        var car = Car.of(owner, strParams, intParams, mainImage, otherImages);
+        var car = Car.of(owner, strParams, intParams);
         // initialized by default
         assertEquals(car.getId(), 0);
         // object references
         assertSame(car.getOwner(), owner);
-        assertSame(car.getMainImage(), mainImage);
-        assertSame(car.getOtherImages(), otherImages);
         // integer params
         assertEquals(car.getPrice(), (int) intParams.get(Car.IntParam.PRICE));
         assertEquals(car.getEngineVolume(), (int) intParams.get(Car.IntParam.ENGINE_VOLUME));
@@ -70,9 +65,7 @@ public class CarTest {
         var strParams = this.createDefaultStrParams();
         var intParams = this.createDefaultIntParams();
         var owner = Mockito.mock(User.class);
-        var mainImage = Mockito.mock(Image.class);
-        @SuppressWarnings("unchecked") var otherImages = (Set<Image>) Mockito.mock(Set.class);
-        var car = Car.of(owner, strParams, intParams, mainImage, otherImages);
+        var car = Car.of(owner, strParams, intParams);
         // initialized by default
         car.setId(56);
         assertEquals(car.getId(), 56);
@@ -81,11 +74,6 @@ public class CarTest {
         car.setOwner(newOwner);
         assertSame(car.getOwner(), newOwner);
         var newMainImage = Mockito.mock(Image.class);
-        car.setMainImage(newMainImage);
-        assertSame(car.getMainImage(), newMainImage);
-        @SuppressWarnings("unchecked") var newOtherImages = (Set<Image>) Mockito.mock(Set.class);
-        car.setOtherImages(newOtherImages);
-        assertSame(car.getOtherImages(), newOtherImages);
         // integer params
         int count = 0;
         car.setPrice(100);
