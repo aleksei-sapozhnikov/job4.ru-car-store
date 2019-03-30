@@ -30,7 +30,7 @@ public class UserStore implements Store {
      * @return Found persistent user or <tt>null</tt> if not found.
      */
     public Function<Session, User> get(long id) {
-        return Store.doTransaction(
+        return this.doTransaction(
                 session -> session.get(User.class, id)
         );
     }
@@ -44,7 +44,7 @@ public class UserStore implements Store {
      */
     @SuppressWarnings("unchecked")
     public Function<Session, User> getByCredentials(String login, String password) {
-        return Store.doTransaction(session -> {
+        return this.doTransaction(session -> {
             var found = (List<User>) session
                     .createQuery("from User where login = :login and password = :password")
                     .setParameter("login", login)
@@ -61,7 +61,7 @@ public class UserStore implements Store {
      * @return <tt>true</tt> if saved successfully, <tt>false</tt> if couldn't save (login exists).
      */
     public Function<Session, Boolean> saveIfNotExists(User user) {
-        return Store.doTransaction(session -> {
+        return this.doTransaction(session -> {
             var found = session.createQuery("from User where login = :login")
                     .setParameter("login", user.getLogin())
                     .list();

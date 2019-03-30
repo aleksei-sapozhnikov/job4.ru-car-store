@@ -29,7 +29,7 @@ public class ImageStore implements Store {
      * @return Image object or <tt>null</tt> if object not found in storage.
      */
     public Function<Session, Image> get(long id) {
-        return Store.doTransaction(
+        return this.doTransaction(
                 session -> session.get(Image.class, id)
         );
     }
@@ -42,7 +42,7 @@ public class ImageStore implements Store {
      */
     @SuppressWarnings("unchecked")
     public Function<Session, List<Image>> getForCar(long carId) {
-        return Store.doTransaction(session ->
+        return this.doTransaction(session ->
                 session.createQuery("from Image where car.id = :carId")
                         .setParameter("carId", carId)
                         .list()

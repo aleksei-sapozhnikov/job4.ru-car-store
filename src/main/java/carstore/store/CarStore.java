@@ -23,7 +23,7 @@ public class CarStore implements Store {
     private static final Logger LOG = LogManager.getLogger(CarStore.class);
 
     public Function<Session, Car> get(long id) {
-        return Store.doTransaction(
+        return this.doTransaction(
                 session -> session.get(Car.class, id)
         );
     }
@@ -35,7 +35,7 @@ public class CarStore implements Store {
      */
     @SuppressWarnings("unchecked")
     public Function<Session, List<Car>> getAll() {
-        return Store.doTransaction(
+        return this.doTransaction(
                 session -> session.createQuery("from Car").list()
         );
     }

@@ -20,7 +20,7 @@ public interface Store {
      * @param <T>        Result type.
      * @return Function to which session can be applied.
      */
-    static <T> Function<Session, T> doTransaction(Function<Session, T> operations) {
+    default <T> Function<Session, T> doTransaction(Function<Session, T> operations) {
         return session -> {
             T result;
             var tx = session.beginTransaction();
