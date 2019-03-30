@@ -54,7 +54,7 @@ public class UserCanEditCarFilter implements Filter {
         if (userId == owner.getId()) {
             chain.doFilter(req, response);
         } else {
-            var errorMsg = String.format("User (%s) is not allowed to edit this car", owner.getLogin());
+            var errorMsg = "You are not allowed to edit this car";
             var redirectPath = new StringBuilder()
                     .append(req.getContextPath())
                     .append("?")

@@ -9,10 +9,7 @@ import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,9 +36,9 @@ public class CarFactory {
         return car;
     }
 
-    private long getCarId(HttpServletRequest req) {
-        var carIdStr = req.getParameter(Attributes.PRM_CAR_ID.v());
-        return Utils.parseLong(carIdStr, 0);
+    private long getCarId(HttpServletRequest req) throws IOException, ServletException {
+        var part = req.getPart(Attributes.PRM_CAR_ID.v());
+        return part == null ? -1 : Utils.readLong(part);
     }
 
     private Map<Car.StrParam, String> getStrParams(HttpServletRequest req) throws IOException, ServletException {
@@ -72,39 +69,21 @@ public class CarFactory {
     }
 
     private void putStringParameter(Map<Car.StrParam, String> map, Car.StrParam mapKey,
-                                    HttpServletRequest req, String partKey)
-            throws IOException, ServletException {
-        map.put(mapKey, this.readString(req.getPart(partKey)));
-    }
-
-    private String readString(Part part) throws IOException {
-        String result;
-        try (var in = part.getInputStream();
-             var out = new ByteArrayOutputStream()) {
-            Utils.readFullInput(in, out);
-            result = new String(out.toByteArray(), StandardCharsets.UTF_8);
+                                    HttpServletRequest req, String partKey
+    ) throws IOException, ServletException {
+        var part = req.getPart(partKey);
+        if (part != null) {
+            map.put(mapKey, Utils.readString(part));
         }
-        return result;
     }
 
     private void putIntegerParameter(Map<Car.IntParam, Integer> map, Car.IntParam mapKey,
-                                     HttpServletRequest req, String partKey)
-            throws IOException, ServletException {
-        map.put(mapKey, this.readInteger(req.getPart(partKey)));
-    }
-
-    private Integer readInteger(Part part) throws IOException, ServletException {
-        String result;
-        try (var in = part.getInputStream();
-             var out = new ByteArrayOutputStream()) {
-            Utils.readFullInput(in, out);
-            result = out.toString();
+                                     HttpServletRequest req, String partKey
+    ) throws IOException, ServletException {
+        var part = req.getPart(partKey);
+        if (part != null) {
+            map.put(mapKey, Utils.readInteger(part));
         }
-        if (!(result.matches("\\d+"))) {
-            throw new ServletException(String.format(
-                    "Given parameter (%s) cannot be parsed as Integer value", result));
-        }
-        return Integer.valueOf(result);
     }
 
 

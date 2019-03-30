@@ -3,10 +3,13 @@ package util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Utilities for common methods.
@@ -73,5 +76,43 @@ public class Utils {
             LOG.fatal(e.getMessage(), e);
         }
         return result;
+    }
+
+    public static String readString(Part part) throws IOException {
+        String result;
+        try (var in = part.getInputStream();
+             var out = new ByteArrayOutputStream()) {
+            Utils.readFullInput(in, out);
+            result = new String(out.toByteArray(), StandardCharsets.UTF_8);
+        }
+        return result;
+    }
+
+    public static Integer readInteger(Part part) throws IOException, ServletException {
+        String result;
+        try (var in = part.getInputStream();
+             var out = new ByteArrayOutputStream()) {
+            Utils.readFullInput(in, out);
+            result = out.toString();
+        }
+        if (!(result.matches("\\d{1,5}"))) {
+            throw new ServletException(String.format(
+                    "Given parameter (%s) cannot be parsed as Integer value", result));
+        }
+        return Integer.valueOf(result);
+    }
+
+    public static Long readLong(Part part) throws IOException, ServletException {
+        String result;
+        try (var in = part.getInputStream();
+             var out = new ByteArrayOutputStream()) {
+            Utils.readFullInput(in, out);
+            result = out.toString();
+        }
+        if (!(result.matches("\\d{1,10}"))) {
+            throw new ServletException(String.format(
+                    "Given parameter (%s) cannot be parsed as Long value", result));
+        }
+        return Long.valueOf(result);
     }
 }

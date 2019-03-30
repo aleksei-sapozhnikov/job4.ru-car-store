@@ -28,7 +28,7 @@ import java.io.IOException;
  * @version 0.1
  * @since 0.1
  */
-@WebServlet("/addCar")
+@WebServlet(urlPatterns = {"/addCar", "/editCar"})
 @MultipartConfig
 public class AddCarServlet extends HttpServlet {
     /**

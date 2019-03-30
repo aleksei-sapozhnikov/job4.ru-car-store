@@ -124,7 +124,6 @@ public class UserCanEditCarFilterTest {
         verify(this.car).getOwner();
         verify(this.user).getId();
         // get redirect string
-        verify(this.user).getLogin();
         ArgumentCaptor<String> redirectCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.resp).sendRedirect(redirectCaptor.capture());
         var redirect = redirectCaptor.getValue();
