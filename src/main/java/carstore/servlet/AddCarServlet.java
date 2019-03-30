@@ -11,6 +11,7 @@ import carstore.store.UserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -74,6 +75,13 @@ public class AddCarServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var carIdStr = req.getParameter("carId");
+        if (carIdStr != null) {
+            var carId = Utils.parseLong(carIdStr, -1);
+            var hbSession = (Session) req.getAttribute(Attributes.ATR_HB_SESSION.v());
+            var car = this.carStore.get(carId).apply(hbSession);
+            req.setAttribute("editCar", car);
+        }
         req.getRequestDispatcher(
                 String.join("/", WebApp.VIEW_ROOT.v(), WebApp.PG_CREATE_CAR.v())
         ).forward(req, resp);

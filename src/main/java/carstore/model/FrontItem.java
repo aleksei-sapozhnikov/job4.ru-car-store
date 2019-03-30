@@ -26,6 +26,10 @@ public class FrontItem {
      */
     private static final Locale LOCALE = new Locale("ru");
     /**
+     * Car id in store.
+     */
+    private long carId;
+    /**
      * Item title.
      */
     private String title;
@@ -62,6 +66,7 @@ public class FrontItem {
      */
     public static FrontItem of(Car car, Set<Image> images) {
         var item = new FrontItem();
+        item.carId = car.getId();
         item.title = car.getManufacturer() + " " + car.getModel();
         item.price = String.format(LOCALE, "%,d $", car.getPrice());
         item.seller = car.getOwner().getLogin();

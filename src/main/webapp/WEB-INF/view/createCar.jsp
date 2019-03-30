@@ -1,4 +1,6 @@
-<%@ page import="carstore.constants.Attributes" %><%--@elvariable id="error" type="java.lang.String"--%>
+<%--@elvariable id="error" type="java.lang.String"--%>
+<%--@elvariable id="editCar" type="carstore.model.Car"--%>
+<%@ page import="carstore.constants.Attributes" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -130,9 +132,9 @@
                 <span class="input-group-text">Mark</span>
             </div>
             <input class="form-control" name="${prm_manufacturer}" placeholder="Manufacturer (e.g. Ford)" required
-                   type="text" <c:if test="${not empty editCar}">value="${editCar.mark.manufacturer}"</c:if>>
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.manufacturer}"</c:if>>
             <input class="form-control" name="${prm_model}" placeholder="Model (e.g. Transit FX-1300)" required
-                   type="text" <c:if test="${not empty editCar}">value="${editCar.mark.model}"</c:if>">
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.model}"</c:if>">
         </div>
         <!--Price-->
         <div class="input-group mb-2">
@@ -148,12 +150,12 @@
                 <span class="input-group-text">Age</span>
             </div>
             <input class="form-control" name="${prm_newness}" placeholder="Newness (e.g. new, old)" required
-                   type="text" <c:if test="${not empty editCar}">value="${editCar.age.newness}"</c:if>>
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.newness}"</c:if>>
             <input class="form-control" name="${prm_yearManufactured}" placeholder="Year of manufacturing (e.g. 2014)"
                    required type="number"
-                   <c:if test="${not empty editCar}">value="${editCar.age.manufactureYear}"</c:if>">
+                   <c:if test="${not empty editCar}">value="${editCar.yearManufactured}"</c:if>">
             <input class="form-control" name="${prm_mileage}" placeholder="Mileage, km (e.g. 150000)" required
-                   type="number" <c:if test="${not empty editCar}">value="${editCar.age.mileage}"</c:if>">
+                   type="number" <c:if test="${not empty editCar}">value="${editCar.mileage}"</c:if>">
         </div>
         <!--Body-->
         <div class="input-group mb-3">
@@ -161,9 +163,9 @@
                 <span class="input-group-text">Body</span>
             </div>
             <input class="form-control" name="${prm_bodyType}" placeholder="Type (e.g. Sedan, Pickup)" required
-                   type="text" <c:if test="${not empty editCar}">value="${editCar.body.type}"</c:if>>
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.bodyType}"</c:if>>
             <input class="form-control" name="${prm_color}" placeholder="Color (e.g. black, white)" required
-                   type="text" <c:if test="${not empty editCar}">value="${editCar.body.color}"</c:if>>
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.color}"</c:if>>
         </div>
         <!--Engine-->
         <div class="input-group mb-3">
@@ -171,9 +173,9 @@
                 <span class="input-group-text">Engine</span>
             </div>
             <input class="form-control" name="${prm_engineFuel}" placeholder="Type (e.g. gasoline, kerosene)" required
-                   type="text" <c:if test="${not empty editCar}">value="${editCar.engine.engineType}"</c:if>>
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.engineFuel}"</c:if>>
             <input class="form-control" name="${prm_engineVolume}" placeholder="Volume, mm³ (e.g. 1200)" required
-                   type="number" <c:if test="${not empty editCar}">value="${editCar.engine.engineVolume}"</c:if>>
+                   type="number" <c:if test="${not empty editCar}">value="${editCar.engineVolume}"</c:if>>
         </div>
         <!--Chassis-->
         <div class="input-group mb-2">
@@ -182,7 +184,7 @@
             </div>
             <input class="form-control" name="${prm_transmissionType}"
                    placeholder="Transmission type (e.g. automatic, manual)" required
-                   type="text" <c:if test="${not empty editCar}">value="${editCar.chassis.transmissionType}"</c:if>>
+                   type="text" <c:if test="${not empty editCar}">value="${editCar.transmissionType}"</c:if>>
         </div>
         <!--
         **** Optional fields
@@ -195,10 +197,7 @@
             </div>
             <div class="item-image-div">
                 <img id="img_current" alt="current image" class="item-image-img"
-                     src="<c:choose>
-<c:when test="${not empty editCar && editCar.images.size() > 0}">image?id=${editCar.images.iterator().next().id}</c:when>
-<c:otherwise><c:url value="/item-default-image.jpg"/></c:otherwise>
-</c:choose>"/>
+                     src="<c:url value="/item-default-image.jpg"/>"/>
             </div>
             <div class="custom-file">
                 <input class="custom-file-input" id="car_image" name="${prm_imageKey}1" type="file"

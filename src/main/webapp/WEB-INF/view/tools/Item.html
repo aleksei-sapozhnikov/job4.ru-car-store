@@ -1,6 +1,6 @@
 <script>
     const defaultCarImage = 'item-default-image.jpg';
-    const carEditPage = 'editCar';
+    const carEditPage = 'addCar';
 
     /**
      * Item - main item to sale.
@@ -50,10 +50,10 @@
                 + ` src="${this.imageIds.length > 0 ? `image?imageId=${this.imageIds[0]}` : defaultCarImage}"`
                 + ` alt="${this.title}">`
                 + '</div>';
-            // res += `<a class="item-link" href="${carEditPage}?storeId=${this.carId}"><div>`;
+            res += `<a class="item-link" href="${carEditPage}?carId=${this.carId}"><div>`;
             res += `<p class="item-title" >${this.title}</p>`;
             res += `<p class="item-price" >${this.price}</p>`;
-            // res += '</div></a>';
+            res += '</div></a>';
             for (const [key, value] of Object.entries(this.descriptions)) {
                 res += '<p class="item-description-text">'
                     + `<span class = "item-description-title" >${key}: </span> ${value}`
