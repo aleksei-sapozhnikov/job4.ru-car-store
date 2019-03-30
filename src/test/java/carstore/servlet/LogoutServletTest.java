@@ -1,6 +1,5 @@
 package carstore.servlet;
 
-import carstore.constants.WebApp;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -43,7 +42,6 @@ public class LogoutServletTest {
         var servlet = new LogoutServlet();
         servlet.doPost(this.req, this.resp);
         verify(this.httpSession).invalidate();
-        verify(this.resp).sendRedirect(WebApp.BASEDIR.v());
     }
 
 }

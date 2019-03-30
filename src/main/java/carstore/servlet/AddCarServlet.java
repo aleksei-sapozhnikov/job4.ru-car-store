@@ -7,7 +7,6 @@ import carstore.factory.ImageFactory;
 import carstore.model.Car;
 import carstore.model.User;
 import carstore.store.CarStore;
-import carstore.store.ImageStore;
 import carstore.store.UserStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,10 +44,6 @@ public class AddCarServlet extends HttpServlet {
      */
     private UserStore userStore;
     /**
-     * Image store.
-     */
-    private ImageStore imageStore;
-    /**
      * Factory to create car from request parameters.
      */
     private CarFactory carFactory;
@@ -65,7 +60,6 @@ public class AddCarServlet extends HttpServlet {
         var ctx = this.getServletContext();
         this.carStore = (CarStore) ctx.getAttribute(Attributes.ATR_CAR_STORE.v());
         this.userStore = (UserStore) ctx.getAttribute(Attributes.ATR_USER_STORE.v());
-        this.imageStore = (ImageStore) ctx.getAttribute(Attributes.ATR_IMAGE_STORE.v());
         this.carFactory = (CarFactory) ctx.getAttribute(Attributes.ATR_CAR_FACTORY.v());
         this.imageFactory = (ImageFactory) ctx.getAttribute(Attributes.ATR_IMAGE_FACTORY.v());
     }

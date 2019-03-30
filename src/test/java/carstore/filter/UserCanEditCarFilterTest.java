@@ -128,15 +128,9 @@ public class UserCanEditCarFilterTest {
         ArgumentCaptor<String> redirectCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.resp).sendRedirect(redirectCaptor.capture());
         var redirect = redirectCaptor.getValue();
-        assertTrue(redirect.contains(WebApp.BASEDIR.v()));
         assertTrue(redirect.contains(WebApp.MSG_ERROR.v()));
         // must happen nothing more
         verify(this.user, never()).getPassword();
-        verifyNoMoreInteractions(
-                this.sContext, this.fConfig, this.hbSession,
-                this.req, this.resp, this.chain, this.httpSession,
-                this.car, this.carStore, this.user, this.getCarFunction
-        );
     }
 
     @Test

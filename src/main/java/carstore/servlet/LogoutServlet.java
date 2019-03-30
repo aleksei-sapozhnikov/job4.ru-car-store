@@ -1,6 +1,5 @@
 package carstore.servlet;
 
-import carstore.constants.WebApp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +34,6 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.getSession(false).invalidate();
-        resp.sendRedirect(WebApp.BASEDIR.v());
+        resp.sendRedirect(req.getContextPath());
     }
 }

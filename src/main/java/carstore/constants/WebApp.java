@@ -1,8 +1,6 @@
 package carstore.constants;
 
 public enum WebApp {
-    BASEDIR(""),
-
     MSG_ERROR("error"),
     MSG_SUCCESS("success"),
 

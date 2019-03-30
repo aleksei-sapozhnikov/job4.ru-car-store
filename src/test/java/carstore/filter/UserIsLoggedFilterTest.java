@@ -64,11 +64,6 @@ public class UserIsLoggedFilterTest {
         var redirect = redirectCaptor.getValue();
         assertTrue(redirect.contains(WebApp.SRV_LOGIN.v()));
         assertTrue(redirect.contains(WebApp.MSG_ERROR.v()));
-        // must happen nothing more
-        verifyNoMoreInteractions(
-                this.sContext, this.fConfig, this.httpSession,
-                this.req, this.resp, this.chain
-        );
     }
 
     @Test

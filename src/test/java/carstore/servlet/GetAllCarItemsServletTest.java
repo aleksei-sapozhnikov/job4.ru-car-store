@@ -90,7 +90,7 @@ public class GetAllCarItemsServletTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void init() throws ServletException, IOException {
+    public void whenDoGetThenSendsAllStoredCarsCOnvertedToItems() throws ServletException, IOException {
         // setup model objects
         when(this.carId5.getId()).thenReturn(5L);
         when(this.carId7.getId()).thenReturn(7L);

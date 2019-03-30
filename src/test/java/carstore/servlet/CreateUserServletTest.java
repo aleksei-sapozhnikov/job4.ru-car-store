@@ -88,7 +88,6 @@ public class CreateUserServletTest {
         ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.resp).sendRedirect(pathCaptor.capture());
         var path = pathCaptor.getValue();
-        assertTrue(path.contains(WebApp.BASEDIR.v()));
         assertTrue(path.contains(WebApp.MSG_SUCCESS.v()));
     }
 

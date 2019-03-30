@@ -97,7 +97,6 @@ public class LoginServletTest {
         ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.resp).sendRedirect(pathCaptor.capture());
         var path = pathCaptor.getValue();
-        assertTrue(path.contains(WebApp.BASEDIR.v()));
         assertTrue(path.contains(WebApp.MSG_SUCCESS.v()));
         verify(this.httpSession).setAttribute(Attributes.ATR_LOGGED_USER_ID.v(), userId);
     }
