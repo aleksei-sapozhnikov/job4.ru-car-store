@@ -1,7 +1,7 @@
 package carstore.servlet;
 
 import carstore.constants.Attributes;
-import carstore.model.FrontItemFactory;
+import carstore.factory.FrontItemFactory;
 import carstore.store.CarStore;
 import carstore.store.ImageStore;
 import com.google.gson.Gson;

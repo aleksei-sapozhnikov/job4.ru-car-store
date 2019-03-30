@@ -10,7 +10,10 @@ public enum Attributes {
     ATR_USER_STORE("userStore"),
     ATR_IMAGE_STORE("imageStore"),
     ATR_CAR_STORE("carStore"),
+
     ATR_ITEM_FACTORY("frontItemFactory"),
+    ATR_CAR_FACTORY("carFactory"),
+    ATR_IMAGE_FACTORY("imageFactory"),
 
     PRM_USER_LOGIN("user_login"),
     PRM_USER_PASSWORD("user_password"),

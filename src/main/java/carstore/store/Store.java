@@ -2,6 +2,7 @@ package carstore.store;
 
 import org.hibernate.Session;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -20,7 +21,7 @@ public interface Store {
      * @param <T>        Result type.
      * @return Function to which session can be applied.
      */
-    default <T> Function<Session, T> doTransaction(Function<Session, T> operations) {
+    default <T> Function<Session, T> functionTransaction(Function<Session, T> operations) {
         return session -> {
             T result;
             var tx = session.beginTransaction();
@@ -35,4 +36,20 @@ public interface Store {
             return result;
         };
     }
+
+    default Consumer<Session> consumerTransaction(Consumer<Session> operations) {
+        return session -> {
+            var tx = session.beginTransaction();
+            try {
+                operations.accept(session);
+                tx.commit();
+            } catch (
+                    Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        };
+    }
+
+
 }

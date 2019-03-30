@@ -1,11 +1,14 @@
 package carstore.store;
 
 import carstore.model.Car;
+import carstore.model.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -23,7 +26,7 @@ public class CarStore implements Store {
     private static final Logger LOG = LogManager.getLogger(CarStore.class);
 
     public Function<Session, Car> get(long id) {
-        return this.doTransaction(
+        return this.functionTransaction(
                 session -> session.get(Car.class, id)
         );
     }
@@ -35,8 +38,19 @@ public class CarStore implements Store {
      */
     @SuppressWarnings("unchecked")
     public Function<Session, List<Car>> getAll() {
-        return this.doTransaction(
+        return this.functionTransaction(
                 session -> session.createQuery("from Car").list()
         );
     }
+
+    public Consumer<Session> saveOrUpdate(Car car, Set<Image> carImages) {
+        return this.consumerTransaction(session -> {
+            session.saveOrUpdate(car);
+            carImages.forEach(img -> {
+                img.setCar(car);
+                session.save(img);
+            });
+        });
+    }
+
 }

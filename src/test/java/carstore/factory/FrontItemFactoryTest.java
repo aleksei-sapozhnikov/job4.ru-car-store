@@ -1,5 +1,8 @@
-package carstore.model;
+package carstore.factory;
 
+import carstore.model.Car;
+import carstore.model.FrontItem;
+import carstore.model.Image;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

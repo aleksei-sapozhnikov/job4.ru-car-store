@@ -6,7 +6,7 @@ public enum WebApp {
     MSG_ERROR("error"),
     MSG_SUCCESS("success"),
 
-    SRV_LOGIN("loginServlet"),
+    SRV_LOGIN("login"),
 
     VIEW_ROOT("/WEB-INF/view"),
     PG_SHOW_ALL_CARS("showAllCars.jsp"),

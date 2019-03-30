@@ -1,7 +1,9 @@
 package carstore.listener;
 
 import carstore.constants.Attributes;
-import carstore.model.FrontItemFactory;
+import carstore.factory.CarFactory;
+import carstore.factory.FrontItemFactory;
+import carstore.factory.ImageFactory;
 import carstore.store.CarStore;
 import carstore.store.ImageStore;
 import carstore.store.UserStore;
@@ -45,6 +47,8 @@ public class ContextListener implements ServletContextListener {
         context.setAttribute(Attributes.ATR_CAR_STORE.v(), new CarStore());
         context.setAttribute(Attributes.ATR_ITEM_FACTORY.v(), new FrontItemFactory());
         context.setAttribute(Attributes.ATR_JSON_PARSER.v(), new Gson());
+        context.setAttribute(Attributes.ATR_CAR_FACTORY.v(), new CarFactory());
+        context.setAttribute(Attributes.ATR_IMAGE_FACTORY.v(), new ImageFactory());
     }
 
     /**
