@@ -24,25 +24,16 @@ public class UserStore implements Store {
     private static final Logger LOG = LogManager.getLogger(UserStore.class);
 
     /**
-     * Saves user to store if user not exists.
+     * Finds user by his id.
      *
-     * @param user User to store.
-     * @return <tt>true</tt> if saved successfully, <tt>false</tt> if couldn't save (login exists).
+     * @param id User id.
+     * @return Found persistent user or <tt>null</tt> if not found.
      */
-    public Function<Session, Boolean> saveIfNotExists(User user) {
-        return Store.doTransaction(session -> {
-            var found = session.createQuery("from User where login = :login")
-                    .setParameter("login", user.getLogin())
-                    .list();
-            var isSaved = false;
-            if (found.size() == 0) {
-                session.persist(user);
-                isSaved = true;
-            }
-            return isSaved;
-        });
+    public Function<Session, User> get(long id) {
+        return Store.doTransaction(
+                session -> session.get(User.class, id)
+        );
     }
-
 
     /**
      * Finds user by his login and password.
@@ -60,6 +51,26 @@ public class UserStore implements Store {
                     .setParameter("password", password)
                     .list();
             return found.isEmpty() ? null : found.get(0);
+        });
+    }
+
+    /**
+     * Saves user to store if user not exists.
+     *
+     * @param user User to store.
+     * @return <tt>true</tt> if saved successfully, <tt>false</tt> if couldn't save (login exists).
+     */
+    public Function<Session, Boolean> saveIfNotExists(User user) {
+        return Store.doTransaction(session -> {
+            var found = session.createQuery("from User where login = :login")
+                    .setParameter("login", user.getLogin())
+                    .list();
+            var isSaved = false;
+            if (found.size() == 0) {
+                session.persist(user);
+                isSaved = true;
+            }
+            return isSaved;
         });
     }
 

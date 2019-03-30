@@ -45,7 +45,7 @@ public class CreateUserServlet extends HttpServlet {
     }
 
     /**
-     * Shows form to add or edit user.
+     * Shows form to add user.
      *
      * @param req  Request object.
      * @param resp Response object.

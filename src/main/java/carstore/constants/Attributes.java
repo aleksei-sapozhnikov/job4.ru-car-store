@@ -6,7 +6,7 @@ public enum Attributes {
 
     ATR_LOGGED_USER_ID("userLoggedInTheSessionId"),
 
-    ATR_JSON_PARSER("gson"),
+    ATR_JSON_PARSER("jsonParser"),
     ATR_USER_STORE("userStore"),
     ATR_IMAGE_STORE("imageStore"),
     ATR_CAR_STORE("carStore"),
@@ -16,9 +16,23 @@ public enum Attributes {
     PRM_USER_PASSWORD("user_password"),
     PRM_USER_PHONE("user_phone"),
 
-    PRM_IMAGE_ID("id"),
+    PRM_CAR_ID("carId"),
 
-    PRM_CAR_STORE_ID("carId");
+    PRM_CAR_MANUFACTURER("carManufacturer"),
+    PRM_CAR_MODEL("carModel"),
+    PRM_CAR_NEWNESS("carNewness"),
+    PRM_CAR_BODY_TYPE("carBodyType"),
+    PRM_CAR_COLOR("carColor"),
+    PRM_CAR_ENGINE_FUEL("carEngineFuel"),
+    PRM_CAR_TRANSMISSION_TYPE("carTransmissionType"),
+
+    PRM_CAR_PRICE("carPrice"),
+    PRM_CAR_YEAR_MANUFACTURED("carYearManufactured"),
+    PRM_CAR_MILEAGE("mileage"),
+    PRM_CAR_ENGINE_VOLUME("carEngineVolume"),
+
+    PRM_IMAGE_ID("imageId"),
+    PRM_IMAGE_KEY_START("image");
 
     private final String value;
 

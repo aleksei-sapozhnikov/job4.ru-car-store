@@ -84,7 +84,7 @@ public class UserCanEditCarFilter implements Filter {
      *                          If car was not found in storage.
      */
     private Car getCarFromStorage(ServletRequest request) throws ServletException {
-        var carIdStr = request.getParameter(Attributes.PRM_CAR_STORE_ID.v());
+        var carIdStr = request.getParameter(Attributes.PRM_CAR_ID.v());
         var carId = Utils.parseLong(carIdStr, -1);
         if (carId == -1) {
             throw new ServletException(String.format(

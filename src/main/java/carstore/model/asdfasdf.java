@@ -4,6 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.cfg.Configuration;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +46,7 @@ public class asdfasdf {
         return result;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         try (var hbFactory = new Configuration().configure().buildSessionFactory();
              var hbSession = hbFactory.openSession()) {
             var owner = User.of("login", "password", "phone");
@@ -51,11 +54,11 @@ public class asdfasdf {
                     createDefaultStrParams(),
                     createDefaultIntParams());
             var images = Set.of(
-                    Image.of(new byte[10]),
-                    Image.of(new byte[20]),
-                    Image.of(new byte[30]),
-                    Image.of(new byte[40]),
-                    Image.of(new byte[50])
+                    Image.of(Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\123\\1E22.jpg"))),
+                    Image.of(Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\123\\maxresdefault.jpg"))),
+                    Image.of(Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\123\\640px-2016_Ford_Transit_350_2.2.jpg"))),
+                    Image.of(Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\123\\used-2015-ford-focus-5drhatchbackse-9806-17346098-1-640.jpg"))),
+                    Image.of(Files.readAllBytes(Path.of("C:\\Users\\Андрей\\Desktop\\123\\Без названия.jpg")))
             );
             images.forEach(image -> image.setCar(car));
 

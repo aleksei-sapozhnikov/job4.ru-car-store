@@ -1,8 +1,11 @@
 <%--@elvariable id="error" type="java.lang.String"--%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="carstore.constants.Attributes" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="context" scope="request" value="${pageContext.request.contextPath}"/>
+<c:set var="prm_login" scope="page" value="<%=Attributes.PRM_USER_LOGIN.v()%>"/>
+<c:set var="prm_password" scope="page" value="<%=Attributes.PRM_USER_PASSWORD.v()%>"/>
 <c:choose>
     <c:when test="${not empty param.id}">
         <c:set var="title" scope="page" value="Edit user"/>
@@ -11,7 +14,6 @@
         <c:set var="title" scope="page" value="Login"/>
     </c:otherwise>
 </c:choose>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -75,7 +77,8 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">Login</span>
             </div>
-            <input class="form-control" name="login_login" placeholder="Login (e.g. john2013)" required
+            <input class="form-control" name="${prm_login}" placeholder="Login (e.g. john2013)"
+                   required
                    type="text">
         </div>
         <!--Password-->
@@ -83,7 +86,8 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">Password</span>
             </div>
-            <input class="form-control" name="login_password" placeholder="Password (e.g. qwerty1234)" required
+            <input class="form-control" name="${prm_password}"
+                   placeholder="Password (e.g. qwerty1234)" required
                    type="text">
         </div>
         <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>

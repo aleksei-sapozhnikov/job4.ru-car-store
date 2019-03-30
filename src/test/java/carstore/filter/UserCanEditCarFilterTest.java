@@ -70,7 +70,7 @@ public class UserCanEditCarFilterTest {
     @Test
     public void whenLoggedIdEqualsCarOwnerIdThenDoFilter() throws IOException, ServletException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
-        when(this.req.getParameter(Attributes.PRM_CAR_STORE_ID.v())).thenReturn("222");
+        when(this.req.getParameter(Attributes.PRM_CAR_ID.v())).thenReturn("222");
         when(this.carStore.get(222)).thenReturn(this.getCarFunction);
         when(this.getCarFunction.apply(this.hbSession)).thenReturn(this.car);
         when(this.car.getOwner()).thenReturn(this.user);
@@ -85,7 +85,7 @@ public class UserCanEditCarFilterTest {
         verify(this.req).getAttribute(Attributes.ATR_HB_SESSION.v());
         verify(this.req).getSession(false);
         verify(this.httpSession).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
-        verify(this.req).getParameter(Attributes.PRM_CAR_STORE_ID.v());
+        verify(this.req).getParameter(Attributes.PRM_CAR_ID.v());
         verify(this.carStore).get(222);
         verify(this.getCarFunction).apply(this.hbSession);
         verify(this.car).getOwner();
@@ -103,7 +103,7 @@ public class UserCanEditCarFilterTest {
     @Test
     public void whenLoggedIdNotEqualToCarOwnerIdThenResponseToMainPageWithError() throws IOException, ServletException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
-        when(this.req.getParameter(Attributes.PRM_CAR_STORE_ID.v())).thenReturn("222");
+        when(this.req.getParameter(Attributes.PRM_CAR_ID.v())).thenReturn("222");
         when(this.carStore.get(222)).thenReturn(this.getCarFunction);
         when(this.getCarFunction.apply(this.hbSession)).thenReturn(this.car);
         when(this.car.getOwner()).thenReturn(this.user);
@@ -118,7 +118,7 @@ public class UserCanEditCarFilterTest {
         verify(this.req).getAttribute(Attributes.ATR_HB_SESSION.v());
         verify(this.req).getSession(false);
         verify(this.httpSession).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
-        verify(this.req).getParameter(Attributes.PRM_CAR_STORE_ID.v());
+        verify(this.req).getParameter(Attributes.PRM_CAR_ID.v());
         verify(this.carStore).get(222);
         verify(this.getCarFunction).apply(this.hbSession);
         verify(this.car).getOwner();
@@ -142,7 +142,7 @@ public class UserCanEditCarFilterTest {
     @Test
     public void whenCarIdParameterNotParsableAsLongThenServletException() throws IOException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
-        when(this.req.getParameter(Attributes.PRM_CAR_STORE_ID.v())).thenReturn("not parsable as long");
+        when(this.req.getParameter(Attributes.PRM_CAR_ID.v())).thenReturn("not parsable as long");
         // initialize
         var filter = new UserCanEditCarFilter();
         filter.init(this.fConfig);
@@ -158,7 +158,7 @@ public class UserCanEditCarFilterTest {
         assertTrue(wasException[0]);
         verify(this.req).getSession(false);
         verify(this.httpSession).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
-        verify(this.req).getParameter(Attributes.PRM_CAR_STORE_ID.v());
+        verify(this.req).getParameter(Attributes.PRM_CAR_ID.v());
         // must happen nothing more
         verifyNoMoreInteractions(
                 this.sContext, this.fConfig, this.hbSession,
@@ -170,7 +170,7 @@ public class UserCanEditCarFilterTest {
     @Test
     public void whenCarNotFoundByIdThenServletException() throws IOException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
-        when(this.req.getParameter(Attributes.PRM_CAR_STORE_ID.v())).thenReturn("222");
+        when(this.req.getParameter(Attributes.PRM_CAR_ID.v())).thenReturn("222");
         when(this.carStore.get(222)).thenReturn(this.getCarFunction);
         when(this.getCarFunction.apply(this.hbSession)).thenReturn(null);
         // initialize
@@ -189,7 +189,7 @@ public class UserCanEditCarFilterTest {
         verify(this.req).getAttribute(Attributes.ATR_HB_SESSION.v());
         verify(this.req).getSession(false);
         verify(this.httpSession).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
-        verify(this.req).getParameter(Attributes.PRM_CAR_STORE_ID.v());
+        verify(this.req).getParameter(Attributes.PRM_CAR_ID.v());
         verify(this.carStore).get(222);
         verify(this.getCarFunction).apply(this.hbSession);
         // must happen nothing more
