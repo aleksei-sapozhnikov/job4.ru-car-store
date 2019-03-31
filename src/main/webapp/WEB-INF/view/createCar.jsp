@@ -1,9 +1,11 @@
 <%--@elvariable id="error" type="java.lang.String"--%>
-<%--@elvariable id="<%=Attributes.CAR_ID.v()%>" type="carstore.model.Car"--%>
+<%--@elvariable id="editCar" type="carstore.model.Car"--%>
+<%--@elvariable id="carImageIds" type="java.util.List"--%>
 <%@ page import="carstore.constants.Attributes" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%--Car parameters--%>
 <c:set var="context" scope="request" value="${pageContext.request.contextPath}"/>
 <c:set var="prm_id" scope="page" value="<%=Attributes.PRM_CAR_ID.v()%>"/>
 <c:set var="prm_manufacturer" scope="page" value="<%=Attributes.PRM_CAR_MANUFACTURER.v()%>"/>
@@ -18,6 +20,9 @@
 <c:set var="prm_mileage" scope="page" value="<%=Attributes.PRM_CAR_MILEAGE.v()%>"/>
 <c:set var="prm_engineVolume" scope="page" value="<%=Attributes.PRM_CAR_ENGINE_VOLUME.v()%>"/>
 <c:set var="prm_imageKey" scope="page" value="<%=Attributes.PRM_IMAGE_KEY_START.v()%>"/>
+<%--Image parameters--%>
+<c:set var="prm_imageId" scope="page" value="<%=Attributes.PRM_IMAGE_ID.v()%>"/>
+
 <c:choose>
     <c:when test="${not empty editCar}">
         <c:set var="title" scope="page" value="Edit car"/>
@@ -197,7 +202,15 @@
             </div>
             <div class="item-image-div">
                 <img id="img_current" alt="current image" class="item-image-img"
-                     src="<c:url value="/item-default-image.jpg"/>"/>
+                        <c:choose>
+                            <c:when test="${not empty carImageIds && carImageIds.size() > 0}">
+                                src="image?${prm_imageId}=${carImageIds.get(0)}"
+                            </c:when>
+                            <c:otherwise>
+                                src="<c:url value="/item-default-image.jpg"/>"
+                            </c:otherwise>
+                        </c:choose>
+                />
             </div>
             <div class="custom-file">
                 <input class="custom-file-input" id="car_image" name="${prm_imageKey}1" type="file"

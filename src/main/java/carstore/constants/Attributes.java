@@ -6,6 +6,7 @@ public enum Attributes {
 
     ATR_LOGGED_USER_ID("userLoggedInTheSessionId"),
     ATR_CAR_TO_EDIT("editCar"),
+    ATR_CAR_IMAGE_IDS("carImageIds"),
 
     ATR_JSON_PARSER("jsonParser"),
     ATR_USER_STORE("userStore"),
