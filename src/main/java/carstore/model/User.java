@@ -70,7 +70,7 @@ public class User {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id")
     public long getId() {
         return this.id;
     }
@@ -90,6 +90,7 @@ public class User {
      *
      * @return Value of login field.
      */
+    @Column(name = "login", nullable = false)
     public String getLogin() {
         return this.login;
     }
@@ -109,6 +110,7 @@ public class User {
      *
      * @return Value of password field.
      */
+    @Column(name = "password", nullable = false)
     public String getPassword() {
         return this.password;
     }
@@ -128,6 +130,7 @@ public class User {
      *
      * @return Value of phone field.
      */
+    @Column(name = "phone", nullable = false)
     public String getPhone() {
         return this.phone;
     }

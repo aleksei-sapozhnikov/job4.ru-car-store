@@ -1,28 +1,28 @@
 create table users (
-  user_id  bigserial primary key,
-  login    varchar(255) unique,
-  password varchar(255),
-  phone    varchar(255)
+  id       bigserial    not null primary key,
+  login    varchar(255) not null,
+  password varchar(255) not null,
+  phone    varchar(255) not null
 );
 
-create table if not exists car (
-  car_id                    bigserial not null primary key,
-  age_manufacture_year      integer,
-  age_mileage               bigint,
-  age_newness               varchar(255),
-  body_color                varchar(255),
-  body_type                 varchar(255),
-  chassis_transmission_type varchar(255),
-  engine_type               varchar(255),
-  engine_volume             integer,
-  mark_manufacturer         varchar(255),
-  mark_model                varchar(255),
-  car_price                 integer,
-  user_seller               bigint references users(user_id)
+create table cars (
+  id                bigserial    not null primary key,
+  body_type         varchar(255) not null,
+  color             varchar(255) not null,
+  engine_fuel       varchar(255) not null,
+  engine_volume     integer      not null,
+  manufacturer      varchar(255) not null,
+  mileage           integer      not null,
+  model             varchar(255) not null,
+  newness           varchar(255) not null,
+  price             integer      not null,
+  transmission_type varchar(255) not null,
+  year_manufactured integer      not null,
+  owner             bigint       not null references users(id)
 );
 
-create table if not exists image (
-  image_id   bigserial primary key,
-  image_data oid,
-  car_id     bigint references car(car_id)
+create table images (
+  id     bigserial not null primary key,
+  data   oid       not null,
+  car_id bigint    not null references cars(id)
 );

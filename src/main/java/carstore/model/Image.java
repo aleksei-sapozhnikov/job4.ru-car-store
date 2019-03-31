@@ -90,6 +90,7 @@ public class Image {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     public long getId() {
         return this.id;
     }
@@ -111,7 +112,7 @@ public class Image {
      */
     @Lob
     @NotNull
-    @Column(name = "image_data", nullable = false)
+    @Column(name = "data", nullable = false)
     public byte[] getData() {
         return Arrays.copyOf(this.data, this.data.length);
     }
@@ -132,6 +133,7 @@ public class Image {
      * @return Value of car field.
      */
     @ManyToOne
+    @JoinColumn(name = "car_id")
     public Car getCar() {
         return this.car;
     }

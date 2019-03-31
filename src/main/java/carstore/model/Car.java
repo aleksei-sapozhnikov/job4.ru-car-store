@@ -16,7 +16,7 @@ import java.util.Map;
  * @since 0.1
  */
 @Entity
-@Table(name = "car")
+@Table(name = "cars")
 public class Car {
     /**
      * Logger.
@@ -90,7 +90,7 @@ public class Car {
      * @return Value of owner field.
      */
     @ManyToOne
-    @JoinColumn(name = "owner")
+    @JoinColumn(name = "owner", nullable = false)
     public User getOwner() {
         return this.owner;
     }
