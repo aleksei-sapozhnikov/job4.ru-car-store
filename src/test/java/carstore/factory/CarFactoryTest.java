@@ -62,17 +62,20 @@ public class CarFactoryTest {
                 .thenReturn(intParams.get(Car.IntParam.MILEAGE))
                 .thenReturn(intParams.get(Car.IntParam.ENGINE_VOLUME))
                 .thenThrow(new RuntimeException("Return values ended"));
-        /*
-         These are default values that are taken from request
-         in normal case. They will be changed in exception-checking tests.
-         */
+
+
+    }
+
+    /**
+     * Default values that are taken from request in normal case.
+     * All parts are not null, so no exception will be thrown.
+     */
+    @Test
+    public void whenAllParametersPresentThenCreateCar() throws IOException, ServletException {
         // first 'any string' then 'particular case'
         when(this.req.getPart(any(String.class))).thenReturn(this.otherPart);
         when(this.req.getPart(Attributes.PRM_CAR_ID.v())).thenReturn(this.idPart);
-    }
-
-    @Test
-    public void whenAllParametersPresentThenCreateCar() throws IOException, ServletException {
+        // other mocks
         PowerMockito.mockStatic(Car.class);
         when(Car.of(this.user, this.createDefaultStrParams(), createDefaultIntParams())).thenReturn(this.car);
         // actions
@@ -83,12 +86,12 @@ public class CarFactoryTest {
         assertSame(result, this.car);
     }
 
+    /**
+     * String params are read first.
+     * We place some of the first parts 'null' and must get exception
+     */
     @Test
     public void whenNotAllStringPartsPresentThenServletException() throws IOException, ServletException {
-        /*
-         string params are read first, so we place some of
-         the first parts 'null' and must get exception
-         */
         // first 'any string' then 'particular case'
         when(this.req.getPart(any(String.class))).thenReturn(
                 this.otherPart, null, this.otherPart, this.otherPart,
@@ -106,12 +109,13 @@ public class CarFactoryTest {
         assertTrue(wasException[0]);
     }
 
+    /**
+     * Integer parameters are read after string params.
+     * We give enough string not-null parts and then some 'null' of integer parts.
+     */
     @Test
     public void whenNotAllIntegerPartsPresentThenServletException() throws IOException, ServletException {
-        /*
-         integer parameters are read after string, so we give enough
-         string not-null parts and then some 'null' of integer parts.
-         */
+
         // first 'any string' then 'particular case'
         when(this.req.getPart(any(String.class))).thenReturn(
                 this.otherPart, this.otherPart, this.otherPart, this.otherPart,

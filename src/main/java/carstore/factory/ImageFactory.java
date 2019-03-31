@@ -8,8 +8,6 @@ import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -30,7 +28,12 @@ public class ImageFactory {
     private static final Logger LOG = LogManager.getLogger(ImageFactory.class);
 
     /**
+     * Creates set of images from request parameters.
      *
+     * @param req Request object.
+     * @return Set of Image objects.
+     * @throws IOException      In case of problems.
+     * @throws ServletException In case of problems.
      */
     public Set<Image> createImageSet(HttpServletRequest req) throws IOException, ServletException {
         var result = new LinkedHashSet<Image>();
@@ -38,18 +41,8 @@ public class ImageFactory {
                 .filter(part -> part.getName().startsWith(Attributes.PRM_IMAGE_KEY_START.v()))
                 .collect(Collectors.toList());
         for (var part : imgParts) {
-            var data = this.readByteArray(part);
+            var data = Utils.readByteArray(part);
             result.add(Image.of(data));
-        }
-        return result;
-    }
-
-    private byte[] readByteArray(Part part) throws IOException {
-        byte[] result;
-        try (var in = part.getInputStream();
-             var out = new ByteArrayOutputStream()) {
-            Utils.readFullInput(in, out);
-            result = out.toByteArray();
         }
         return result;
     }

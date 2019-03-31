@@ -115,4 +115,15 @@ public class Utils {
         }
         return Long.valueOf(result);
     }
+
+
+    public static byte[] readByteArray(Part part) throws IOException {
+        byte[] result;
+        try (var in = part.getInputStream();
+             var out = new ByteArrayOutputStream()) {
+            Utils.readFullInput(in, out);
+            result = out.toByteArray();
+        }
+        return result;
+    }
 }
