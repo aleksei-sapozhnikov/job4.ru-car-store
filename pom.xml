@@ -384,20 +384,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--<plugin>-->
-            <!--<groupId>com.heroku.sdk</groupId>-->
-            <!--<artifactId>heroku-maven-plugin</artifactId>-->
-            <!--<version>2.0.7</version>-->
-            <!--<configuration>-->
-            <!--<jdkVersion>11</jdkVersion>-->
-            <!--<processTypes>-->
-            <!--<web>java $JAVA_OPTS -jar target/dependency/webapp-runner.jar &#45;&#45;port $PORT target/*.war</web>-->
-            <!--<release>sh ./mvnw liquibase:update</release>-->
-            <!--</processTypes>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
-
             <!--
               ** Informational plugin: shows values of maven variables
               ** during project build.
