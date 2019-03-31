@@ -1,4 +1,4 @@
-package carstore.store.proxy;
+package carstore.store.integral.proxy;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

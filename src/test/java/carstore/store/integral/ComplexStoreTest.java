@@ -1,9 +1,12 @@
-package carstore.store;
+package carstore.store.integral;
 
 import carstore.model.Car;
 import carstore.model.Image;
 import carstore.model.User;
-import carstore.store.proxy.IntegralTest;
+import carstore.store.CarStore;
+import carstore.store.ImageStore;
+import carstore.store.UserStore;
+import carstore.store.integral.proxy.IntegralTest;
 import org.junit.Before;
 import org.junit.Test;
 
