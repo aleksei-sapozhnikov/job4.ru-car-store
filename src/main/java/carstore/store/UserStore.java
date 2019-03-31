@@ -36,6 +36,18 @@ public class UserStore implements Store {
     }
 
     /**
+     * Finds list of all users saved.
+     *
+     * @return Function to apply session to.
+     */
+    @SuppressWarnings("unchecked")
+    public Function<Session, List<User>> getAll() {
+        return this.functionTransaction(
+                session -> session.createQuery("from User").list()
+        );
+    }
+
+    /**
      * Finds user by his login and password.
      *
      * @param login    User login.

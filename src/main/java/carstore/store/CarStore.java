@@ -25,6 +25,12 @@ public class CarStore implements Store {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(CarStore.class);
 
+    /**
+     * Returns car by its id.
+     *
+     * @param id Car id.
+     * @return Function to get car.
+     */
     public Function<Session, Car> get(long id) {
         return this.functionTransaction(
                 session -> session.get(Car.class, id)
@@ -34,7 +40,7 @@ public class CarStore implements Store {
     /**
      * Returns List of all cars stored.
      *
-     * @return List of cars stored.
+     * @return Function to get all cars.
      */
     @SuppressWarnings("unchecked")
     public Function<Session, List<Car>> getAll() {
@@ -43,8 +49,17 @@ public class CarStore implements Store {
         );
     }
 
+    /**
+     * Saves or updates car with its images.
+     * Save or update is defined by car's id.
+     *
+     * @param car       Car object to save/update.
+     * @param carImages Set of car images.
+     * @return Consumer to apply hibernate session to.
+     */
     public Consumer<Session> saveOrUpdate(Car car, Set<Image> carImages) {
         return this.consumerTransaction(session -> {
+            session.createQuery("delete from Image").executeUpdate();
             session.saveOrUpdate(car);
             carImages.forEach(img -> {
                 img.setCar(car);

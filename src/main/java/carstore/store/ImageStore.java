@@ -35,6 +35,18 @@ public class ImageStore implements Store {
     }
 
     /**
+     * Returns list of all saved image objects..
+     *
+     * @return Function to apply session to.
+     */
+    @SuppressWarnings("unchecked")
+    public Function<Session, List<Image>> getAll() {
+        return this.functionTransaction(
+                session -> session.createQuery("from Image").list()
+        );
+    }
+
+    /**
      * Returns image for car with given id.
      *
      * @param carId Car id.
