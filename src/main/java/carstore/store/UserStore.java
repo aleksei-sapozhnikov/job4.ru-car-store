@@ -78,7 +78,7 @@ public class UserStore implements Store {
                     .setParameter("login", user.getLogin())
                     .list();
             var isSaved = false;
-            if (found.size() == 0) {
+            if (found.isEmpty()) {
                 session.persist(user);
                 isSaved = true;
             }
