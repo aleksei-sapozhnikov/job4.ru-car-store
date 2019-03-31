@@ -6,7 +6,6 @@ import carstore.model.User;
 import carstore.store.UserStore;
 import org.hibernate.Session;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -80,7 +79,6 @@ public class LoginServletTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    @Ignore
     public void whenRightLoginAndPasswordThenAttachUserIdToSession() throws ServletException, IOException {
         var login = "userLogin";
         var password = "userPassword";
