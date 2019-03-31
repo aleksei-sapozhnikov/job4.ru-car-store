@@ -59,7 +59,9 @@ public class CarStore implements Store {
      */
     public Consumer<Session> saveOrUpdate(Car car, Set<Image> carImages) {
         return this.consumerTransaction(session -> {
-            session.createQuery("delete from Image").executeUpdate();
+            session.createQuery("delete from Image where car.id = :carId")
+                    .setParameter("carId", car.getId())
+                    .executeUpdate();
             session.saveOrUpdate(car);
             carImages.forEach(img -> {
                 img.setCar(car);

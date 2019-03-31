@@ -1,5 +1,5 @@
 <%--@elvariable id="error" type="java.lang.String"--%>
-<%--@elvariable id="editCar" type="carstore.model.Car"--%>
+<%--@elvariable id="<%=Attributes.CAR_ID.v()%>" type="carstore.model.Car"--%>
 <%@ page import="carstore.constants.Attributes" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

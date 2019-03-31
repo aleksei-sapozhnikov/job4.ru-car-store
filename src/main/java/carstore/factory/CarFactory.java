@@ -38,7 +38,7 @@ public class CarFactory {
 
     private long getCarId(HttpServletRequest req) throws IOException, ServletException {
         var part = req.getPart(Attributes.PRM_CAR_ID.v());
-        return part == null ? -1 : Utils.readLong(part);
+        return part == null ? 0 : Utils.readLong(part);
     }
 
     private Map<Car.StrParam, String> getStrParams(HttpServletRequest req) throws IOException, ServletException {

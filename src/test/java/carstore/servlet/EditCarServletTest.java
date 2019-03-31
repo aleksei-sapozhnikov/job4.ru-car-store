@@ -34,7 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 
-public class AddCarServletTest {
+public class EditCarServletTest {
 
     @Mock
     private ServletContext sContext;
@@ -89,10 +89,18 @@ public class AddCarServletTest {
         );
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void whenDoGetTheGoToCarFormPage() throws ServletException, IOException {
-        var servlet = new AddCarServlet();
+    public void whenDoGetThenAttachCarIdAndGoToCarFormPage() throws ServletException, IOException {
+        var servlet = new EditCarServlet();
+        servlet.init(this.sConfig);
+        var carToEdit = Mockito.mock(Car.class);
+        when(this.req.getParameter(Attributes.PRM_CAR_ID.v())).thenReturn("111");
+        var getCarFunction = (Function<Session, Car>) Mockito.mock(Function.class);
+        when(this.carStore.get(111)).thenReturn(getCarFunction);
+        when(getCarFunction.apply(this.hbSession)).thenReturn(carToEdit);
         servlet.doGet(req, resp);
+        verify(this.req).setAttribute(Attributes.ATR_CAR_TO_EDIT.v(), carToEdit);
         ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.req).getRequestDispatcher(pathCaptor.capture());
         var path = pathCaptor.getValue();
@@ -113,7 +121,7 @@ public class AddCarServletTest {
         var saveUpdateCarConsumer = (Consumer<Session>) Mockito.mock(Consumer.class);
         when(this.carStore.saveOrUpdate(this.car, this.imageSet)).thenReturn(saveUpdateCarConsumer);
         // actions
-        var servlet = new AddCarServlet();
+        var servlet = new EditCarServlet();
         servlet.init(this.sConfig);
         servlet.doPost(this.req, this.resp);
         // verify

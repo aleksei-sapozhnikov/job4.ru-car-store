@@ -95,7 +95,7 @@ public class Utils {
             Utils.readFullInput(in, out);
             result = out.toString();
         }
-        if (!(result.matches("\\d{1,5}"))) {
+        if (!(result.matches("\\d{1,10}"))) {
             throw new ServletException(String.format(
                     "Given parameter (%s) cannot be parsed as Integer value", result));
         }
@@ -109,7 +109,7 @@ public class Utils {
             Utils.readFullInput(in, out);
             result = out.toString();
         }
-        if (!(result.matches("\\d{1,10}"))) {
+        if (!(result.matches("\\d{1,19}"))) {
             throw new ServletException(String.format(
                     "Given parameter (%s) cannot be parsed as Long value", result));
         }
