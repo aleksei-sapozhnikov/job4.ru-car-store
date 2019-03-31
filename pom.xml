@@ -392,7 +392,6 @@
                 <configuration>
                     <jdkVersion>11</jdkVersion>
                     <processTypes>
-                        <web>java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/*.war</web>
                         <release>sh ./mvnw liquibase:update</release>
                     </processTypes>
                 </configuration>
