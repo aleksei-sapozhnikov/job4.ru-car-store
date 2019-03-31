@@ -92,7 +92,8 @@ public class LoginServlet extends HttpServlet {
         req.getSession().setAttribute(Attributes.ATR_LOGGED_USER_ID.v(), loggedUserId);
         var msg = String.format("User (%s) logged in", user.getLogin());
         var redirectPath = new StringBuilder()
-                .append(req.getContextPath())
+//                .append(req.getContextPath())
+                .append("/")
                 .append("?")
                 .append(WebApp.MSG_SUCCESS.v()).append("=").append(msg)
                 .toString();

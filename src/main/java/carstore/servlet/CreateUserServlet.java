@@ -75,7 +75,8 @@ public class CreateUserServlet extends HttpServlet {
         if (saved) {
             var resultMsg = String.format("User (%s) created", user.getLogin());
             var redirectPath = new StringBuilder()
-                    .append(req.getContextPath())
+//                    .append(req.getContextPath())
+                    .append("/")
                     .append("?")
                     .append(WebApp.MSG_SUCCESS.v()).append("=").append(resultMsg)
                     .toString();

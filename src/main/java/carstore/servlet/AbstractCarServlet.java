@@ -102,7 +102,8 @@ public abstract class AbstractCarServlet extends HttpServlet {
      */
     protected void redirectSuccess(HttpServletRequest req, HttpServletResponse resp, String resultMsg) throws IOException {
         var redirectPath = new StringBuilder()
-                .append(req.getContextPath())
+//                .append(req.getContextPath())
+                .append("/")
                 .append("?")
                 .append(WebApp.MSG_SUCCESS.v()).append("=").append(resultMsg)
                 .toString();
