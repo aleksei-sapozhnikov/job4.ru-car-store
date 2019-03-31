@@ -1,4 +1,4 @@
-package util;
+package carstore.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,14 +44,16 @@ public class Utils {
     /**
      * Parses id from string if it's possible.
      *
-     * @param string   Given string.
-     * @param notFound Value to return if could not parse.
+     * @param string          Given string.
+     * @param notParsedReturn Value to return if could not parse.
      * @return Parsed id or <tt>notFound</tt> value.
      */
-    public static long parseLong(String string, long notFound) {
-        long result = notFound;
-        if (string != null && string.matches("\\d+")) {
+    public static long parseLong(String string, long notParsedReturn) {
+        long result = notParsedReturn;
+        try {
             result = Long.parseLong(string);
+        } catch (Exception e) {
+            LOG.error(String.format("Could not parse value (%s) as long", string), e);
         }
         return result;
     }

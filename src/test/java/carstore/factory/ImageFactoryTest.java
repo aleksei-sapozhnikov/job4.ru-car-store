@@ -2,6 +2,7 @@ package carstore.factory;
 
 import carstore.constants.Attributes;
 import carstore.model.Image;
+import carstore.util.Utils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +12,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -2,9 +2,9 @@ package carstore.factory;
 
 import carstore.constants.Attributes;
 import carstore.model.Image;
+import carstore.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import util.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

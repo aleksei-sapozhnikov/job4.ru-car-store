@@ -4,10 +4,10 @@ import carstore.constants.Attributes;
 import carstore.constants.WebApp;
 import carstore.model.Car;
 import carstore.store.CarStore;
+import carstore.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import util.Utils;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

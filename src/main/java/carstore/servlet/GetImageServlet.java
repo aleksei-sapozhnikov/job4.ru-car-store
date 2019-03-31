@@ -3,10 +3,10 @@ package carstore.servlet;
 import carstore.constants.Attributes;
 import carstore.model.Image;
 import carstore.store.ImageStore;
+import carstore.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import util.Utils;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
