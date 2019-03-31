@@ -70,7 +70,7 @@ public class Utils {
         try (var in = callerClass.getClassLoader().getResourceAsStream(path);
              var out = new ByteArrayOutputStream()) {
             if (in == null) {
-                throw new RuntimeException("Input resource is null");
+                throw new NullPointerException("Input resource is null");
             }
             Utils.readFullInput(in, out);
             result = out.toByteArray();
@@ -91,31 +91,27 @@ public class Utils {
     }
 
     public static Integer readInteger(Part part) throws IOException, ServletException {
-        String result;
-        try (var in = part.getInputStream();
-             var out = new ByteArrayOutputStream()) {
-            Utils.readFullInput(in, out);
-            result = out.toString();
-        }
-        if (!(result.matches("\\d{1,10}"))) {
+        String str = Utils.readString(part);
+        Integer result;
+        try {
+            result = Integer.valueOf(str);
+        } catch (NumberFormatException e) {
             throw new ServletException(String.format(
-                    "Given parameter (%s) cannot be parsed as Integer value", result));
+                    "Given parameter (%s) cannot be parsed as Integer value", str), e);
         }
-        return Integer.valueOf(result);
+        return result;
     }
 
     public static Long readLong(Part part) throws IOException, ServletException {
-        String result;
-        try (var in = part.getInputStream();
-             var out = new ByteArrayOutputStream()) {
-            Utils.readFullInput(in, out);
-            result = out.toString();
-        }
-        if (!(result.matches("\\d{1,19}"))) {
+        String str = Utils.readString(part);
+        Long result;
+        try {
+            result = Long.valueOf(str);
+        } catch (NumberFormatException e) {
             throw new ServletException(String.format(
-                    "Given parameter (%s) cannot be parsed as Long value", result));
+                    "Given parameter (%s) cannot be parsed as Long value", str), e);
         }
-        return Long.valueOf(result);
+        return result;
     }
 
 
