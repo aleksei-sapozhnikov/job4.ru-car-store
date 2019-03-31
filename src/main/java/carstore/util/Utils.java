@@ -33,11 +33,13 @@ public class Utils {
      * @throws IOException In case of problems.
      */
     public static void readFullInput(InputStream in, OutputStream out) throws IOException {
-        var buf = new byte[1024];
-        var read = in.read(buf);
-        while (read > -1) {
-            out.write(buf, 0, read);
-            read = in.read(buf);
+        if (in != null) {
+            var buf = new byte[1024];
+            var read = in.read(buf);
+            while (read > -1) {
+                out.write(buf, 0, read);
+                read = in.read(buf);
+            }
         }
     }
 

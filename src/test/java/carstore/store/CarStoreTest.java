@@ -10,12 +10,12 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class CarStoreTest {
@@ -60,7 +60,7 @@ public class CarStoreTest {
     }
 
     @Test
-    public void saveOrUpdate() {
+    public void whenSaveOrUpdateCarWithImagesThenSaved() {
         long carId = 7;
         var images = Set.of(this.img1, this.img2, this.img3);
         when(this.car.getId()).thenReturn(carId);
@@ -76,5 +76,19 @@ public class CarStoreTest {
             verify(img).setCar(this.car);
             this.hbSession.save(img);
         });
+    }
+
+    @Test
+    public void whenNoImagesThenNoImageDeletion() {
+        long carId = 7;
+        var images = Collections.<Image>emptySet();
+        when(this.car.getId()).thenReturn(carId);
+        when(this.hbSession.createQuery("delete from Image where car.id = :carId")).thenReturn(this.query);
+        when(this.query.setParameter("carId", carId)).thenReturn(this.query);
+        // actions
+        var store = new CarStore();
+        store.saveOrUpdate(this.car, images).accept(this.hbSession);
+        // verify
+        verify(this.query, never()).executeUpdate();
     }
 }

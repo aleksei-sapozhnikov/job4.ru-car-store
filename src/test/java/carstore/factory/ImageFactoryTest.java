@@ -38,34 +38,55 @@ public class ImageFactoryTest {
     @Before
     public void initMocks() throws IOException, ServletException {
         MockitoAnnotations.initMocks(this);
+        PowerMockito.mockStatic(Utils.class);
+        PowerMockito.mockStatic(Image.class);
+        // general mocks
         when(this.req.getParts()).thenReturn(List.of(this.imgPart1, this.otherPart1, this.imgPart2, this.imgPart3, this.otherPart2));
         when(this.imgPart1.getName()).thenReturn(String.format("%sOne", Attributes.PRM_IMAGE_KEY_START.v()));
         when(this.imgPart2.getName()).thenReturn(String.format("%sTwo", Attributes.PRM_IMAGE_KEY_START.v()));
         when(this.imgPart3.getName()).thenReturn(String.format("%sThree", Attributes.PRM_IMAGE_KEY_START.v()));
         when(this.otherPart1.getName()).thenReturn("otherOne");
         when(this.otherPart2.getName()).thenReturn("otherTwo");
-        // mock data read
-        PowerMockito.mockStatic(Utils.class);
-        when(Utils.readByteArray(this.imgPart1)).thenReturn("img1".getBytes());
-        when(Utils.readByteArray(this.imgPart2)).thenReturn("img2".getBytes());
-        when(Utils.readByteArray(this.imgPart3)).thenReturn("img3".getBytes());
+        // non-image data
         when(Utils.readByteArray(this.otherPart1)).thenReturn("other1".getBytes());
         when(Utils.readByteArray(this.otherPart2)).thenReturn("other".getBytes());
-        // mock image creation result
-        PowerMockito.mockStatic(Image.class);
-        when(Image.of("img1".getBytes())).thenReturn(this.image1);
-        when(Image.of("img2".getBytes())).thenReturn(this.image2);
-        when(Image.of("img3".getBytes())).thenReturn(this.image3);
     }
 
     @Test
     public void whenRequestThenSetOfImagesFromImageParts() throws IOException, ServletException {
+        // mock data read
+        when(Utils.readByteArray(this.imgPart1)).thenReturn("img1".getBytes());
+        when(Utils.readByteArray(this.imgPart2)).thenReturn("img2".getBytes());
+        when(Utils.readByteArray(this.imgPart3)).thenReturn("img3".getBytes());
+        // mock image creation result
+        when(Image.of("img1".getBytes())).thenReturn(this.image1);
+        when(Image.of("img2".getBytes())).thenReturn(this.image2);
+        when(Image.of("img3".getBytes())).thenReturn(this.image3);
+        // actions
         var factory = new ImageFactory();
         var result = factory.createImageSet(this.req);
+        // verify
         assertEquals(result, Set.of(
                 this.image1,
                 this.image2,
                 this.image3
         ));
+    }
+
+    @Test
+    public void whenImageDataEmptyThenNotAddedToList() throws IOException, ServletException {
+        // mock data read
+        when(Utils.readByteArray(this.imgPart1)).thenReturn("img1".getBytes());
+        when(Utils.readByteArray(this.imgPart2)).thenReturn(new byte[0]);   // empty
+        when(Utils.readByteArray(this.imgPart3)).thenReturn(new byte[0]);   // empty
+        // mock image creation result
+        when(Image.of("img1".getBytes())).thenReturn(this.image1);
+        when(Image.of("img2".getBytes())).thenReturn(this.image2);
+        when(Image.of("img3".getBytes())).thenReturn(this.image3);
+        // actions
+        var factory = new ImageFactory();
+        var result = factory.createImageSet(this.req);
+        // verify
+        assertEquals(result, Set.of(this.image1));
     }
 }

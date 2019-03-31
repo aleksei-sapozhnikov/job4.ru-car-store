@@ -40,6 +40,14 @@ public class UtilsTest {
     }
 
     @Test
+    public void whenInputStreamNullThenEmptyArrayReturned() throws IOException {
+        try (var out = new ByteArrayOutputStream()) {
+            Utils.readFullInput(null, out);
+            assertArrayEquals(new byte[0], out.toByteArray());
+        }
+    }
+
+    @Test
     public void whenStringOfLongThenParsed() {
         var str = "12345678";
         var result = Utils.parseLong(str, -1);

@@ -42,7 +42,9 @@ public class ImageFactory {
                 .collect(Collectors.toList());
         for (var part : imgParts) {
             var data = Utils.readByteArray(part);
-            result.add(Image.of(data));
+            if (data.length != 0) {
+                result.add(Image.of(data));
+            }
         }
         return result;
     }
