@@ -1,15 +1,9 @@
 package carstore.util;
 
-import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
@@ -22,19 +16,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "org.w3c.*", "javax.management.*"})
-@PrepareForTest({Utils.class})
 public class UtilsTest {
 
     public static final String SAMPLE_RESOURCE_REFERENCE = "carstore/util/sampleResource";
 
-    @Mock
-    private Logger logger;
     @Mock
     private Part part;
 
@@ -75,18 +62,6 @@ public class UtilsTest {
         assertArrayEquals(result, infoStr.getBytes());
     }
 
-    @Test
-    public void whenResourceNotExistingThenLogErrorMessageAndReturnEmptyArray() throws URISyntaxException, IOException {
-        var defaultLogger = Whitebox.getInternalState(Utils.class, "LOG");
-        var utilsObj = new Utils();
-        Whitebox.setInternalState(Utils.class, "LOG", this.logger);
-        // do actions
-        var result = Utils.readResource(this.getClass(), "wrong resource reference");
-        verify(this.logger).fatal(any(String.class), any(Throwable.class));
-        assertArrayEquals(result, new byte[0]);
-        // clear after test
-        Whitebox.setInternalState(Utils.class, "LOG", defaultLogger);
-    }
 
     @Test
     public void whenReadStringFromPartThenFullyRead() throws IOException {
