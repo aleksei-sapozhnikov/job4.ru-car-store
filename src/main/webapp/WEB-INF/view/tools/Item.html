@@ -16,28 +16,12 @@
         seller;
         /** Contacts */
         contacts;
+        /** Available for sale or not */
+        available;
         /** Descriptions */
         descriptions;
         /** Ids of images for this item */
         imageIds;
-
-        // /**
-        //  * Constructs new car object.
-        //  * @param {number} storeId
-        //  * @param {string} title
-        //  * @param {number} price
-        //  * @param descriptions
-        //  * @param imagesIds
-        //  */
-        // constructor(storeId, title, price, seller, contect, descriptions, imagesIds) {
-        //     this.carId = storeId;
-        //     this.title = title;
-        //     this.price = price;
-        //     this.seller = seller;
-        //     this.contacts = contect
-        //     this.descriptions = descriptions;
-        //     this.imagesIds = imagesIds;
-        // }
 
         /**
          * Formats item to html.
@@ -45,6 +29,9 @@
          */
         toHtml() {
             let res = '<div class="item-div">';
+            res += this.available
+                ? '<div class="item-is-available">For sale</div>'
+                : '<div class="item-not-available">Sold</div>';
             res += '<div class="item-image-div">'
                 + '<img class="item-image-img"'
                 + ` src="${this.imageIds.length > 0 ? `image?imageId=${this.imageIds[0]}` : defaultCarImage}"`
@@ -74,6 +61,24 @@
 
     .item-link {
         color: black;
+    }
+
+    .item-is-available {
+        margin: 0 15px;
+        font-size: 1.2em;
+        font-weight: 500;
+        text-align: center;
+        background: #82ff5b;
+        color: #000000;
+    }
+
+    .item-not-available {
+        margin: 0 15px;
+        font-size: 1.2em;
+        font-weight: 500;
+        text-align: center;
+        background: #960611;
+        color: #ffffff;
     }
 
     .item-title {

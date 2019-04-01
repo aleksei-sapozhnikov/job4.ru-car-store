@@ -18,7 +18,8 @@ create table cars (
   price             integer      not null,
   transmission_type varchar(255) not null,
   year_manufactured integer      not null,
-  owner             bigint       not null references users(id)
+  owner             bigint       not null references users(id),
+  available         boolean      not null
 );
 
 create table images (

@@ -46,6 +46,10 @@ public class FrontItem {
      */
     private String contacts;
     /**
+     * Is item available for sale or not.
+     */
+    private boolean available;
+    /**
      * Map of item descriptions: title -> text
      */
     private Map<String, String> descriptions = new LinkedHashMap<>();
@@ -71,6 +75,7 @@ public class FrontItem {
         item.price = String.format(LOCALE, "%,d $", car.getPrice());
         item.seller = car.getOwner().getLogin();
         item.contacts = String.format("tel: %s", car.getOwner().getPhone());
+        item.available = car.isAvailable();
         item.descriptions.put("Body", String.join("; ",
                 car.getBodyType(),
                 car.getColor()));
@@ -85,6 +90,15 @@ public class FrontItem {
                 car.getTransmissionType()));
         item.imageIds.addAll(images.stream().map(Image::getId).collect(Collectors.toList()));
         return item;
+    }
+
+    /**
+     * Returns carId.
+     *
+     * @return Value of carId field.
+     */
+    public long getCarId() {
+        return this.carId;
     }
 
     /**
@@ -121,6 +135,15 @@ public class FrontItem {
      */
     public String getContacts() {
         return this.contacts;
+    }
+
+    /**
+     * Returns available.
+     *
+     * @return Value of available field.
+     */
+    public boolean isAvailable() {
+        return this.available;
     }
 
     /**

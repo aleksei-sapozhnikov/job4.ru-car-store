@@ -39,6 +39,10 @@ public class Car {
      * Car owner entity object.
      */
     private User owner;
+    /**
+     * Is this car available for selling or not.
+     */
+    private boolean available = true;
 
     /**
      * Creates Car object using map of given parameters.
@@ -105,6 +109,25 @@ public class Car {
         return this;
     }
 
+    /**
+     * Returns available.
+     *
+     * @return Value of available field.
+     */
+    @Column(name = "available")
+    public boolean isAvailable() {
+        return this.available;
+    }
+
+    /**
+     * Sets available value.
+     *
+     * @param available Value to set.
+     */
+    public Car setAvailable(boolean available) {
+        this.available = available;
+        return this;
+    }
 
     //////////////////////////////////////////////////////////////////
     // custom getters and setters for properties held in map objects
