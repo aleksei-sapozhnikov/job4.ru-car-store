@@ -139,8 +139,8 @@
             </div>
             <label for="status" hidden>Car status</label>
             <select id="status" name="${prm_available}">
-                <option value="true">For sale</option>
-                <option value="false">Sold</option>
+                <option value="true" <c:if test="${editCar.available != false}">selected</c:if>>For sale</option>
+                <option value="false" <c:if test="${editCar.available == false}">selected</c:if>>Sold</option>
             </select>
         </div>
         <!--Mark-->
