@@ -28,6 +28,7 @@ public class LogoutServletTest {
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
         when(this.req.getSession(false)).thenReturn(this.httpSession);
+        when(this.req.getContextPath()).thenReturn("root");
     }
 
     @Test

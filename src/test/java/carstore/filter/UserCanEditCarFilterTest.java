@@ -23,7 +23,8 @@ import java.io.IOException;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class UserCanEditCarFilterTest {
@@ -55,6 +56,8 @@ public class UserCanEditCarFilterTest {
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
         when(this.fConfig.getServletContext()).thenReturn(this.sContext);
+        when(this.sContext.getContextPath()).thenReturn("root");
+        when(this.req.getContextPath()).thenReturn("root");
         when(this.sContext.getAttribute(Attributes.ATR_CAR_STORE.v())).thenReturn(this.carStore);
         when(this.req.getSession(false)).thenReturn(this.httpSession);
         when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.hbSession);
@@ -91,12 +94,6 @@ public class UserCanEditCarFilterTest {
         verify(this.car).getOwner();
         verify(this.user).getId();
         verify(this.chain).doFilter(this.req, this.resp);
-        // must happen nothing more
-        verifyNoMoreInteractions(
-                this.sContext, this.fConfig, this.hbSession,
-                this.req, this.resp, this.chain, this.httpSession,
-                this.car, this.carStore, this.user, this.getCarFunction
-        );
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -128,8 +125,6 @@ public class UserCanEditCarFilterTest {
         verify(this.resp).sendRedirect(redirectCaptor.capture());
         var redirect = redirectCaptor.getValue();
         assertTrue(redirect.contains(WebApp.MSG_ERROR.v()));
-        // must happen nothing more
-        verify(this.user, never()).getPassword();
     }
 
     @Test
@@ -152,12 +147,6 @@ public class UserCanEditCarFilterTest {
         verify(this.req).getSession(false);
         verify(this.httpSession).getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
         verify(this.req).getParameter(Attributes.PRM_CAR_ID.v());
-        // must happen nothing more
-        verifyNoMoreInteractions(
-                this.sContext, this.fConfig, this.hbSession,
-                this.req, this.resp, this.chain, this.httpSession,
-                this.car, this.carStore, this.user, this.getCarFunction
-        );
     }
 
     @Test
@@ -185,12 +174,6 @@ public class UserCanEditCarFilterTest {
         verify(this.req).getParameter(Attributes.PRM_CAR_ID.v());
         verify(this.carStore).get(222);
         verify(this.getCarFunction).apply(this.hbSession);
-        // must happen nothing more
-        verifyNoMoreInteractions(
-                this.sContext, this.fConfig, this.hbSession,
-                this.req, this.resp, this.chain, this.httpSession,
-                this.car, this.carStore, this.user, this.getCarFunction
-        );
     }
 
 

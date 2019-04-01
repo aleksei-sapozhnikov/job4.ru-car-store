@@ -69,6 +69,21 @@ public abstract class AbstractCarServlet extends HttpServlet {
     }
 
     /**
+     * Saves or updates car and redirects with message.
+     *
+     * @param req  Request object.
+     * @param resp Response object.
+     * @throws ServletException In case of problems.
+     * @throws IOException      In case of problems.
+     */
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Car car = this.saveOrUpdateCar(req);
+        var resultMsg = String.format("Car (%s %s) saved.", car.getManufacturer(), car.getModel());
+        this.redirectSuccess(req, resp, resultMsg);
+    }
+
+    /**
      * Creates car object from request parameters and adds it to store.
      * If car (defined by id) existed, it is updated.
      *
@@ -77,13 +92,45 @@ public abstract class AbstractCarServlet extends HttpServlet {
      * @throws IOException      In case of problems.
      * @throws ServletException In case of problems.
      */
-    protected Car saveOrUpdateCar(HttpServletRequest req) throws IOException, ServletException {
-        var owner = this.getLoggedUser(req);
+    private Car saveOrUpdateCar(HttpServletRequest req) throws IOException, ServletException {
+        var loggedUserId = this.getLoggedUserId(req);
+        var loggedUser = this.getLoggedUser(req);
         var images = this.imageFactory.createImageSet(req);
-        var car = this.carFactory.createCar(req, owner);
+        var carToSave = this.carFactory.createCar(req, loggedUser);
+        this.validateChange(carToSave, loggedUserId);
         var hbSession = (Session) req.getAttribute(Attributes.ATR_HB_SESSION.v());
-        this.carStore.saveOrUpdate(car, images).accept(hbSession);
-        return car;
+        this.carStore.saveOrUpdate(carToSave, images).accept(hbSession);
+        return carToSave;
+    }
+
+    /**
+     * Checks if logged user iw car's owner.
+     * This is for the case when logged user passed the filter to edit car
+     * but somehow changed car id parameter in edit car form.
+     *
+     * @param car          Car to update.
+     * @param loggedUserId Id of user currently logged in session.
+     * @throws ServletException If logged user is not car's owner.
+     */
+    private void validateChange(Car car, Long loggedUserId) throws ServletException {
+        var carOwner = car.getOwner();
+        if (carOwner.getId() != loggedUserId) {
+            throw new ServletException(String.format(
+                    "Logged user (id=%s) trying to change car (id=%s) but the user is not the car's owner",
+                    loggedUserId, car.getId()
+            ));
+        }
+    }
+
+    /**
+     * Returns id of the user logged in session.
+     *
+     * @param req Request object.
+     * @return Logged user id.
+     */
+    private Long getLoggedUserId(HttpServletRequest req) {
+        var httpSession = req.getSession(false);
+        return (Long) httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
     }
 
     /**
@@ -92,11 +139,10 @@ public abstract class AbstractCarServlet extends HttpServlet {
      * @param req Request object.
      * @return Found persistent user.
      */
-    protected User getLoggedUser(HttpServletRequest req) {
+    private User getLoggedUser(HttpServletRequest req) {
+        var loggedId = this.getLoggedUserId(req);
         var hbSession = (Session) req.getAttribute(Attributes.ATR_HB_SESSION.v());
-        var httpSession = req.getSession(false);
-        var userId = (Long) httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v());
-        return this.userStore.get(userId).apply(hbSession);
+        return this.userStore.get(loggedId).apply(hbSession);
     }
 
     /**
@@ -106,7 +152,7 @@ public abstract class AbstractCarServlet extends HttpServlet {
      * @param resp Response object.
      * @throws IOException In case of problems.
      */
-    protected void redirectSuccess(HttpServletRequest req, HttpServletResponse resp, String resultMsg) throws IOException {
+    private void redirectSuccess(HttpServletRequest req, HttpServletResponse resp, String resultMsg) throws IOException {
         var redirectPath = new StringBuilder()
                 .append(req.getContextPath().equals("") ? "/" : req.getContextPath())
                 .append("?")

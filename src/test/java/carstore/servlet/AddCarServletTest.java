@@ -69,6 +69,8 @@ public class AddCarServletTest {
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
         when(this.sConfig.getServletContext()).thenReturn(this.sContext);
+        when(this.sContext.getContextPath()).thenReturn("root");
+        when(this.req.getContextPath()).thenReturn("root");
         when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.hbSession);
         when(this.req.getSession(false)).thenReturn(this.httpSession);
         when(this.req.getRequestDispatcher(any(String.class))).thenReturn(this.rDispatcher);
@@ -108,10 +110,15 @@ public class AddCarServletTest {
         var getUserFunction = (Function<Session, User>) Mockito.mock(Function.class);
         when(this.userStore.get(111L)).thenReturn(getUserFunction);
         when(getUserFunction.apply(this.hbSession)).thenReturn(this.user);
+        // validation will be ok
+        when(this.user.getId()).thenReturn(55L);
+        when(this.car.getOwner()).thenReturn(this.user);
         when(this.imageFactory.createImageSet(this.req)).thenReturn(this.imageSet);
         when(this.carFactory.createCar(this.req, this.user)).thenReturn(this.car);
         var saveUpdateCarConsumer = (Consumer<Session>) Mockito.mock(Consumer.class);
         when(this.carStore.saveOrUpdate(this.car, this.imageSet)).thenReturn(saveUpdateCarConsumer);
+        when(this.car.getOwner()).thenReturn(this.user);    // validation ok: user is car owner
+        when(this.user.getId()).thenReturn(111L);
         // actions
         var servlet = new AddCarServlet();
         servlet.init(this.sConfig);

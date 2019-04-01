@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
 
@@ -36,7 +37,9 @@ public class FrontItemTest {
     }
 
     private void initCarMock() {
+        when(car.isAvailable()).thenReturn(false);
         when(car.getOwner()).thenReturn(this.user);
+        when(car.getId()).thenReturn(111L);
         when(user.getLogin()).thenReturn("login");
         when(user.getPhone()).thenReturn("phone");
         var count = 0;  // to check we gave all parameters stored in maps
@@ -69,6 +72,8 @@ public class FrontItemTest {
     public void whenCreatedFromCarThenFieldsFormatted() {
         var images = Set.of(this.image1, this.image2);
         var item = FrontItem.of(this.car, images);
+        assertEquals(item.getCarId(), 111L);
+        assertFalse(item.isAvailable());
         assertEquals("manufacturer model", item.getTitle());
         assertEquals("1 $", item.getPrice());
         assertEquals("login", item.getSeller());

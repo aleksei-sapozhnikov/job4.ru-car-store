@@ -1,7 +1,6 @@
 package carstore.servlet;
 
 import carstore.constants.WebApp;
-import carstore.model.Car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,20 +40,5 @@ public class AddCarServlet extends AbstractCarServlet {
         req.getRequestDispatcher(
                 String.join("/", WebApp.VIEW_ROOT.v(), WebApp.PG_CREATE_CAR.v())
         ).forward(req, resp);
-    }
-
-    /**
-     * Saves or updates car and redirects with message.
-     *
-     * @param req  Request object.
-     * @param resp Response object.
-     * @throws ServletException In case of problems.
-     * @throws IOException      In case of problems.
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Car car = this.saveOrUpdateCar(req);
-        var resultMsg = String.format("Car (%s %s) saved.", car.getManufacturer(), car.getModel());
-        this.redirectSuccess(req, resp, resultMsg);
     }
 }

@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,17 +35,35 @@ public class CarFactoryTest {
     @Mock
     User user;
     @Mock
-    Part idPart, otherPart;
+    Part idPart, isAvailablePart, intParamPart, strParamPart;
     @Mock
     Car car;
 
     @Before
     public void initMocks() throws IOException, ServletException {
         MockitoAnnotations.initMocks(this);
+        // common params
+        when(this.req.getPart(Attributes.PRM_CAR_ID.v())).thenReturn(this.idPart);
+        when(this.req.getPart(Attributes.PRM_CAR_AVAILABLE.v())).thenReturn(this.isAvailablePart);
+        // string params
+        when(this.req.getPart(Attributes.PRM_CAR_MANUFACTURER.v())).thenReturn(this.strParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_MODEL.v())).thenReturn(this.strParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_NEWNESS.v())).thenReturn(this.strParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_BODY_TYPE.v())).thenReturn(this.strParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_COLOR.v())).thenReturn(this.strParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_ENGINE_FUEL.v())).thenReturn(this.strParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_TRANSMISSION_TYPE.v())).thenReturn(this.strParamPart);
+        // integer params
+        when(this.req.getPart(Attributes.PRM_CAR_PRICE.v())).thenReturn(this.intParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_YEAR_MANUFACTURED.v())).thenReturn(this.intParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_MILEAGE.v())).thenReturn(this.intParamPart);
+        when(this.req.getPart(Attributes.PRM_CAR_ENGINE_VOLUME.v())).thenReturn(this.intParamPart);
+        // mock params reading
         PowerMockito.mockStatic(Utils.class);
         when(Utils.readLong(this.idPart)).thenReturn(111L);
+        when(Utils.readString(this.isAvailablePart)).thenReturn("true");
         var strParams = this.createDefaultStrParams();
-        when(Utils.readString(this.otherPart))
+        when(Utils.readString(this.strParamPart))
                 .thenReturn(strParams.get(Car.StrParam.MANUFACTURER))
                 .thenReturn(strParams.get(Car.StrParam.MODEL))
                 .thenReturn(strParams.get(Car.StrParam.NEWNESS))
@@ -56,14 +73,12 @@ public class CarFactoryTest {
                 .thenReturn(strParams.get(Car.StrParam.TRANSMISSION_TYPE))
                 .thenThrow(new RuntimeException("Return values ended"));
         var intParams = this.createDefaultIntParams();
-        when(Utils.readInteger(this.otherPart))
+        when(Utils.readInteger(this.intParamPart))
                 .thenReturn(intParams.get(Car.IntParam.PRICE))
                 .thenReturn(intParams.get(Car.IntParam.YEAR_MANUFACTURED))
                 .thenReturn(intParams.get(Car.IntParam.MILEAGE))
                 .thenReturn(intParams.get(Car.IntParam.ENGINE_VOLUME))
                 .thenThrow(new RuntimeException("Return values ended"));
-
-
     }
 
     /**
@@ -72,16 +87,13 @@ public class CarFactoryTest {
      */
     @Test
     public void whenAllParametersPresentThenCreateCar() throws IOException, ServletException {
-        // first 'any string' then 'particular case'
-        when(this.req.getPart(any(String.class))).thenReturn(this.otherPart);
-        when(this.req.getPart(Attributes.PRM_CAR_ID.v())).thenReturn(this.idPart);
-        // other mocks
         PowerMockito.mockStatic(Car.class);
         when(Car.of(this.user, this.createDefaultStrParams(), createDefaultIntParams())).thenReturn(this.car);
         // actions
         var factory = new CarFactory();
         var result = factory.createCar(this.req, this.user);
         // verify
+        verify(this.car).setAvailable(true);
         verify(this.car).setId(111);
         assertSame(result, this.car);
     }
@@ -92,11 +104,8 @@ public class CarFactoryTest {
      */
     @Test
     public void whenNotAllStringPartsPresentThenServletException() throws IOException, ServletException {
-        // first 'any string' then 'particular case'
-        when(this.req.getPart(any(String.class))).thenReturn(
-                this.otherPart, null, this.otherPart, this.otherPart,
-                null, this.otherPart, null);
-        when(this.req.getPart(Attributes.PRM_CAR_ID.v())).thenReturn(this.idPart);
+        // one of string params is not present
+        when(this.req.getPart(Attributes.PRM_CAR_NEWNESS.v())).thenReturn(null);
         // actions
         var factory = new CarFactory();
         var wasException = new boolean[]{false};
@@ -115,13 +124,8 @@ public class CarFactoryTest {
      */
     @Test
     public void whenNotAllIntegerPartsPresentThenServletException() throws IOException, ServletException {
-
-        // first 'any string' then 'particular case'
-        when(this.req.getPart(any(String.class))).thenReturn(
-                this.otherPart, this.otherPart, this.otherPart, this.otherPart,
-                this.otherPart, this.otherPart, this.otherPart, this.otherPart,
-                null, this.otherPart, null, this.otherPart, this.otherPart, null);
-        when(this.req.getPart(Attributes.PRM_CAR_ID.v())).thenReturn(this.idPart);
+        // one of integer params is not present
+        when(this.req.getPart(Attributes.PRM_CAR_PRICE.v())).thenReturn(null);
         // actions
         var factory = new CarFactory();
         var wasException = new boolean[]{false};

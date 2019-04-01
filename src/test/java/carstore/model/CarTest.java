@@ -6,8 +6,7 @@ import org.mockito.Mockito;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 
 public class CarTest {
@@ -43,6 +42,7 @@ public class CarTest {
         var car = Car.of(owner, strParams, intParams);
         // initialized by default
         assertEquals(car.getId(), 0);
+        assertTrue(car.isAvailable());
         // object references
         assertSame(car.getOwner(), owner);
         // integer params
@@ -69,6 +69,9 @@ public class CarTest {
         // initialized by default
         car.setId(56);
         assertEquals(car.getId(), 56);
+        car.setAvailable(false);
+        assertFalse(car.isAvailable());
+        ;
         // object references
         var newOwner = Mockito.mock(User.class);
         car.setOwner(newOwner);
