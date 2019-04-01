@@ -22,6 +22,7 @@ public enum Attributes {
     PRM_USER_PHONE("user_phone"),
 
     PRM_CAR_ID("carId"),
+    PRM_CAR_AVAILABLE("carAvailable"),
 
     PRM_CAR_MANUFACTURER("carManufacturer"),
     PRM_CAR_MODEL("carModel"),

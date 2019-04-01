@@ -8,6 +8,7 @@
 <%--Car parameters--%>
 <c:set var="context" scope="request" value="${pageContext.request.contextPath}"/>
 <c:set var="prm_id" scope="page" value="<%=Attributes.PRM_CAR_ID.v()%>"/>
+<c:set var="prm_available" scope="page" value="<%=Attributes.PRM_CAR_AVAILABLE.v()%>"/>
 <c:set var="prm_manufacturer" scope="page" value="<%=Attributes.PRM_CAR_MANUFACTURER.v()%>"/>
 <c:set var="prm_model" scope="page" value="<%=Attributes.PRM_CAR_MODEL.v()%>"/>
 <c:set var="prm_newness" scope="page" value="<%=Attributes.PRM_CAR_NEWNESS.v()%>"/>
@@ -131,6 +132,17 @@
         **** Required fields
         -->
         <h4>Required</h4>
+        <!--Status-->
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Car status</span>
+            </div>
+            <label for="status" hidden>Car status</label>
+            <select id="status" name="${prm_available}">
+                <option value="true">For sale</option>
+                <option value="false">Sold</option>
+            </select>
+        </div>
         <!--Mark-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">

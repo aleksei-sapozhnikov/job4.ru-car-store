@@ -30,15 +30,21 @@ public class CarFactory {
     public Car createCar(HttpServletRequest req, User owner) throws IOException, ServletException {
         var strParams = this.getStrParams(req);
         var intParams = this.getIntParams(req);
-        long carId = getCarId(req);
         var car = Car.of(owner, strParams, intParams);
-        car.setId(carId);
+        car.setAvailable(this.getIsAvailable(req));
+        car.setId(this.getCarId(req));
         return car;
     }
 
     private long getCarId(HttpServletRequest req) throws IOException, ServletException {
         var part = req.getPart(Attributes.PRM_CAR_ID.v());
         return part == null ? 0 : Utils.readLong(part);
+    }
+
+    private boolean getIsAvailable(HttpServletRequest req) throws IOException, ServletException {
+        var part = req.getPart(Attributes.PRM_CAR_AVAILABLE.v());
+        var str = Utils.readString(part);
+        return str.equals("true");
     }
 
     private Map<Car.StrParam, String> getStrParams(HttpServletRequest req) throws IOException, ServletException {
