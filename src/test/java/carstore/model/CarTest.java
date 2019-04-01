@@ -71,7 +71,6 @@ public class CarTest {
         assertEquals(car.getId(), 56);
         car.setAvailable(false);
         assertFalse(car.isAvailable());
-        ;
         // object references
         var newOwner = Mockito.mock(User.class);
         car.setOwner(newOwner);
