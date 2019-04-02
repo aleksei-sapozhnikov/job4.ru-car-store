@@ -28,7 +28,6 @@
 
     <!-- Custom components -->
     <c:import url="tools/Item.html"/>
-    <c:import url="tools/get-url-parameter.html"/>
 
 
     <script>
@@ -49,12 +48,25 @@
             });
         }
 
+        function compareItems(first, second) {
+            let result;
+            if (first.available && !second.available) {
+                result = -1;
+            } else if (!first.available && second.available) {
+                result = 1
+            } else {
+                result = first.carId - second.carId;
+            }
+            return result;
+        }
+
         /**
          *
          * @param items
          */
         function drawItems(items) {
             let res = '';
+            items.sort(compareItems);
             items.forEach(function (item) {
                 Object.setPrototypeOf(item, Item.prototype);
                 res += item.toHtml();
