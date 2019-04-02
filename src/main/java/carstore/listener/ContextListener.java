@@ -7,6 +7,7 @@ import carstore.factory.ImageFactory;
 import carstore.store.CarStore;
 import carstore.store.ImageStore;
 import carstore.store.UserStore;
+import carstore.util.PropertiesHolder;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,6 +45,7 @@ public class ContextListener implements ServletContextListener {
         var contextPathGiven = ctx.getContextPath();
         var contextPathToUse = contextPathGiven.equals("") ? "/" : String.format("%s/", contextPathGiven);
         ctx.setAttribute(Attributes.ATR_CONTEXT_PATH.v(), contextPathToUse);
+        ctx.setAttribute(Attributes.ATR_SELECT_VALUES.v(), new PropertiesHolder("carstore/selectValues.properties"));
         ctx.setAttribute(Attributes.ATR_HB_FACTORY.v(), sessionFactory);
         ctx.setAttribute(Attributes.ATR_USER_STORE.v(), new UserStore());
         ctx.setAttribute(Attributes.ATR_IMAGE_STORE.v(), new ImageStore());
