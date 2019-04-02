@@ -34,7 +34,9 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">Login</span>
             </div>
-            <input class="form-control" name="user_login" placeholder="Login (e.g. john2013)" required
+            <input class="form-control" name="user_login"
+                   placeholder="Login: at least 3 chars, may use small latin letters and numbers (e.g. john2013)"
+                   required pattern="[a-z0-9]{3,}"
                    type="text">
         </div>
         <!--Password-->
@@ -42,7 +44,9 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">Password</span>
             </div>
-            <input class="form-control" name="user_password" placeholder="Password (e.g. qwerty1234)" required
+            <input class="form-control" name="user_password"
+                   placeholder="Password: at least 3 chars, may use small and capital latin letters and numbers (e.g. qwERy12R34)"
+                   required pattern="[a-zA-Z0-9]{3,}"
                    type="text">
         </div>
         <!--Phone-->
@@ -50,8 +54,9 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">Phone</span>
             </div>
-            <input class="form-control" name="user_phone" placeholder="Phone (e.g. 1234567)" required
-                   type="text">
+            <input class="form-control" name="user_phone"
+                   placeholder="Phone: from 7 to 30 chars, numbers only (e.g 1234567)" required
+                   type="text" pattern="[0-9]{7,30}">
         </div>
         <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>
     </form>
