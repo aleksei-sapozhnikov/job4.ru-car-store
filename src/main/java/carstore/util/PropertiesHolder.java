@@ -25,7 +25,11 @@ public class PropertiesHolder {
     @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger(PropertiesHolder.class);
 
-    private final List<String> newness, bodyType;
+    /**
+     * Lists of properties with certain property values
+     * which will be returned by getters.
+     */
+    private final List<String> manufacturer, newness, bodyType, color, engineFuel, transmissionType;
 
     /**
      * Constructs new instance.
@@ -40,8 +44,12 @@ public class PropertiesHolder {
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
-        this.newness = this.getList("newness.", properties);
-        this.bodyType = this.getList("bodyType.", properties);
+        this.manufacturer = this.buildList("manufacturer.", properties);
+        this.newness = this.buildList("newness.", properties);
+        this.bodyType = this.buildList("bodyType.", properties);
+        this.color = this.buildList("color.", properties);
+        this.engineFuel = this.buildList("engineFuel.", properties);
+        this.transmissionType = this.buildList("transmissionType.", properties);
     }
 
     /**
@@ -51,10 +59,19 @@ public class PropertiesHolder {
      * @param properties   Properties object to get key/value from.
      * @return List of values.
      */
-    private List<String> getList(String keyBeginning, Properties properties) {
+    private List<String> buildList(String keyBeginning, Properties properties) {
         return properties.stringPropertyNames().stream()
                 .filter(key -> key.startsWith(keyBeginning))
                 .map(properties::getProperty).collect(Collectors.toUnmodifiableList());
+    }
+
+    /**
+     * Returns manufacturer.
+     *
+     * @return Value of manufacturer field.
+     */
+    public List<String> getManufacturer() {
+        return this.manufacturer;
     }
 
     /**
@@ -73,6 +90,33 @@ public class PropertiesHolder {
      */
     public List<String> getBodyType() {
         return this.bodyType;
+    }
+
+    /**
+     * Returns color.
+     *
+     * @return Value of color field.
+     */
+    public List<String> getColor() {
+        return this.color;
+    }
+
+    /**
+     * Returns engineFuel.
+     *
+     * @return Value of engineFuel field.
+     */
+    public List<String> getEngineFuel() {
+        return this.engineFuel;
+    }
+
+    /**
+     * Returns transmissionType.
+     *
+     * @return Value of transmissionType field.
+     */
+    public List<String> getTransmissionType() {
+        return this.transmissionType;
     }
 
     /**
