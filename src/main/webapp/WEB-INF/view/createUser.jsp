@@ -56,17 +56,33 @@
 <div class="container">
 
 
-    <p class="statusMsg">
-        <c:if test="${not empty param.success}">
-            <span style="color:green"><b>Success: </b>${param.success}</span>
-        </c:if>
-        <c:if test="${not empty param.error}">
-            <span style="color:red"><b>Error: </b>${param.error}</span>
-        </c:if>
-        <c:if test="${error != null}">
-            <span style="color:red"><b>Error: </b>${error}</span>
-        </c:if>
-    </p>
+    <%--
+     Alerts
+     --%>
+    <c:if test="${not empty param.success}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> ${param.success}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:if>
+    <c:if test="${not empty param.error}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> ${param.error}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:if>
+    <c:if test="${error != null}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> ${error}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:if>
 
 
     <form action="addUser" id="editForm" method="POST">

@@ -76,7 +76,7 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
             this.attachAndPass(req, resp, user);
         } else {
-            this.forwardToLoginWithError(req, resp, login, password);
+            this.forwardToLoginWithError(req, resp, login);
         }
     }
 
@@ -109,14 +109,13 @@ public class LoginServlet extends HttpServlet {
      * @param req      Request object.
      * @param resp     Response object.
      * @param login    Given login (for error message).
-     * @param password Given password (for error message).
      * @throws ServletException In case of problems.
      * @throws IOException      In case of problems.
      */
-    private void forwardToLoginWithError(HttpServletRequest req, HttpServletResponse resp, String login, String password) throws ServletException, IOException {
+    private void forwardToLoginWithError(HttpServletRequest req, HttpServletResponse resp, String login) throws ServletException, IOException {
         req.setAttribute(
                 WebApp.MSG_ERROR.v(),
-                String.format("No user (login: %s, password: %s) found", login, password));
+                String.format("Could not find user (%s) with given password.", login));
         this.doGet(req, resp);
     }
 }
