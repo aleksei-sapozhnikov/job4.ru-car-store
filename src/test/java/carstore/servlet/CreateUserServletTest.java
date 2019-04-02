@@ -48,8 +48,8 @@ public class CreateUserServletTest {
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
         when(this.sConfig.getServletContext()).thenReturn(this.sContext);
+        when(this.req.getServletContext()).thenReturn(this.sContext);
         when(this.sContext.getContextPath()).thenReturn("root");
-        when(this.req.getContextPath()).thenReturn("root");
         when(this.sContext.getAttribute(Attributes.ATR_USER_STORE.v())).thenReturn(this.userStore);
         when(this.req.getRequestDispatcher(any(String.class))).thenReturn(this.rDispatcher);
         when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.hbSession);

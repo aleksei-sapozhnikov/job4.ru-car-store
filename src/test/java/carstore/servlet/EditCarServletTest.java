@@ -74,7 +74,7 @@ public class EditCarServletTest {
         MockitoAnnotations.initMocks(this);
         when(this.sConfig.getServletContext()).thenReturn(this.sContext);
         when(this.sContext.getContextPath()).thenReturn("root");
-        when(this.req.getContextPath()).thenReturn("root");
+        when(this.req.getServletContext()).thenReturn(this.sContext);
         when(this.sContext.getContextPath()).thenReturn("root");
         when(this.req.getContextPath()).thenReturn("root");
         when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.hbSession);

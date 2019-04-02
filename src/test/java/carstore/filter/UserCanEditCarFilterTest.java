@@ -59,6 +59,7 @@ public class UserCanEditCarFilterTest {
         when(this.sContext.getContextPath()).thenReturn("root");
         when(this.req.getContextPath()).thenReturn("root");
         when(this.sContext.getAttribute(Attributes.ATR_CAR_STORE.v())).thenReturn(this.carStore);
+        when(this.req.getServletContext()).thenReturn(this.sContext);
         when(this.req.getSession(false)).thenReturn(this.httpSession);
         when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.hbSession);
     }

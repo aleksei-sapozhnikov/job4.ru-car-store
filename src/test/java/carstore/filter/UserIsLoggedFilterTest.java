@@ -39,6 +39,7 @@ public class UserIsLoggedFilterTest {
     @Before
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
+        when(this.req.getServletContext()).thenReturn(this.sContext);
         when(this.req.getSession(false)).thenReturn(this.httpSession);
         when(this.sContext.getContextPath()).thenReturn("root");
         when(this.req.getContextPath()).thenReturn("root");

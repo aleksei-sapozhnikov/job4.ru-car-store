@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,8 @@ import static org.mockito.Mockito.when;
 public class LogoutServletTest {
 
     @Mock
+    ServletContext sContext;
+    @Mock
     private HttpServletRequest req;
     @Mock
     private HttpServletResponse resp;
@@ -29,6 +32,8 @@ public class LogoutServletTest {
         MockitoAnnotations.initMocks(this);
         when(this.req.getSession(false)).thenReturn(this.httpSession);
         when(this.req.getContextPath()).thenReturn("root");
+        when(this.req.getServletContext()).thenReturn(this.sContext);
+        when(this.sContext.getContextPath()).thenReturn("root");
     }
 
     @Test
