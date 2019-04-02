@@ -5,6 +5,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<jsp:useBean id="dateNow" class="java.util.Date"/>
+<fmt:formatDate var="currentYear" value="${dateNow}" pattern="yyyy"/>
 <%--Car parameters--%>
 <c:set var="context" scope="request" value="${pageContext.request.contextPath}"/>
 <c:set var="prm_id" scope="page" value="<%=Attributes.PRM_CAR_ID.v()%>"/>
@@ -67,9 +69,7 @@
                 $(labelSelector).text(fileName);
             });
         });
-    </script>
 
-    <script>
         function showLoadedImage(input) {
             if (input.files && input.files[0]) {
                 let reader = new FileReader();
@@ -89,20 +89,22 @@
             text-align: center;
         }
 
+        .status-option {
+            border-radius: 15px;
+            margin-left: 10px;
+            margin-right: 10px;
+            padding: 10px 10px 10px 25px;
+            width: 150px;
+        }
+
         .status-for-sale {
             background: #82ff5b;
             color: #000000;
-            margin-left: 10px;
-            margin-right: 10px;
-            padding: 10px;
         }
 
         .status-sold {
             background: #960611;
             color: #ffffff;
-            margin-left: 10px;
-            margin-right: 10px;
-            padding: 10px;
         }
 
         h4 {
@@ -130,13 +132,13 @@
         <h4>Required parameters</h4>
         <%--Status--%>
         <div class="status-div">
-            <div class="form-check form-check-inline status-for-sale">
+            <div class="form-check form-check-inline status-option status-for-sale">
                 <input type="radio" id="radio-for-sale" name="${prm_available}" class="form-check-input"
                        value="true"
                        <c:if test="${editCar.available != false}">checked</c:if>>
                 <label class="form-check-label" for="radio-for-sale">For sale</label>
             </div>
-            <div class="form-check form-check-inline status-sold">
+            <div class="form-check form-check-inline status-option status-sold">
                 <input type="radio" id="radio-sold" name="${prm_available}" class="form-check-input" value="false"
                        <c:if test="${editCar.available == false}">checked</c:if>>
                 <label class="form-check-label" for="radio-sold">Sold</label>
@@ -151,7 +153,7 @@
                     </div>
                     <label for="manufacturer-input" hidden></label>
                     <input class="form-control" id="manufacturer-input" name="${prm_manufacturer}"
-                           list="manufacturer-list" type="text" placeholder="Ford"
+                           list="manufacturer-list" type="text" placeholder="Ford" required autofocus
                     <c:if test="${not empty editCar}"> value="${editCar.manufacturer}"</c:if>>
                     <datalist id="manufacturer-list">
                         <c:forEach items="${select_manufacturer}" var="item">
@@ -177,7 +179,8 @@
                         <span class="input-group-text">Price</span>
                     </div>
                     <input class="form-control" name="${prm_price}" placeholder="4000"
-                           required type="number" <c:if test="${not empty editCar}">value="${editCar.price}"</c:if>">
+                           required type="number" min="1"
+                           <c:if test="${not empty editCar}">value="${editCar.price}"</c:if>">
                     <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon2">$</span>
                     </div>
@@ -190,11 +193,15 @@
                         <span class="input-group-text">Newness</span>
                     </div>
                     <label for="newness-input" hidden></label>
-                    <select class="form-control" id="newness-input" name="${prm_newness}">
+                    <select class="form-control" id="newness-input" name="${prm_newness}" required>
+                        <c:if test="${empty editCar}">
+                            <option disabled selected value="">Newness:</option>
+                        </c:if>
                         <c:forEach items="${select_newness}" var="item">
                             <option value="${item}"<c:if
                                     test="${editCar.newness == item}"> selected</c:if>>${item}</option>
                         </c:forEach>
+
                     </select>
                 </div>
             </div>
@@ -206,7 +213,7 @@
                     </div>
                     <input class="form-control" name="${prm_yearManufactured}"
                            placeholder="2014"
-                           required type="number"
+                           required type="number" min="1900" max="${currentYear}"
                            <c:if test="${not empty editCar}">value="${editCar.yearManufactured}"</c:if>">
                 </div>
             </div>
@@ -217,7 +224,7 @@
                         <span class="input-group-text">Mileage</span>
                     </div>
                     <input class="form-control" name="${prm_mileage}" placeholder="150000" required
-                           type="number" <c:if test="${not empty editCar}">value="${editCar.mileage}"</c:if>">
+                           type="number" min="0" <c:if test="${not empty editCar}">value="${editCar.mileage}"</c:if>">
                     <div class="input-group-prepend">
                         <span class="input-group-text">km</span>
                     </div>
@@ -230,7 +237,7 @@
                         <span class="input-group-text">Body type</span>
                     </div>
                     <label for="bodyType-input" hidden></label>
-                    <input class="form-control" id="bodyType-input" name="${prm_bodyType}" list="bodyType-list"
+                    <input class="form-control" id="bodyType-input" name="${prm_bodyType}" list="bodyType-list" required
                            type="text" placeholder="sedan" <c:if test="${not empty editCar}">
                            value="${editCar.manufacturer}"</c:if>>
                     <datalist id="bodyType-list">
@@ -246,7 +253,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Color</span>
                     </div>
-                    <input class="form-control" id="color-input" name="${prm_color}" list="color-list"
+                    <input class="form-control" id="color-input" name="${prm_color}" list="color-list" required
                            type="text" placeholder="black" <c:if test="${not empty editCar}">
                            value="${editCar.color}"</c:if>>
                     <datalist id="color-list">
@@ -263,7 +270,7 @@
                         <span class="input-group-text">Fuel</span>
                     </div>
                     <input class="form-control" id="engineFuel-input" name="${prm_engineFuel}"
-                           list="engineFuel-list"
+                           list="engineFuel-list" required
                            type="text" placeholder="gasoline" <c:if test="${not empty editCar}">
                            value="${editCar.engineFuel}"</c:if>>
                     <datalist id="engineFuel-list">
@@ -281,7 +288,8 @@
                     </div>
                     <input class="form-control" name="${prm_engineVolume}" placeholder="1200"
                            required
-                           type="number" <c:if test="${not empty editCar}">value="${editCar.engineVolume}"</c:if>>
+                           type="number" min="1"
+                           <c:if test="${not empty editCar}">value="${editCar.engineVolume}"</c:if>>
                     <div class="input-group-append">
                         <span class="input-group-text">cm³</span>
                     </div>
@@ -294,7 +302,10 @@
                         <span class="input-group-text">Transmission type</span>
                     </div>
                     <label for="transmissionType-input" hidden></label>
-                    <select class="form-control" id="transmissionType-input" name="${prm_transmissionType}">
+                    <select class="form-control" id="transmissionType-input" name="${prm_transmissionType}" required>
+                        <c:if test="${empty editCar}">
+                            <option disabled selected value="">Transmission type:</option>
+                        </c:if>
                         <c:forEach items="${select_transmissionType}" var="item">
                             <option value="${item}"<c:if
                                     test="${editCar.transmissionType == item}"> selected</c:if>>${item}</option>
