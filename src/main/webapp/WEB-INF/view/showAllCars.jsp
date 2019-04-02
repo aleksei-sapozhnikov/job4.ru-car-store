@@ -57,9 +57,7 @@
             let res = '';
             items.forEach(function (item) {
                 Object.setPrototypeOf(item, Item.prototype);
-                res += '<div class="item-div col col-12 col-md-6 col-lg-4" style="background-color: bisque;">'
-                    + item.toHtml()
-                    + '</div>';
+                res += item.toHtml();
             });
             $("#cars-table").html(res);
         }

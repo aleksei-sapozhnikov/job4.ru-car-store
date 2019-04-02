@@ -28,7 +28,7 @@
          * @return {string} html value
          */
         toHtml() {
-            let res = '<div class="item-div">';
+            let res = '<div class="item-div col col-12 col-md-6 col-lg-4">';
             res += this.available
                 ? '<div class="item-is-available">For sale</div>'
                 : '<div class="item-not-available">Sold</div>';
@@ -58,8 +58,11 @@
 
 <style>
     .item-div {
+        background: #e2e2e2;
         margin: 15px auto;
         max-width: 300px;
+        padding-top: 15px;
+        padding-bottom: 15px;
     }
 
     .item-is-available {
@@ -97,7 +100,7 @@
     }
 
     .item-seller {
-        margin-top: 0;
+        margin-top: auto;
         margin-bottom: 0;
         font-size: 1.2em;
         text-align: left;
