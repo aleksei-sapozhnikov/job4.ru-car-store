@@ -40,15 +40,18 @@ public class ContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         var sessionFactory = new Configuration().configure().buildSessionFactory();
-        var context = sce.getServletContext();
-        context.setAttribute(Attributes.ATR_HB_FACTORY.v(), sessionFactory);
-        context.setAttribute(Attributes.ATR_USER_STORE.v(), new UserStore());
-        context.setAttribute(Attributes.ATR_IMAGE_STORE.v(), new ImageStore());
-        context.setAttribute(Attributes.ATR_CAR_STORE.v(), new CarStore());
-        context.setAttribute(Attributes.ATR_ITEM_FACTORY.v(), new FrontItemFactory());
-        context.setAttribute(Attributes.ATR_JSON_PARSER.v(), new Gson());
-        context.setAttribute(Attributes.ATR_CAR_FACTORY.v(), new CarFactory());
-        context.setAttribute(Attributes.ATR_IMAGE_FACTORY.v(), new ImageFactory());
+        var ctx = sce.getServletContext();
+        var contextPathGiven = ctx.getContextPath();
+        var contextPathToUse = contextPathGiven.equals("") ? "/" : String.format("%s/", contextPathGiven);
+        ctx.setAttribute(Attributes.ATR_CONTEXT_PATH.v(), contextPathToUse);
+        ctx.setAttribute(Attributes.ATR_HB_FACTORY.v(), sessionFactory);
+        ctx.setAttribute(Attributes.ATR_USER_STORE.v(), new UserStore());
+        ctx.setAttribute(Attributes.ATR_IMAGE_STORE.v(), new ImageStore());
+        ctx.setAttribute(Attributes.ATR_CAR_STORE.v(), new CarStore());
+        ctx.setAttribute(Attributes.ATR_ITEM_FACTORY.v(), new FrontItemFactory());
+        ctx.setAttribute(Attributes.ATR_JSON_PARSER.v(), new Gson());
+        ctx.setAttribute(Attributes.ATR_CAR_FACTORY.v(), new CarFactory());
+        ctx.setAttribute(Attributes.ATR_IMAGE_FACTORY.v(), new ImageFactory());
     }
 
     /**

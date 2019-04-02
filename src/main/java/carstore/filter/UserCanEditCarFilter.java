@@ -56,7 +56,7 @@ public class UserCanEditCarFilter implements Filter {
         } else {
             var errorMsg = "You are not allowed to edit this car";
             var redirectPath = new StringBuilder()
-                    .append("/")
+                    .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
                     .append("?")
                     .append(WebApp.MSG_ERROR.v()).append("=").append(errorMsg)
                     .toString();

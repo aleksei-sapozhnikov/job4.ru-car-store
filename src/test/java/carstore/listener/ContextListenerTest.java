@@ -62,12 +62,8 @@ public class ContextListenerTest {
     @Before
     public void initMocks() throws Exception {
         MockitoAnnotations.initMocks(this);
+        // mock data returned
         when(this.sce.getServletContext()).thenReturn(this.ctx);
-    }
-
-
-    @Test
-    public void whenContextInitializedThenAttributesCreatedAndAttached() throws Exception {
         // mock new instances creation
         PowerMockito.whenNew(Configuration.class).withNoArguments().thenReturn(this.configuration);
         PowerMockito.whenNew(UserStore.class).withNoArguments().thenReturn(this.userStore);
@@ -80,8 +76,15 @@ public class ContextListenerTest {
         // configs for session factory
         when(this.configuration.configure()).thenReturn(this.configuration);
         when(this.configuration.buildSessionFactory()).thenReturn(this.sessionFactory);
-        // run and verify
+
+    }
+
+
+    @Test
+    public void whenContextInitializedThenAttributesCreatedAndAttached() throws Exception {
+        when(this.ctx.getContextPath()).thenReturn("root");
         new ContextListener().contextInitialized(this.sce);
+        verify(this.ctx).setAttribute(Attributes.ATR_CONTEXT_PATH.v(), "root/");
         verify(this.ctx).setAttribute(Attributes.ATR_HB_FACTORY.v(), this.sessionFactory);
         verify(this.ctx).setAttribute(Attributes.ATR_USER_STORE.v(), this.userStore);
         verify(this.ctx).setAttribute(Attributes.ATR_IMAGE_STORE.v(), this.imageStore);
@@ -97,5 +100,12 @@ public class ContextListenerTest {
         when(this.ctx.getAttribute(Attributes.ATR_HB_FACTORY.v())).thenReturn(this.sessionFactory);
         new ContextListener().contextDestroyed(this.sce);
         verify(this.sessionFactory).close();
+    }
+
+    @Test
+    public void whenContextPathEmptyThenRootSymbolAsContext() {
+        when(this.ctx.getContextPath()).thenReturn("");
+        new ContextListener().contextInitialized(this.sce);
+        verify(this.ctx).setAttribute(Attributes.ATR_CONTEXT_PATH.v(), "/");
     }
 }

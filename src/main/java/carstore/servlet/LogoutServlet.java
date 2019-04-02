@@ -1,5 +1,6 @@
 package carstore.servlet;
 
+import carstore.constants.Attributes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,7 +36,7 @@ public class LogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.getSession(false).invalidate();
         resp.sendRedirect(
-                "/"
+                (String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v())
         );
     }
 }

@@ -1,6 +1,8 @@
 package carstore.constants;
 
 public enum Attributes {
+    ATR_CONTEXT_PATH("contextPath"),
+
     ATR_HB_FACTORY("hibernateSessionFactory"),
     ATR_HB_SESSION("hibernateSession"),
 
