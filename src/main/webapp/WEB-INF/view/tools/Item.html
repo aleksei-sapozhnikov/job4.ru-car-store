@@ -37,16 +37,19 @@
                 + ` src="${this.imageIds.length > 0 ? `image?imageId=${this.imageIds[0]}` : defaultCarImage}"`
                 + ` alt="${this.title}">`
                 + '</div>';
-            res += `<a class="item-link" href="${carEditPage}?carId=${this.carId}"><div>`;
             res += `<p class="item-title" >${this.title}</p>`;
             res += `<p class="item-price" >${this.price}</p>`;
-            res += '</div></a>';
             for (const [key, value] of Object.entries(this.descriptions)) {
                 res += '<p class="item-description-text">'
                     + `<span class = "item-description-title" >${key}: </span> ${value}`
                     + '</p>';
             }
-            res += `<p class="item-seller">${this.seller} ${this.contacts}</p>`;
+            res += '<div class="row item-div">'
+                + `<div class=" column item-seller">`
+                + `<b>Seller: </b>${this.seller}<br><b>Contacts: </b>${this.contacts}`
+                + `</div>`
+                + `<div class="column item-edit"><a class="edit-link" href="${carEditPage}?carId=${this.carId}">Edit car</a></div>`
+                + '</div>';
             res += '</div>';
             return res;
         }
@@ -57,10 +60,6 @@
     .item-div {
         margin: 15px auto;
         max-width: 300px;
-    }
-
-    .item-link {
-        color: black;
     }
 
     .item-is-available {
@@ -100,9 +99,22 @@
     .item-seller {
         margin-top: 0;
         margin-bottom: 0;
-        font-size: 1em;
-        text-align: center;
-        color: #322dff
+        font-size: 1.2em;
+        text-align: left;
+        color: #000000
+    }
+
+    .edit-link {
+        color: blue;
+    }
+
+    .item-edit {
+        text-align: right;
+        vertical-align: bottom;
+        margin-top: auto;
+        margin-right: 0;
+        margin-left: auto;
+        margin-bottom: 0;
     }
 
     .item-description-title {
