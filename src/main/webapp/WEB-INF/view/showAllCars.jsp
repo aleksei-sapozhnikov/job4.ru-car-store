@@ -71,6 +71,12 @@
         });
     </script>
 
+    <style>
+        body {
+            background-image: url(background.jpg);
+        }
+    </style>
+
     <title>Car store</title>
     <link rel="shortcut icon" href="${context}/favicon.ico"/>
 </head>
