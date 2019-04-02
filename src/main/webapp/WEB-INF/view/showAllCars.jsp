@@ -8,141 +8,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-    <!-- Bootstrap CSS -->
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script crossorigin="anonymous"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- Jquery-UI -->
-    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <!-- Custom components -->
-    <c:import url="tools/Item.html"/>
-
-
-    <script>
-        function showItems() {
-            $.ajax({
-                type: 'GET',
-                async: false,
-                datatype: "application/json",
-                url: "<c:url value="/getAllCarItems"/>",
-                success: function (response) {
-                    if (response.error != null) {
-                        alert(response.error);
-                    } else {
-                        let items = JSON.parse(response);
-                        drawItems(items);
-                    }
-                }
-            });
-        }
-
-        function compareItems(first, second) {
-            let result;
-            if (first.available && !second.available) {
-                result = -1;
-            } else if (!first.available && second.available) {
-                result = 1
-            } else {
-                result = first.carId - second.carId;
-            }
-            return result;
-        }
-
-        /**
-         *
-         * @param items
-         */
-        function drawItems(items) {
-            let res = '';
-            items.sort(compareItems);
-            items.forEach(function (item) {
-                Object.setPrototypeOf(item, Item.prototype);
-                res += item.toHtml();
-            });
-            $("#cars-table").html(res);
-        }
-    </script>
+    <c:import url="tools/headCommon.jsp"/>
+    <c:import url="tools/ItemClass.html"/>
+    <c:import url="tools/showItemsScripts.jsp"/>
+    <title>Car store</title>
 
     <script>
         $(function () {
-            showItems();
+            showItems($("#cars-table"));
         });
     </script>
 
-    <style>
-        body {
-            background-image: url(background.jpg);
-        }
-    </style>
-
-    <title>Car store</title>
-    <link rel="shortcut icon" href="${context}/favicon.ico"/>
 </head>
-<body>
-
-<div align="center" class="container-fluid">
-    <h3>Car store</h3>
-</div>
+<c:import url="tools/navbar.jsp"/>
+<div align="center"><h3>Car store</h3></div>
+<c:import url="tools/alerts.jsp"/>
 
 <div class="container">
-
-    <%--
-    Alerts
-    --%>
-    <c:if test="${not empty param.success}">
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> ${param.success}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-    <c:if test="${not empty param.error}">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error!</strong> ${param.error}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-    <c:if test="${error != null}">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error!</strong> ${error}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-
-
-    <div class="row">
-        <a href="addCar">
-            <button class="btn btn-primary" id="button_add_item">Add car</button>
-        </a>
-        <a href="addUser">
-            <button class="btn btn-primary" id="button_add_user">Add user</button>
-        </a>
-        <a href="login">
-            <button class="btn btn-primary" id="button_login">Login</button>
-        </a>
-        <form action="logout" method="POST">
-            <input type="submit" class="btn btn-primary" id="button_logout" value="Logout"/>
-        </form>
-    </div>
-
-
     <div class="row row-centered" id="cars-table">
         Loading items...
     </div>

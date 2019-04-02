@@ -8,10 +8,10 @@ public enum WebApp {
 
     VIEW_ROOT("/WEB-INF/view"),
     PG_SHOW_ALL_CARS("showAllCars.jsp"),
-    PG_CREATE_USER("createUser.jsp"),
-    PG_CREATE_CAR("createCar.jsp"),
+    PG_CREATE_USER("userEditForm.jsp"),
+    PG_CREATE_CAR("carEditForm.jsp"),
     PG_EDIT_CAR("editCar.jsp"),
-    PG_LOGIN("loginUser.jsp");
+    PG_LOGIN("loginForn.jsp");
 
     private final String value;
 

@@ -51,29 +51,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-    <!-- Bootstrap CSS -->
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script crossorigin="anonymous"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- Jquery-UI -->
-    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <!-- Custom components -->
-    <c:import url="tools/Item.html"/>
+    <c:import url="tools/headCommon.jsp"/>
+    <c:import url="tools/ItemClass.html"/>
 
     <title>${title}</title>
-    <link rel="shortcut icon" href="<c:url value="/favicon.ico"/>"/>
 
     <script>
         $(function () {
@@ -131,45 +112,11 @@
 
 </head>
 <body>
+<c:import url="tools/navbar.jsp"/>
+<div align="center"><h3> ${title} </h3></div>
+<c:import url="tools/alerts.jsp"/>
 
 <div class="container">
-    <div align="center"><h3> ${title} </h3></div>
-
-    <%--
-     Alerts
-     --%>
-    <c:if test="${not empty param.success}">
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> ${param.success}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-    <c:if test="${not empty param.error}">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error!</strong> ${param.error}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-    <c:if test="${error != null}">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error!</strong> ${error}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-
-
-    <div class="row">
-        <a href="<c:url value="/"/>">
-            <button class="btn btn-primary" id="button_add_item">To main page</button>
-        </a>
-    </div>
-
     <form action="addCar" enctype="multipart/form-data" id="editCarForm" method="POST">
         <%--
         Hidden fields
@@ -180,7 +127,7 @@
         <%--
         Required fields
         --%>
-        <h4>Required</h4>
+        <h4>Required parameters</h4>
         <%--Status--%>
         <div class="status-div">
             <div class="form-check form-check-inline status-for-sale">
@@ -359,7 +306,7 @@
         <!--
         **** Optional fields
         -->
-        <h4>Optional</h4>
+        <h4>Optional parameters</h4>
         <!--Photo-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
