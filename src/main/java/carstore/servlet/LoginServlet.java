@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Services log in by user-password form.
@@ -90,11 +92,12 @@ public class LoginServlet extends HttpServlet {
     private void attachAndPass(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
         var loggedUserId = user.getId();
         req.getSession().setAttribute(Attributes.ATR_LOGGED_USER_ID.v(), loggedUserId);
-        var msg = String.format("User (%s) logged in", user.getLogin());
+        var resultMsg = String.format("User (%s) logged in", user.getLogin());
+        var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
         var redirectPath = new StringBuilder()
                 .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
                 .append("?")
-                .append(WebApp.MSG_SUCCESS.v()).append("=").append(msg)
+                .append(WebApp.MSG_SUCCESS.v()).append("=").append(codedMsg)
                 .toString();
         resp.sendRedirect(redirectPath);
     }

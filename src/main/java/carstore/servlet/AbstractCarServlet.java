@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Controls adding car.
@@ -153,10 +155,11 @@ public abstract class AbstractCarServlet extends HttpServlet {
      * @throws IOException In case of problems.
      */
     private void redirectSuccess(HttpServletRequest req, HttpServletResponse resp, String resultMsg) throws IOException {
+        var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
         var redirectPath = new StringBuilder()
                 .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
                 .append("?")
-                .append(WebApp.MSG_SUCCESS.v()).append("=").append(resultMsg)
+                .append(WebApp.MSG_SUCCESS.v()).append("=").append(codedMsg)
                 .toString();
         resp.sendRedirect(redirectPath);
     }

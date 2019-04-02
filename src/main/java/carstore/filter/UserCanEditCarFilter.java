@@ -14,6 +14,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Checks logged user and his ability to edit given car.
@@ -55,10 +57,11 @@ public class UserCanEditCarFilter implements Filter {
             chain.doFilter(req, response);
         } else {
             var errorMsg = "You are not allowed to edit this car";
+            var codedMsg = URLEncoder.encode(errorMsg, StandardCharsets.UTF_8);
             var redirectPath = new StringBuilder()
                     .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
                     .append("?")
-                    .append(WebApp.MSG_ERROR.v()).append("=").append(errorMsg)
+                    .append(WebApp.MSG_ERROR.v()).append("=").append(codedMsg)
                     .toString();
             resp.sendRedirect(redirectPath);
         }

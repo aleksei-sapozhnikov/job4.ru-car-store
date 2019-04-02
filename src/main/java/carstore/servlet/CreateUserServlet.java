@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Servlet to add and edit users.
@@ -74,10 +76,11 @@ public class CreateUserServlet extends HttpServlet {
         var saved = this.userStore.saveIfNotExists(user).apply(hbSession);
         if (saved) {
             var resultMsg = String.format("User (%s) created", user.getLogin());
+            var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
             var redirectPath = new StringBuilder()
                     .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
                     .append("?")
-                    .append(WebApp.MSG_SUCCESS.v()).append("=").append(resultMsg)
+                    .append(WebApp.MSG_SUCCESS.v()).append("=").append(codedMsg)
                     .toString();
             resp.sendRedirect(redirectPath);
         } else {

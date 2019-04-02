@@ -10,6 +10,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Checks if session contains logged user.
@@ -54,11 +56,13 @@ public class UserIsLoggedFilter implements Filter {
             this.checkIsLong(loggedId);
             chain.doFilter(request, response);
         } else {
+            var resultMsg = "Please log in to add or edit cars";
+            var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
             var redirectPath = new StringBuilder()
                     .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
                     .append(WebApp.SRV_LOGIN.v())
                     .append("?")
-                    .append(WebApp.MSG_ERROR.v()).append("=").append("Please log in to add or edit cars")
+                    .append(WebApp.MSG_ERROR.v()).append("=").append(codedMsg)
                     .toString();
             resp.sendRedirect(redirectPath);
         }
