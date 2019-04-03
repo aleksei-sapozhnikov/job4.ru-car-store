@@ -9,6 +9,8 @@ public enum Attributes {
     ATR_HB_SESSION("hibernateSession"),
 
     ATR_LOGGED_USER_ID("userLoggedInTheSessionId"),
+    ATR_LOGGED_USER_LOGIN("userLoggedInTheSessionLogin"),
+
     ATR_CAR_TO_EDIT("editCar"),
     ATR_CAR_IMAGE_IDS("carImageIds"),
 

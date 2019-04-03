@@ -90,8 +90,8 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException In case of problems.
      */
     private void attachAndPass(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
-        var loggedUserId = user.getId();
-        req.getSession().setAttribute(Attributes.ATR_LOGGED_USER_ID.v(), loggedUserId);
+        req.getSession().setAttribute(Attributes.ATR_LOGGED_USER_ID.v(), user.getId());
+        req.getSession().setAttribute(Attributes.ATR_LOGGED_USER_LOGIN.v(), user.getLogin());
         var resultMsg = String.format("User (%s) logged in", user.getLogin());
         var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
         var redirectPath = new StringBuilder()
@@ -106,9 +106,9 @@ public class LoginServlet extends HttpServlet {
      * Forwards request back to login page
      * with attached error message.
      *
-     * @param req      Request object.
-     * @param resp     Response object.
-     * @param login    Given login (for error message).
+     * @param req   Request object.
+     * @param resp  Response object.
+     * @param login Given login (for error message).
      * @throws ServletException In case of problems.
      * @throws IOException      In case of problems.
      */
