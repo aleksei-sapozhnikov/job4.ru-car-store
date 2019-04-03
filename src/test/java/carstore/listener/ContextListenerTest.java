@@ -7,6 +7,7 @@ import carstore.factory.ImageFactory;
 import carstore.store.CarStore;
 import carstore.store.ImageStore;
 import carstore.store.UserStore;
+import carstore.util.PropertiesHolder;
 import com.google.gson.Gson;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -23,6 +24,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,29 +37,31 @@ import static org.mockito.Mockito.when;
 public class ContextListenerTest {
 
     @Mock
-    ServletContextEvent sce;
+    private ServletContextEvent sce;
     @Mock
-    ServletContext ctx;
+    private ServletContext ctx;
 
     @Mock
-    Configuration configuration;
+    private Configuration configuration;
     @Mock
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     @Mock
-    UserStore userStore;
+    private PropertiesHolder propertiesHolder;
     @Mock
-    ImageStore imageStore;
+    private UserStore userStore;
     @Mock
-    CarStore carStore;
+    private ImageStore imageStore;
     @Mock
-    FrontItemFactory frontItemFactory;
+    private CarStore carStore;
     @Mock
-    Gson gson;
+    private FrontItemFactory frontItemFactory;
     @Mock
-    CarFactory carFactory;
+    private Gson gson;
     @Mock
-    ImageFactory imageFactory;
+    private CarFactory carFactory;
+    @Mock
+    private ImageFactory imageFactory;
 
     @Before
     public void initMocks() throws Exception {
@@ -73,6 +77,7 @@ public class ContextListenerTest {
         PowerMockito.whenNew(Gson.class).withNoArguments().thenReturn(this.gson);
         PowerMockito.whenNew(CarFactory.class).withNoArguments().thenReturn(this.carFactory);
         PowerMockito.whenNew(ImageFactory.class).withNoArguments().thenReturn(this.imageFactory);
+        PowerMockito.whenNew(PropertiesHolder.class).withArguments(any(String.class)).thenReturn(this.propertiesHolder);
         // configs for session factory
         when(this.configuration.configure()).thenReturn(this.configuration);
         when(this.configuration.buildSessionFactory()).thenReturn(this.sessionFactory);
@@ -86,6 +91,7 @@ public class ContextListenerTest {
         new ContextListener().contextInitialized(this.sce);
         verify(this.ctx).setAttribute(Attributes.ATR_CONTEXT_PATH.v(), "root/");
         verify(this.ctx).setAttribute(Attributes.ATR_HB_FACTORY.v(), this.sessionFactory);
+        verify(this.ctx).setAttribute(Attributes.ATR_SELECT_VALUES.v(), this.propertiesHolder);
         verify(this.ctx).setAttribute(Attributes.ATR_USER_STORE.v(), this.userStore);
         verify(this.ctx).setAttribute(Attributes.ATR_IMAGE_STORE.v(), this.imageStore);
         verify(this.ctx).setAttribute(Attributes.ATR_CAR_STORE.v(), this.carStore);

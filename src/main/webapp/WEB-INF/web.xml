@@ -25,4 +25,9 @@
         <url-pattern>/editCar</url-pattern>
     </filter-mapping>
 
+    <context-param>
+        <param-name>selectValuesResource</param-name>
+        <param-value>carstore/selectValues.properties</param-value>
+    </context-param>
+
 </web-app>
