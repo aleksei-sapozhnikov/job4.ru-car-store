@@ -2,6 +2,7 @@ package carstore.servlet;
 
 import carstore.constants.Attributes;
 import carstore.constants.WebApp;
+import carstore.exception.InvalidParametersException;
 import carstore.factory.CarFactory;
 import carstore.factory.ImageFactory;
 import carstore.model.Car;
@@ -126,7 +127,7 @@ public class EditCarServletTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void whenDoPostThenCarSavedOrUpdatedAndRedirectMainPageWithSuccess() throws ServletException, IOException {
+    public void whenDoPostThenCarSavedOrUpdatedAndRedirectMainPageWithSuccess() throws ServletException, IOException, InvalidParametersException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
         var getUserFunction = (Function<Session, User>) Mockito.mock(Function.class);
         when(this.userStore.get(111L)).thenReturn(getUserFunction);
@@ -151,7 +152,7 @@ public class EditCarServletTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void whenDoPostAndUserIsNotOwnerThenServletException() throws ServletException, IOException {
+    public void whenDoPostAndUserIsNotOwnerThenServletException() throws ServletException, IOException, InvalidParametersException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
         var getUserFunction = (Function<Session, User>) Mockito.mock(Function.class);
         when(this.userStore.get(111L)).thenReturn(getUserFunction);
@@ -171,6 +172,27 @@ public class EditCarServletTest {
             wasException[0] = true;
         }
         assertTrue(wasException[0]);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void whenCarFactoryThrowsInvalidParametersExceptionThenRedirectWithError() throws ServletException, IOException, InvalidParametersException {
+        when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
+        var getUserFunction = (Function<Session, User>) Mockito.mock(Function.class);
+        when(this.userStore.get(111L)).thenReturn(getUserFunction);
+        when(getUserFunction.apply(this.hbSession)).thenReturn(this.user);
+        when(this.imageFactory.createImageSet(this.req)).thenReturn(this.imageSet);
+        when(this.carFactory.createCar(this.req, this.user)).thenThrow(new InvalidParametersException("expected"));
+        // actions
+        var servlet = new EditCarServlet();
+        servlet.init(this.sConfig);
+        servlet.doPost(this.req, this.resp);
+        // verify
+        ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
+        verify(this.resp).sendRedirect(pathCaptor.capture());
+        var path = pathCaptor.getValue();
+        assertTrue(path.contains(WebApp.MSG_ERROR.v()));
+
     }
 
 }

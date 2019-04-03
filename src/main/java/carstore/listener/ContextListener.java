@@ -2,6 +2,7 @@ package carstore.listener;
 
 import carstore.constants.Attributes;
 import carstore.factory.CarFactory;
+import carstore.factory.CarParamsValidator;
 import carstore.factory.FrontItemFactory;
 import carstore.factory.ImageFactory;
 import carstore.store.CarStore;
@@ -52,7 +53,7 @@ public class ContextListener implements ServletContextListener {
         ctx.setAttribute(Attributes.ATR_CAR_STORE.v(), new CarStore());
         ctx.setAttribute(Attributes.ATR_ITEM_FACTORY.v(), new FrontItemFactory());
         ctx.setAttribute(Attributes.ATR_JSON_PARSER.v(), new Gson());
-        ctx.setAttribute(Attributes.ATR_CAR_FACTORY.v(), new CarFactory());
+        ctx.setAttribute(Attributes.ATR_CAR_FACTORY.v(), new CarFactory(new CarParamsValidator()));
         ctx.setAttribute(Attributes.ATR_IMAGE_FACTORY.v(), new ImageFactory());
     }
 

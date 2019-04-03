@@ -65,7 +65,6 @@ public class UserIsLoggedFilterTest {
         ArgumentCaptor<String> redirectCaptor = ArgumentCaptor.forClass(String.class);
         verify(this.resp).sendRedirect(redirectCaptor.capture());
         var redirect = redirectCaptor.getValue();
-        assertTrue(redirect.contains(WebApp.SRV_LOGIN.v()));
         assertTrue(redirect.contains(WebApp.MSG_ERROR.v()));
     }
 

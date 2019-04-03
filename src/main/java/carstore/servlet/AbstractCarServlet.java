@@ -2,6 +2,7 @@ package carstore.servlet;
 
 import carstore.constants.Attributes;
 import carstore.constants.WebApp;
+import carstore.exception.InvalidParametersException;
 import carstore.factory.CarFactory;
 import carstore.factory.ImageFactory;
 import carstore.model.Car;
@@ -51,11 +52,11 @@ public abstract class AbstractCarServlet extends HttpServlet {
     /**
      * Factory to create car from request parameters.
      */
-    protected CarFactory carFactory;
+    private CarFactory carFactory;
     /**
      * Factory to get image set from request parameters.
      */
-    protected ImageFactory imageFactory;
+    private ImageFactory imageFactory;
 
     /**
      * Initiates fields.
@@ -80,9 +81,14 @@ public abstract class AbstractCarServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Car car = this.saveOrUpdateCar(req);
-        var resultMsg = String.format("Car (%s %s) saved.", car.getManufacturer(), car.getModel());
-        this.redirectSuccess(req, resp, resultMsg);
+        try {
+            Car car = this.saveOrUpdateCar(req);
+            var resultMsg = String.format("Car (%s %s) saved.", car.getManufacturer(), car.getModel());
+            this.redirect(req, resp, resultMsg, true);
+        } catch (InvalidParametersException e) {
+            var resultMsg = "Could not save car: one of car parameters did not pass validation";
+            this.redirect(req, resp, resultMsg, false);
+        }
     }
 
     /**
@@ -94,7 +100,7 @@ public abstract class AbstractCarServlet extends HttpServlet {
      * @throws IOException      In case of problems.
      * @throws ServletException In case of problems.
      */
-    private Car saveOrUpdateCar(HttpServletRequest req) throws IOException, ServletException {
+    private Car saveOrUpdateCar(HttpServletRequest req) throws IOException, ServletException, InvalidParametersException {
         var loggedUserId = this.getLoggedUserId(req);
         var loggedUser = this.getLoggedUser(req);
         var images = this.imageFactory.createImageSet(req);
@@ -154,12 +160,12 @@ public abstract class AbstractCarServlet extends HttpServlet {
      * @param resp Response object.
      * @throws IOException In case of problems.
      */
-    private void redirectSuccess(HttpServletRequest req, HttpServletResponse resp, String resultMsg) throws IOException {
+    private void redirect(HttpServletRequest req, HttpServletResponse resp, String resultMsg, boolean success) throws IOException {
         var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
         var redirectPath = new StringBuilder()
                 .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
                 .append("?")
-                .append(WebApp.MSG_SUCCESS.v()).append("=").append(codedMsg)
+                .append(success ? WebApp.MSG_SUCCESS.v() : WebApp.MSG_ERROR.v()).append("=").append(codedMsg)
                 .toString();
         resp.sendRedirect(redirectPath);
     }

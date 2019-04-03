@@ -2,6 +2,7 @@ package carstore.listener;
 
 import carstore.constants.Attributes;
 import carstore.factory.CarFactory;
+import carstore.factory.CarParamsValidator;
 import carstore.factory.FrontItemFactory;
 import carstore.factory.ImageFactory;
 import carstore.store.CarStore;
@@ -61,6 +62,8 @@ public class ContextListenerTest {
     @Mock
     private CarFactory carFactory;
     @Mock
+    private CarParamsValidator carParamsValidator;
+    @Mock
     private ImageFactory imageFactory;
 
     @Before
@@ -68,6 +71,7 @@ public class ContextListenerTest {
         MockitoAnnotations.initMocks(this);
         // mock data returned
         when(this.sce.getServletContext()).thenReturn(this.ctx);
+        when(this.ctx.getInitParameter(any(String.class))).thenReturn("initParam");
         // mock new instances creation
         PowerMockito.whenNew(Configuration.class).withNoArguments().thenReturn(this.configuration);
         PowerMockito.whenNew(UserStore.class).withNoArguments().thenReturn(this.userStore);
@@ -75,7 +79,8 @@ public class ContextListenerTest {
         PowerMockito.whenNew(CarStore.class).withNoArguments().thenReturn(this.carStore);
         PowerMockito.whenNew(FrontItemFactory.class).withNoArguments().thenReturn(this.frontItemFactory);
         PowerMockito.whenNew(Gson.class).withNoArguments().thenReturn(this.gson);
-        PowerMockito.whenNew(CarFactory.class).withNoArguments().thenReturn(this.carFactory);
+        PowerMockito.whenNew(CarParamsValidator.class).withNoArguments().thenReturn(this.carParamsValidator);
+        PowerMockito.whenNew(CarFactory.class).withArguments(this.carParamsValidator).thenReturn(this.carFactory);
         PowerMockito.whenNew(ImageFactory.class).withNoArguments().thenReturn(this.imageFactory);
         PowerMockito.whenNew(PropertiesHolder.class).withArguments(any(String.class)).thenReturn(this.propertiesHolder);
         // configs for session factory

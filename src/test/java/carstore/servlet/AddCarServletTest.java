@@ -2,6 +2,7 @@ package carstore.servlet;
 
 import carstore.constants.Attributes;
 import carstore.constants.WebApp;
+import carstore.exception.InvalidParametersException;
 import carstore.factory.CarFactory;
 import carstore.factory.ImageFactory;
 import carstore.model.Car;
@@ -106,7 +107,7 @@ public class AddCarServletTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void whenDoPostThenCarSavedOrUpdatedAndRedirectMainPageWithSuccess() throws ServletException, IOException {
+    public void whenDoPostThenCarSavedOrUpdatedAndRedirectMainPageWithSuccess() throws ServletException, IOException, InvalidParametersException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
         var getUserFunction = (Function<Session, User>) Mockito.mock(Function.class);
         when(this.userStore.get(111L)).thenReturn(getUserFunction);

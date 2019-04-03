@@ -1,6 +1,7 @@
 package carstore.factory;
 
 import carstore.constants.Attributes;
+import carstore.exception.InvalidParametersException;
 import carstore.model.Car;
 import carstore.model.User;
 import carstore.util.Utils;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +40,8 @@ public class CarFactoryTest {
     Part idPart, isAvailablePart, intParamPart, strParamPart;
     @Mock
     Car car;
+    @Mock
+    CarParamsValidator validator;
 
     @Before
     public void initMocks() throws IOException, ServletException {
@@ -45,6 +49,7 @@ public class CarFactoryTest {
         // common params
         when(this.req.getPart(Attributes.PRM_CAR_ID.v())).thenReturn(this.idPart);
         when(this.req.getPart(Attributes.PRM_CAR_AVAILABLE.v())).thenReturn(this.isAvailablePart);
+        when(this.validator.areValidParams(any(), any())).thenReturn(true);
         // string params
         when(this.req.getPart(Attributes.PRM_CAR_MANUFACTURER.v())).thenReturn(this.strParamPart);
         when(this.req.getPart(Attributes.PRM_CAR_MODEL.v())).thenReturn(this.strParamPart);
@@ -86,11 +91,11 @@ public class CarFactoryTest {
      * All parts are not null, so no exception will be thrown.
      */
     @Test
-    public void whenAllParametersPresentThenCreateCar() throws IOException, ServletException {
+    public void whenAllParametersPresentThenCreateCar() throws IOException, ServletException, InvalidParametersException {
         PowerMockito.mockStatic(Car.class);
         when(Car.of(this.user, this.createDefaultStrParams(), createDefaultIntParams())).thenReturn(this.car);
         // actions
-        var factory = new CarFactory();
+        var factory = new CarFactory(this.validator);
         var result = factory.createCar(this.req, this.user);
         // verify
         verify(this.car).setAvailable(true);
@@ -103,11 +108,11 @@ public class CarFactoryTest {
      * We place some of the first parts 'null' and must get exception
      */
     @Test
-    public void whenNotAllStringPartsPresentThenServletException() throws IOException, ServletException {
+    public void whenNotAllStringPartsPresentThenServletException() throws IOException, ServletException, InvalidParametersException {
         // one of string params is not present
         when(this.req.getPart(Attributes.PRM_CAR_NEWNESS.v())).thenReturn(null);
         // actions
-        var factory = new CarFactory();
+        var factory = new CarFactory(this.validator);
         var wasException = new boolean[]{false};
         try {
             factory.createCar(this.req, this.user);
@@ -123,17 +128,33 @@ public class CarFactoryTest {
      * We give enough string not-null parts and then some 'null' of integer parts.
      */
     @Test
-    public void whenNotAllIntegerPartsPresentThenServletException() throws IOException, ServletException {
+    public void whenNotAllIntegerPartsPresentThenServletException() throws IOException, ServletException, InvalidParametersException {
         // one of integer params is not present
         when(this.req.getPart(Attributes.PRM_CAR_PRICE.v())).thenReturn(null);
         // actions
-        var factory = new CarFactory();
+        var factory = new CarFactory(this.validator);
         var wasException = new boolean[]{false};
         try {
             factory.createCar(this.req, this.user);
         } catch (ServletException e) {
             wasException[0] = true;
             assertEquals("Not all car Integer parameters found.", e.getMessage());
+        }
+        assertTrue(wasException[0]);
+    }
+
+    @Test
+    public void whenParametersAreNotValidThenInvalidParameterException() throws IOException, ServletException {
+        // parameters did not pass validation
+        when(this.validator.areValidParams(any(), any())).thenReturn(false);
+        // actions
+        var factory = new CarFactory(this.validator);
+        var wasException = new boolean[]{false};
+        try {
+            factory.createCar(this.req, this.user);
+        } catch (InvalidParametersException e) {
+            wasException[0] = true;
+            assertEquals("One of car parameters did not pass validation.", e.getMessage());
         }
         assertTrue(wasException[0]);
     }
