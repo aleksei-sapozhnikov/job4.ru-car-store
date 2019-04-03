@@ -37,7 +37,7 @@
             </div>
             <input class="form-control" name="user_login"
                    placeholder="Login: at least 3 chars, may use small latin letters and numbers (e.g. john2013)"
-                   required pattern="[a-z0-9]{3,}"
+                   required pattern="[A-Za-z0-9\s]{3,}"
                    type="text">
         </div>
         <!--Password-->
