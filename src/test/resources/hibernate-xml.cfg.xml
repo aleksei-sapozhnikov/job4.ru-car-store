@@ -9,13 +9,15 @@
         <property name="hibernate.connection.password"/>
         <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
         <property name="hibernate.show_sql">true</property>
-
         <property name="hibernate.hbm2ddl.auto">create</property>
 
-        <!-- List of Annotations-mapping classes -->
-        <mapping class="carstore.model.Car"/>
-        <mapping class="carstore.model.Image"/>
-        <mapping class="carstore.model.User"/>
+        <!-- List of XML mapping files -->
+        <mapping resource="carstore/model/Age.hbm.xml"/>
+        <mapping resource="carstore/model/Body.hbm.xml"/>
+        <mapping resource="carstore/model/Car.hbm.xml"/>
+        <mapping resource="carstore/model/Chassis.hbm.xml"/>
+        <mapping resource="carstore/model/Engine.hbm.xml"/>
+        <mapping resource="carstore/model/Mark.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>
