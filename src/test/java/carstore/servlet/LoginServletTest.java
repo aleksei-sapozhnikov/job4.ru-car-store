@@ -75,7 +75,6 @@ public class LoginServletTest {
         verify(this.req).getRequestDispatcher(pathCaptor.capture());
         var path = pathCaptor.getValue();
         assertTrue(path.contains(WebApp.VIEW_ROOT.v()));
-        assertTrue(path.contains(WebApp.PG_LOGIN.v()));
         verify(this.rDispatcher).forward(req, resp);
     }
 
