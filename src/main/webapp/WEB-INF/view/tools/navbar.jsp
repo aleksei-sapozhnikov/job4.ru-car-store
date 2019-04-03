@@ -13,12 +13,15 @@
             <li class="nav-item active">
                 <a class="navbar-brand" href="<c:url value="/"/>">Car store</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<c:url value="/"/>">Main page</a>
+            </li>
         </ul>
     </div>
     <div class="mx-auto order-0">
         <span class="navbar-brand mx-auto" style="font-size: 1.7em; font-weight: 500;">${prm_navbar_title}</span>
     </div>
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" href="<c:url value="/addCar"/>">Add car</a>
