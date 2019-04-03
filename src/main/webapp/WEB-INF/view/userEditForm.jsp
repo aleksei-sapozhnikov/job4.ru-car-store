@@ -9,7 +9,7 @@
 <head>
     <c:import url="tools/headCommon.jsp"/>
 
-    <title>Add user</title>
+    <title>Register</title>
     <link rel="shortcut icon" href="<c:url value="/favicon.ico"/>"/>
 
     <style>
@@ -23,11 +23,12 @@
     </style>
 </head>
 <body>
-<c:import url="tools/navbar.jsp"/>
-<div align="center"><h3>Add user</h3></div>
-<c:import url="tools/alerts.jsp"/>
-
+<c:import url="tools/navbar.jsp">
+    <c:param name="navbar_title" value="Register"/>
+</c:import>
 <div class="container">
+    <c:import url="tools/alerts.jsp"/>
+
     <form action="addUser" id="editForm" method="POST">
         <!--Login-->
         <div class="input-group mb-2">
@@ -58,7 +59,9 @@
                    placeholder="Phone: from 7 to 30 chars, numbers only (e.g 1234567)" required
                    type="text" pattern="[0-9]{7,30}">
         </div>
-        <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>
+        <div style="text-align:center">
+            <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>
+        </div>
     </form>
 </div>
 

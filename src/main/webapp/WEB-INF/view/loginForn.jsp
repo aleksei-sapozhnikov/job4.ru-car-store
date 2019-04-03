@@ -23,11 +23,13 @@
     </style>
 </head>
 <body>
-<c:import url="tools/navbar.jsp"/>
-<div align="center"><h3>Login</h3></div>
-<c:import url="tools/alerts.jsp"/>
+<c:import url="tools/navbar.jsp">
+    <c:param name="navbar_title" value="Login"/>
+</c:import>
 
 <div class="container">
+    <c:import url="tools/alerts.jsp"/>
+
     <form action="login" id="editForm" method="POST">
         <!--Login-->
         <div class="input-group mb-2">

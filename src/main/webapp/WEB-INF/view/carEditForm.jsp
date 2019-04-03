@@ -85,7 +85,7 @@
         .status-div {
             margin-top: 20px;
             margin-bottom: 20px;
-            font-size: 1.5em;
+            font-size: 1.2em;
             text-align: center;
         }
 
@@ -93,8 +93,8 @@
             border-radius: 15px;
             margin-left: 10px;
             margin-right: 10px;
-            padding: 10px 10px 10px 25px;
-            width: 150px;
+            padding: 5px 5px 5px 20px;
+            width: 120px;
         }
 
         .status-for-sale {
@@ -114,11 +114,13 @@
 
 </head>
 <body>
-<c:import url="tools/navbar.jsp"/>
-<div align="center"><h3> ${title} </h3></div>
-<c:import url="tools/alerts.jsp"/>
+<c:import url="tools/navbar.jsp">
+    <c:param name="navbar_title" value="${title}"/>
+</c:import>
 
 <div class="container">
+    <c:import url="tools/alerts.jsp"/>
+
     <form action="addCar" enctype="multipart/form-data" id="editCarForm" method="POST">
         <%--
         Hidden fields
@@ -318,6 +320,7 @@
         **** Optional fields
         -->
         <h4>Optional parameters</h4>
+
         <!--Photo-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -341,7 +344,9 @@
                 <label class="custom-file-label" for="car_image" id="car_image_label">Choose file</label>
             </div>
         </div>
-        <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>
+        <div style="text-align:center">
+            <input class="btn btn-success submitBtn" name="submit" type="submit" value="SAVE"/>
+        </div>
     </form>
 </div>
 

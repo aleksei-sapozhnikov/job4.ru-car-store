@@ -20,11 +20,12 @@
     </script>
 
 </head>
-<c:import url="tools/navbar.jsp"/>
-<div align="center"><h3>Car store</h3></div>
-<c:import url="tools/alerts.jsp"/>
-
+<c:import url="tools/navbar.jsp">
+    <c:param name="navbar_title" value="Current offers"/>
+</c:import>
 <div class="container">
+    <c:import url="tools/alerts.jsp"/>
+
     <div class="row row-centered" id="cars-table">
         Loading items...
     </div>
