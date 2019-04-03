@@ -60,7 +60,6 @@ public class UserIsLoggedFilter implements Filter {
             var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
             var redirectPath = new StringBuilder()
                     .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
-                    .append(WebApp.SRV_LOGIN.v())
                     .append("?")
                     .append(WebApp.MSG_ERROR.v()).append("=").append(codedMsg)
                     .toString();

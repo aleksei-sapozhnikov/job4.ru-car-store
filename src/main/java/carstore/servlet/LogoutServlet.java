@@ -1,6 +1,7 @@
 package carstore.servlet;
 
 import carstore.constants.Attributes;
+import carstore.constants.WebApp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Invalidates current logged user session.
@@ -35,8 +38,13 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.getSession(false).invalidate();
-        resp.sendRedirect(
-                (String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v())
-        );
+        var resultMsg = "Successfully logged out";
+        var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
+        var redirectPath = new StringBuilder()
+                .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
+                .append("?")
+                .append(WebApp.MSG_SUCCESS.v()).append("=").append(codedMsg)
+                .toString();
+        resp.sendRedirect(redirectPath);
     }
 }
