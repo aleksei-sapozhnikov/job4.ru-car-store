@@ -156,6 +156,7 @@
                     <label for="manufacturer-input" hidden></label>
                     <input class="form-control" id="manufacturer-input" name="${prm_manufacturer}"
                            list="manufacturer-list" type="text" placeholder="Ford" required autofocus
+                           pattern="[a-zA-Z][a-zA-Z0-9\s-/]{2,254}"
                     <c:if test="${not empty editCar}"> value="${editCar.manufacturer}"</c:if>>
                     <datalist id="manufacturer-list">
                         <c:forEach items="${select_manufacturer}" var="item">
@@ -171,6 +172,7 @@
                         <span class="input-group-text">Model</span>
                     </div>
                     <input class="form-control" name="${prm_model}" placeholder="Transit FX-1300F" required
+                           pattern="[a-zA-Z][a-zA-Z0-9\s-/]{2,254}"
                            type="text" <c:if test="${not empty editCar}">value="${editCar.model}"</c:if>">
                 </div>
             </div>
@@ -240,7 +242,7 @@
                     </div>
                     <label for="bodyType-input" hidden></label>
                     <input class="form-control" id="bodyType-input" name="${prm_bodyType}" list="bodyType-list" required
-                           type="text" placeholder="sedan" <c:if test="${not empty editCar}">
+                           type="text" placeholder="sedan" <c:if test="${not empty editCar}"> pattern="[a-zA-Z]{3,255}"
                            value="${editCar.manufacturer}"</c:if>>
                     <datalist id="bodyType-list">
                         <c:forEach items="${select_bodyType}" var="item">
@@ -256,7 +258,8 @@
                         <span class="input-group-text">Color</span>
                     </div>
                     <input class="form-control" id="color-input" name="${prm_color}" list="color-list" required
-                           type="text" placeholder="black" <c:if test="${not empty editCar}">
+                           type="text" pattern="[a-zA-Z][a-zA-Z\s-/]{2,254}" placeholder="black" <c:if
+                            test="${not empty editCar}">
                            value="${editCar.color}"</c:if>>
                     <datalist id="color-list">
                         <c:forEach items="${select_color}" var="item">
