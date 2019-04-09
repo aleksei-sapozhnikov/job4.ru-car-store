@@ -6,6 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -72,4 +74,41 @@ public class CarStore implements Store {
         });
     }
 
+    /**
+     * Gets all cars with at least one image.
+     *
+     * @return List of cars with images.
+     */
+    @SuppressWarnings("unchecked")
+    public Function<Session, List<Car>> getAllWithImage() {
+        return this.functionTransaction(session ->
+                session.createQuery("from Car c where c.id in (select distinct i.car.id from Image i)")
+                        .list());
+    }
+
+    /**
+     * Gets all cars created today.
+     *
+     * @return List of cars created today.
+     */
+    @SuppressWarnings("unchecked")
+    public Function<Session, List<Car>> getAllCreatedToday() {
+        return this.functionTransaction(session ->
+                session.createQuery("from Car c where c.created > :dayStart")
+                        .setParameter("dayStart", LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                        .list());
+    }
+
+    /**
+     * Gets all cars by manufacturer.
+     *
+     * @return List of cars created today.
+     */
+    @SuppressWarnings("unchecked")
+    public Function<Session, List<Car>> getByManufacturer(String manufacturer) {
+        return this.functionTransaction(session ->
+                session.createQuery("from Car c where c.manufacturer = :manufacturer")
+                        .setParameter("manufacturer", manufacturer)
+                        .list());
+    }
 }

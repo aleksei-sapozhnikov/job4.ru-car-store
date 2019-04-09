@@ -43,6 +43,10 @@ public class Car {
      * Is this car available for selling or not.
      */
     private boolean available = true;
+    /**
+     * Time when the car was added to the system.
+     */
+    private long created;
 
     /**
      * Creates Car object using map of given parameters.
@@ -126,6 +130,26 @@ public class Car {
      */
     public Car setAvailable(boolean available) {
         this.available = available;
+        return this;
+    }
+
+    /**
+     * Returns created.
+     *
+     * @return Value of created field.
+     */
+    @Column(name = "created")
+    public long getCreated() {
+        return this.created;
+    }
+
+    /**
+     * Sets created value.
+     *
+     * @param created Value to set.
+     */
+    public Car setCreated(long created) {
+        this.created = created;
         return this;
     }
 
@@ -360,10 +384,6 @@ public class Car {
         this.strParams.put(StrParam.TRANSMISSION_TYPE, transmissionType);
         return this;
     }
-
-    ////////////////////////////
-    // equals() and hashCode()
-    ////////////////////////////
 
     ////////////////////////////
     // parameters enumerations

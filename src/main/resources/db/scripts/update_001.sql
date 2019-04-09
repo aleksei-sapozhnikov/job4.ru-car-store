@@ -19,7 +19,8 @@ create table cars (
   transmission_type varchar(255) not null,
   year_manufactured integer      not null,
   owner             bigint       not null references users(id),
-  available         boolean      not null
+  available         boolean      not null,
+  created           timestamp    not null
 );
 
 create table images (

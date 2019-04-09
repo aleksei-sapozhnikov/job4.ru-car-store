@@ -43,6 +43,7 @@ public class CarTest {
         // initialized by default
         assertEquals(car.getId(), 0);
         assertTrue(car.isAvailable());
+        assertEquals(car.getCreated(), 0);
         // object references
         assertSame(car.getOwner(), owner);
         // integer params
@@ -71,11 +72,12 @@ public class CarTest {
         assertEquals(car.getId(), 56);
         car.setAvailable(false);
         assertFalse(car.isAvailable());
+        car.setCreated(123L);
+        assertEquals(car.getCreated(), 123L);
         // object references
         var newOwner = Mockito.mock(User.class);
         car.setOwner(newOwner);
         assertSame(car.getOwner(), newOwner);
-        var newMainImage = Mockito.mock(Image.class);
         // integer params
         int count = 0;
         car.setPrice(100);
