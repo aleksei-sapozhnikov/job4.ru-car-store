@@ -28,6 +28,14 @@ public enum Attributes {
     PRM_USER_PHONE("user_phone"),
 
     PRM_CAR_ID("carId"),
+
+    PRM_FILTER_BY("filterBy"),
+    PRM_FILTER_BY_CREATED_TODAY("createdToday"),
+    PRM_FILTER_BY_WITH_IMAGE("withPhoto"),
+    PRM_FILTER_BY_MANUFACTURER("manufacturer"),
+
+    PRM_FILTER_VALUE("filterValue"),
+
     PRM_CAR_AVAILABLE("carAvailable"),
 
     PRM_CAR_MANUFACTURER("carManufacturer"),
