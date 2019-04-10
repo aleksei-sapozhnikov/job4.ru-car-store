@@ -107,8 +107,8 @@ public class CarStore implements Store {
     @SuppressWarnings("unchecked")
     public Function<Session, List<Car>> getByManufacturer(String manufacturer) {
         return this.functionTransaction(session ->
-                session.createQuery("from Car c where c.manufacturer = :manufacturer")
-                        .setParameter("manufacturer", manufacturer)
+                session.createQuery("from Car c where c.manufacturer like :manufacturer")
+                        .setParameter("manufacturer", String.format("%s%%", manufacturer))
                         .list());
     }
 }

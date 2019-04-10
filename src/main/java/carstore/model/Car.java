@@ -138,7 +138,7 @@ public class Car {
      *
      * @return Value of created field.
      */
-    @Column(name = "created")
+    @Column(name = "created", updatable = false)
     public long getCreated() {
         return this.created;
     }

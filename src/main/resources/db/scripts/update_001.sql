@@ -20,7 +20,7 @@ create table cars (
   year_manufactured integer      not null,
   owner             bigint       not null references users(id),
   available         boolean      not null,
-  created           timestamp    not null
+  created           bigint       not null
 );
 
 create table images (

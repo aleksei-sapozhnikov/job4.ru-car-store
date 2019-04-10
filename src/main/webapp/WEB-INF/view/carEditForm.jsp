@@ -156,7 +156,7 @@
                     <label for="manufacturer-input" hidden></label>
                     <input class="form-control" id="manufacturer-input" name="${prm_manufacturer}"
                            list="manufacturer-list" type="text" placeholder="Ford" required autofocus
-                           pattern="[a-zA-Z][a-zA-Z0-9\s-/]{2,254}"
+                           pattern="[a-zA-Z][a-zA-Z0-9\\s\\/-]{2,254}"
                     <c:if test="${not empty editCar}"> value="${editCar.manufacturer}"</c:if>>
                     <datalist id="manufacturer-list">
                         <c:forEach items="${select_manufacturer}" var="item">
@@ -172,7 +172,7 @@
                         <span class="input-group-text">Model</span>
                     </div>
                     <input class="form-control" name="${prm_model}" placeholder="Transit FX-1300F" required
-                           pattern="[a-zA-Z][a-zA-Z0-9\s-/]{2,254}"
+                           pattern="[a-zA-Z0-9][a-zA-Z0-9\\s\\/-]{2,254}"
                            type="text" <c:if test="${not empty editCar}">value="${editCar.model}"</c:if>">
                 </div>
             </div>
@@ -258,7 +258,7 @@
                         <span class="input-group-text">Color</span>
                     </div>
                     <input class="form-control" id="color-input" name="${prm_color}" list="color-list" required
-                           type="text" pattern="[a-zA-Z][a-zA-Z\s-/]{2,254}" placeholder="black" <c:if
+                           type="text" pattern="[a-zA-Z][a-zA-Z\\s\\/-]{2,254}" placeholder="black" <c:if
                             test="${not empty editCar}">
                            value="${editCar.color}"</c:if>>
                     <datalist id="color-list">
@@ -274,15 +274,16 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Fuel</span>
                     </div>
-                    <input class="form-control" id="engineFuel-input" name="${prm_engineFuel}"
-                           list="engineFuel-list" required
-                           type="text" placeholder="gasoline" <c:if test="${not empty editCar}">
-                           value="${editCar.engineFuel}"</c:if>>
-                    <datalist id="engineFuel-list">
+                    <label for="engineFuel-input" hidden></label>
+                    <select class="form-control" id="engineFuel-input" name="${prm_engineFuel}" required>
+                        <c:if test="${empty editCar}">
+                            <option disabled selected value="">Engine fuel:</option>
+                        </c:if>
                         <c:forEach items="${select_engineFuel}" var="item">
-                            <option value="${item}">${item}</option>
+                            <option value="${item}"<c:if
+                                    test="${editCar.engineFuel == item}"> selected</c:if>>${item}</option>
                         </c:forEach>
-                    </datalist>
+                    </select>
                 </div>
             </div>
             <%--Engine volume--%>
