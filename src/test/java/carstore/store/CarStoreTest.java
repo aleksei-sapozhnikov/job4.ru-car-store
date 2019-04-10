@@ -91,4 +91,39 @@ public class CarStoreTest {
         // verify
         verify(this.query, never()).executeUpdate();
     }
+
+    @Test
+    public void whenGetAllWithImagesThenQuery() {
+        when(this.hbSession
+                .createQuery("from Car c where c.id in (select distinct i.car.id from Image i)")
+        ).thenReturn(this.query);
+        when(this.query.list()).thenReturn(this.carList);
+        var store = new CarStore();
+        var result = store.getAllWithImage().apply(this.hbSession);
+        assertSame(result, carList);
+    }
+
+    @Test
+    public void whenGetAllCreatedTodayThenQuery() {
+        when(this.hbSession
+                .createQuery("from Car c where c.created > :dayStart")
+        ).thenReturn(this.query);
+        when(this.query.setParameter(eq("dayStart"), any())).thenReturn(this.query);
+        when(this.query.list()).thenReturn(this.carList);
+        var store = new CarStore();
+        var result = store.getAllCreatedToday().apply(this.hbSession);
+        assertSame(result, carList);
+    }
+
+    @Test
+    public void whenGetByManufacturerThenQuery() {
+        when(this.hbSession
+                .createQuery("from Car c where c.manufacturer like :manufacturer")
+        ).thenReturn(this.query);
+        when(this.query.setParameter("manufacturer", "Toyota%")).thenReturn(this.query);
+        when(this.query.list()).thenReturn(this.carList);
+        var store = new CarStore();
+        var result = store.getByManufacturer("Toyota").apply(this.hbSession);
+        assertSame(result, carList);
+    }
 }

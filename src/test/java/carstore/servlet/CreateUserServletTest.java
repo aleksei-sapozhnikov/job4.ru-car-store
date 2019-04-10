@@ -18,6 +18,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.function.Function;
 
@@ -40,6 +41,8 @@ public class CreateUserServletTest {
     @Mock
     private HttpServletResponse resp;
     @Mock
+    private HttpSession httpSession;
+    @Mock
     private RequestDispatcher rDispatcher;
     @Mock
     private UserStore userStore;
@@ -53,6 +56,7 @@ public class CreateUserServletTest {
         when(this.sContext.getAttribute(Attributes.ATR_USER_STORE.v())).thenReturn(this.userStore);
         when(this.req.getRequestDispatcher(any(String.class))).thenReturn(this.rDispatcher);
         when(this.req.getAttribute(Attributes.ATR_HB_SESSION.v())).thenReturn(this.hbSession);
+        when(this.req.getSession()).thenReturn(this.httpSession);
     }
 
     @Test

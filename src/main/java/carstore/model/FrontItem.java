@@ -46,6 +46,10 @@ public class FrontItem {
      */
     private String contacts;
     /**
+     * Time when the item was created.
+     */
+    private long created;
+    /**
      * Is item available for sale or not.
      */
     private boolean available;
@@ -76,6 +80,7 @@ public class FrontItem {
         item.seller = car.getOwner().getLogin();
         item.contacts = String.format("tel: %s", car.getOwner().getPhone());
         item.available = car.isAvailable();
+        item.created = car.getCreated();
         item.descriptions.put("Body", String.join("; ",
                 car.getBodyType(),
                 car.getColor()));
@@ -135,6 +140,15 @@ public class FrontItem {
      */
     public String getContacts() {
         return this.contacts;
+    }
+
+    /**
+     * Returns created.
+     *
+     * @return Value of created field.
+     */
+    public long getCreated() {
+        return this.created;
     }
 
     /**

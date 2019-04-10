@@ -16,6 +16,8 @@
         seller;
         /** Contacts */
         contacts;
+        /** Item creation time */
+        created;
         /** @boolean Available for sale or not */
         available;
         /** Descriptions */
@@ -46,7 +48,7 @@
             }
             res += '<div class="row item-div">'
                 + `<div class=" column item-seller">`
-                + `<b>Seller: </b>${this.seller}<br><b>Contacts: </b>${this.contacts}`
+                + `<b>Seller: </b>${this.seller}<br><b>Contacts: </b>${this.contacts}<br><b>Created: </b>${new Date(this.created).toLocaleString()}`
                 + `</div>`
                 + `<div class="column item-edit"><a class="edit-link" href="${carEditPage}?carId=${this.carId}">Edit car</a></div>`
                 + '</div>';
@@ -114,7 +116,7 @@
     .item-seller {
         margin-top: auto;
         margin-bottom: 0;
-        font-size: 1.2em;
+        font-size: 1.0em;
         text-align: left;
         color: #000000
     }
