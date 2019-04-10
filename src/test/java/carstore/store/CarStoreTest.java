@@ -118,9 +118,9 @@ public class CarStoreTest {
     @Test
     public void whenGetByManufacturerThenQuery() {
         when(this.hbSession
-                .createQuery("from Car c where c.manufacturer = :manufacturer")
+                .createQuery("from Car c where c.manufacturer like :manufacturer")
         ).thenReturn(this.query);
-        when(this.query.setParameter("manufacturer", "Toyota")).thenReturn(this.query);
+        when(this.query.setParameter("manufacturer", "Toyota%")).thenReturn(this.query);
         when(this.query.list()).thenReturn(this.carList);
         var store = new CarStore();
         var result = store.getByManufacturer("Toyota").apply(this.hbSession);

@@ -100,15 +100,15 @@ public class CarStore implements Store {
     }
 
     /**
-     * Gets all cars by manufacturer.
+     * Gets all cars fitting given manufacturer template.
      *
-     * @return List of cars created today.
+     * @return List of cars fitting criteria.
      */
     @SuppressWarnings("unchecked")
-    public Function<Session, List<Car>> getByManufacturer(String manufacturer) {
+    public Function<Session, List<Car>> getByManufacturer(String manufacturerLike) {
         return this.functionTransaction(session ->
                 session.createQuery("from Car c where c.manufacturer like :manufacturer")
-                        .setParameter("manufacturer", String.format("%s%%", manufacturer))
+                        .setParameter("manufacturer", String.format("%s%%", manufacturerLike))
                         .list());
     }
 }
