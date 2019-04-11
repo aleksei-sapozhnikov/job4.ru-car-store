@@ -31,7 +31,7 @@
 
 **Кратко:** 
 
-PostgreSQL, JDBC, Hibernate, Liquibase, Servlet, Filter, JSP, HTML, CSS, Javascript, JQuery, JSON. 
+PostgreSQL, JDBC, Hibernate, Liquibase, Servlet, Filter, JSP, HTML, CSS, Bootstrap, Javascript, JQuery, JSON. 
 
 **Подробнее:**
 
@@ -52,10 +52,11 @@ PostgreSQL, JDBC, Hibernate, Liquibase, Servlet, Filter, JSP, HTML, CSS, Javascr
 1. На Frontend применена смесь:
    
    Статические элементы страницы (например, список вариантов в форме редактирования)
-   генерируются на сервере с помощью **JSP**. Свойства элементов задают атрибуты **HTML** и **CSS**.
+   генерируются на сервере с помощью **JSP**. 
+   Разметку и свойства элементов задают **HTML**, **CSS** и библиотека **Bootstrap**.
    
    Динамические элементы, появляющиеся с помощью **AJAX**-запросов без перезагрузки страницы,
-   обрабатываются с помощью **Javascript** и **Jquery**.
+   обрабатываются с помощью **Javascript** и библиотеки **Jquery**.
    
    Обмен данных между сервером и клиентом идет через **JSON**-объекты (FrontItem), описанные и на
    серверной, и на клиенской стороне. Для преобразования объекта в JSON-строку и наоборот на сервере
