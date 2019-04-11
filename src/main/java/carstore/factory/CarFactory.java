@@ -1,7 +1,6 @@
 package carstore.factory;
 
 import carstore.constants.Attributes;
-import carstore.exception.InvalidParametersException;
 import carstore.model.Car;
 import carstore.model.User;
 import carstore.util.Utils;
@@ -47,15 +46,15 @@ public class CarFactory {
      * @param req   Request object.
      * @param owner User to assign as car owner.
      * @return Car object created.
-     * @throws IOException                In case of problems.
-     * @throws ServletException           In case of problems.
-     * @throws InvalidParametersException If given parameters do not match the validator.
+     * @throws IOException              In case of problems.
+     * @throws ServletException         In case of problems.
+     * @throws IllegalArgumentException If given parameters do not match the validator.
      */
-    public Car createCar(HttpServletRequest req, User owner) throws IOException, ServletException, InvalidParametersException {
+    public Car createCar(HttpServletRequest req, User owner) throws IOException, ServletException {
         var strParams = this.getStrParams(req);
         var intParams = this.getIntParams(req);
         if (!this.validator.areValidParams(strParams, intParams)) {
-            throw new InvalidParametersException("One of car parameters did not pass validation.");
+            throw new IllegalArgumentException("One of car parameters did not pass validation.");
         }
         var car = Car.of(owner, strParams, intParams);
         car.setAvailable(this.getIsAvailable(req));

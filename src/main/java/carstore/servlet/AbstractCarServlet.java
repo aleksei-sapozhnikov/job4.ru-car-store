@@ -2,7 +2,6 @@ package carstore.servlet;
 
 import carstore.constants.Attributes;
 import carstore.constants.WebApp;
-import carstore.exception.InvalidParametersException;
 import carstore.factory.CarFactory;
 import carstore.factory.ImageFactory;
 import carstore.model.Car;
@@ -85,7 +84,7 @@ public abstract class AbstractCarServlet extends HttpServlet {
             Car car = this.saveOrUpdateCar(req);
             var resultMsg = String.format("Car (%s %s) saved.", car.getManufacturer(), car.getModel());
             this.redirect(req, resp, resultMsg, true);
-        } catch (InvalidParametersException e) {
+        } catch (IllegalArgumentException e) {
             var resultMsg = "Could not save car: one of car parameters did not pass validation";
             this.redirect(req, resp, resultMsg, false);
         }
@@ -100,7 +99,7 @@ public abstract class AbstractCarServlet extends HttpServlet {
      * @throws IOException      In case of problems.
      * @throws ServletException In case of problems.
      */
-    private Car saveOrUpdateCar(HttpServletRequest req) throws IOException, ServletException, InvalidParametersException {
+    private Car saveOrUpdateCar(HttpServletRequest req) throws IOException, ServletException {
         var loggedUserId = this.getLoggedUserId(req);
         var loggedUser = this.getLoggedUser(req);
         var images = this.imageFactory.createImageSet(req);

@@ -1,7 +1,6 @@
 package carstore.factory;
 
 import carstore.constants.Attributes;
-import carstore.exception.InvalidParametersException;
 import carstore.model.Car;
 import carstore.model.User;
 import carstore.util.Utils;
@@ -91,7 +90,7 @@ public class CarFactoryTest {
      * All parts are not null, so no exception will be thrown.
      */
     @Test
-    public void whenAllParametersPresentThenCreateCar() throws IOException, ServletException, InvalidParametersException {
+    public void whenAllParametersPresentThenCreateCar() throws IOException, ServletException {
         PowerMockito.mockStatic(Car.class);
         when(Car.of(this.user, this.createDefaultStrParams(), createDefaultIntParams())).thenReturn(this.car);
         // actions
@@ -108,7 +107,7 @@ public class CarFactoryTest {
      * We place some of the first parts 'null' and must get exception
      */
     @Test
-    public void whenNotAllStringPartsPresentThenServletException() throws IOException, ServletException, InvalidParametersException {
+    public void whenNotAllStringPartsPresentThenServletException() throws IOException, ServletException {
         // one of string params is not present
         when(this.req.getPart(Attributes.PRM_CAR_NEWNESS.v())).thenReturn(null);
         // actions
@@ -128,7 +127,7 @@ public class CarFactoryTest {
      * We give enough string not-null parts and then some 'null' of integer parts.
      */
     @Test
-    public void whenNotAllIntegerPartsPresentThenServletException() throws IOException, ServletException, InvalidParametersException {
+    public void whenNotAllIntegerPartsPresentThenServletException() throws IOException, ServletException {
         // one of integer params is not present
         when(this.req.getPart(Attributes.PRM_CAR_PRICE.v())).thenReturn(null);
         // actions
@@ -152,7 +151,7 @@ public class CarFactoryTest {
         var wasException = new boolean[]{false};
         try {
             factory.createCar(this.req, this.user);
-        } catch (InvalidParametersException e) {
+        } catch (IllegalArgumentException e) {
             wasException[0] = true;
             assertEquals("One of car parameters did not pass validation.", e.getMessage());
         }
