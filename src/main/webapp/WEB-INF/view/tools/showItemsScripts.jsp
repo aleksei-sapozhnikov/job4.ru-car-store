@@ -1,12 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <script>
-    function showItems(destination) {
+    function showItems(destination, urlParams) {
         $.ajax({
             type: 'GET',
             async: false,
             datatype: "application/json",
-            url: "<c:url value="/getAllCarItems"/>",
+            url: "<c:url value="/getAllCarItems"/>" + urlParams,
             success: function (response) {
                 if (response.error != null) {
                     alert(response.error);
@@ -27,8 +28,4 @@
         });
         $(destination).html(res);
     }
-
-    $(function () {
-        showItems();
-    });
 </script>

@@ -75,19 +75,33 @@ public class CreateUserServlet extends HttpServlet {
         var hbSession = (Session) req.getAttribute(Attributes.ATR_HB_SESSION.v());
         var saved = this.userStore.saveIfNotExists(user).apply(hbSession);
         if (saved) {
+            req.getSession().setAttribute(Attributes.ATR_LOGGED_USER_ID.v(), user.getId());
+            req.getSession().setAttribute(Attributes.ATR_LOGGED_USER_LOGIN.v(), user.getLogin());
             var resultMsg = String.format("User (%s) created", user.getLogin());
-            var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
-            var redirectPath = new StringBuilder()
-                    .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
-                    .append("?")
-                    .append(WebApp.MSG_SUCCESS.v()).append("=").append(codedMsg)
-                    .toString();
-            resp.sendRedirect(redirectPath);
+            this.redirectSuccess(req, resp, resultMsg);
         } else {
             var resultMsg = String.format("Login (%s) already exists", user.getLogin());
             req.setAttribute(WebApp.MSG_ERROR.v(), resultMsg);
             this.doGet(req, resp);
         }
+    }
+
+    /**
+     * Redirects to main page with success message.
+     *
+     * @param req       Request object.
+     * @param resp      Response object.
+     * @param resultMsg Message to send.
+     * @throws IOException In case of problems.
+     */
+    private void redirectSuccess(HttpServletRequest req, HttpServletResponse resp, String resultMsg) throws IOException {
+        var codedMsg = URLEncoder.encode(resultMsg, StandardCharsets.UTF_8);
+        var redirectPath = new StringBuilder()
+                .append((String) req.getServletContext().getAttribute(Attributes.ATR_CONTEXT_PATH.v()))
+                .append("?")
+                .append(WebApp.MSG_SUCCESS.v()).append("=").append(codedMsg)
+                .toString();
+        resp.sendRedirect(redirectPath);
     }
 
     /**

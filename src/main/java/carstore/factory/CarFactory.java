@@ -59,6 +59,7 @@ public class CarFactory {
         }
         var car = Car.of(owner, strParams, intParams);
         car.setAvailable(this.getIsAvailable(req));
+        car.setCreated(System.currentTimeMillis());
         car.setId(this.getCarId(req));
         return car;
     }

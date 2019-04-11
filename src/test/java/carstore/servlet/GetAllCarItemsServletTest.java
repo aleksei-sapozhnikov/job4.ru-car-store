@@ -59,9 +59,13 @@ public class GetAllCarItemsServletTest {
     @Mock
     private Car carId5, carId7;
     @Mock
-    private Image image1ForCarId5, image2ForCarId5, image1ForCarId7;
+    private List<Image> imageList;
     @Mock
     private FrontItem itemCarId5, itemCarId7;
+    @Mock
+    private Function<Session, List<Car>> getCarsFunction;
+    @Mock
+    private Function<Session, List<Image>> getImagesFunction;
 
     @Before
     public void initMocks() throws IOException {
@@ -73,46 +77,60 @@ public class GetAllCarItemsServletTest {
         when(this.sContext.getAttribute(Attributes.ATR_ITEM_FACTORY.v())).thenReturn(this.itemFactory);
         when(this.sContext.getAttribute(Attributes.ATR_JSON_PARSER.v())).thenReturn(this.jsonParser);
         when(this.resp.getWriter()).thenReturn(this.writer);
-    }
-
-    @Test
-    public void whenDestroyThenNothingIsDone() {
-        var servlet = new GetAllCarItemsServlet();
-        servlet.destroy();
-        verifyZeroInteractions(this.jsonParser, this.sContext, this.sConfig,
-                this.hbSession, this.req, this.resp, this.writer,
-                this.carStore, this.imageStore, this.itemFactory,
-                this.carId5, this.carId7,
-                this.image1ForCarId5, this.image2ForCarId5, this.image1ForCarId7,
-                this.itemCarId5, this.itemCarId7
-        );
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void whenDoGetThenSendsAllStoredCarsCOnvertedToItems() throws ServletException, IOException {
         // setup model objects
         when(this.carId5.getId()).thenReturn(5L);
         when(this.carId7.getId()).thenReturn(7L);
-        // setup get images for cars
-        var getImagesForCarId5 = (Function<Session, List<Image>>) mock(Function.class);
-        var getImagesForCarId7 = (Function<Session, List<Image>>) mock(Function.class);
-        when(this.imageStore.getForCar(5)).thenReturn(getImagesForCarId5);
-        when(this.imageStore.getForCar(7)).thenReturn(getImagesForCarId7);
-        when(getImagesForCarId5.apply(this.hbSession))
-                .thenReturn(List.of(this.image1ForCarId5, this.image2ForCarId5));
-        when(getImagesForCarId7.apply(this.hbSession))
-                .thenReturn(List.of(this.image1ForCarId7));
-        // setup get cars
-        var getCarsFunction = (Function<Session, List<Car>>) mock(Function.class);
-        when(this.carStore.getAll()).thenReturn(getCarsFunction);
-        when(getCarsFunction.apply(this.hbSession))
+        // setup cars returned from storage
+        when(this.getCarsFunction.apply(this.hbSession))
                 .thenReturn(List.of(this.carId5, this.carId7));
+        // setup get images for cars
+        when(this.imageStore.getForCar(anyLong())).thenReturn(this.getImagesFunction);
+        when(this.getImagesFunction.apply(this.hbSession)).thenReturn(this.imageList);
         // setup get items for cars
-        when(this.itemFactory.newFrontItem(this.carId5, List.of(this.image1ForCarId5, this.image2ForCarId5)))
-                .thenReturn(this.itemCarId5);
-        when(this.itemFactory.newFrontItem(this.carId7, List.of(this.image1ForCarId7)))
-                .thenReturn(this.itemCarId7);
+        when(this.itemFactory.newFrontItem(this.carId5, this.imageList)).thenReturn(this.itemCarId5);
+        when(this.itemFactory.newFrontItem(this.carId7, this.imageList)).thenReturn(this.itemCarId7);
+    }
+
+    @Test
+    public void whenDoGetWithoutParametersThenGetAllCarsAndConvertToItems() throws ServletException, IOException {
+        when(this.carStore.getAll()).thenReturn(this.getCarsFunction);
+        // actions
+        var servlet = new GetAllCarItemsServlet();
+        servlet.init(this.sConfig);
+        servlet.doGet(this.req, this.resp);
+        // verify
+        verify(this.jsonParser).toJson(Set.of(this.itemCarId5, itemCarId7), this.writer);
+    }
+
+    @Test
+    public void whenDoGetFilterByCreatedTodayThenGetAllCreatedToday() throws ServletException, IOException {
+        when(this.req.getParameter(Attributes.PRM_FILTER_BY.v())).thenReturn(Attributes.PRM_FILTER_BY_CREATED_TODAY.v());
+        when(this.carStore.getAllCreatedToday()).thenReturn(this.getCarsFunction);
+        // do actions
+        var servlet = new GetAllCarItemsServlet();
+        servlet.init(this.sConfig);
+        servlet.doGet(this.req, this.resp);
+        // verify
+        verify(this.jsonParser).toJson(Set.of(this.itemCarId5, itemCarId7), this.writer);
+    }
+
+    @Test
+    public void whenDoGetFilterByWithImageThenGetAllWithImage() throws ServletException, IOException {
+        when(this.req.getParameter(Attributes.PRM_FILTER_BY.v())).thenReturn(Attributes.PRM_FILTER_BY_WITH_IMAGE.v());
+        when(this.carStore.getAllWithImage()).thenReturn(this.getCarsFunction);
+        // do actions
+        var servlet = new GetAllCarItemsServlet();
+        servlet.init(this.sConfig);
+        servlet.doGet(this.req, this.resp);
+        // verify
+        verify(this.jsonParser).toJson(Set.of(this.itemCarId5, itemCarId7), this.writer);
+    }
+
+    @Test
+    public void whenDoGetFilterByManufacturerWithImageThenGetAllWithImage() throws ServletException, IOException {
+        when(this.req.getParameter(Attributes.PRM_FILTER_BY.v())).thenReturn(Attributes.PRM_FILTER_BY_MANUFACTURER.v());
+        when(this.req.getParameter(Attributes.PRM_FILTER_VALUE.v())).thenReturn("Toyota");
+        when(this.carStore.getByManufacturer("Toyota")).thenReturn(this.getCarsFunction);
         // do actions
         var servlet = new GetAllCarItemsServlet();
         servlet.init(this.sConfig);
