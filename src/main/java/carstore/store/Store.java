@@ -15,7 +15,7 @@ import java.util.function.Function;
 public interface Store {
 
     /**
-     * Returns function doing one Hibernate transaction.
+     * Returns function doing one Hibernate transaction with result returned.
      *
      * @param operations Operations to perform.
      * @param <T>        Result type.
@@ -37,6 +37,12 @@ public interface Store {
         };
     }
 
+    /**
+     * Returns consumer doing one Hibernate transaction without returning result.
+     *
+     * @param operations Operations to perform.
+     * @return Consumer to which session can be applied.
+     */
     default Consumer<Session> consumerTransaction(Consumer<Session> operations) {
         return session -> {
             var tx = session.beginTransaction();

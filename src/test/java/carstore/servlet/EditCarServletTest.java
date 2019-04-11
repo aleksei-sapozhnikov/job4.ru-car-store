@@ -2,7 +2,6 @@ package carstore.servlet;
 
 import carstore.constants.Attributes;
 import carstore.constants.WebApp;
-import carstore.exception.InvalidParametersException;
 import carstore.factory.CarFactory;
 import carstore.factory.ImageFactory;
 import carstore.model.Car;
@@ -127,7 +126,7 @@ public class EditCarServletTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void whenDoPostThenCarSavedOrUpdatedAndRedirectMainPageWithSuccess() throws ServletException, IOException, InvalidParametersException {
+    public void whenDoPostThenCarSavedOrUpdatedAndRedirectMainPageWithSuccess() throws ServletException, IOException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
         var getUserFunction = (Function<Session, User>) Mockito.mock(Function.class);
         when(this.userStore.get(111L)).thenReturn(getUserFunction);
@@ -152,7 +151,7 @@ public class EditCarServletTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void whenDoPostAndUserIsNotOwnerThenServletException() throws ServletException, IOException, InvalidParametersException {
+    public void whenDoPostAndUserIsNotOwnerThenServletException() throws ServletException, IOException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
         var getUserFunction = (Function<Session, User>) Mockito.mock(Function.class);
         when(this.userStore.get(111L)).thenReturn(getUserFunction);
@@ -176,13 +175,13 @@ public class EditCarServletTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void whenCarFactoryThrowsInvalidParametersExceptionThenRedirectWithError() throws ServletException, IOException, InvalidParametersException {
+    public void whenCarFactoryThrowsInvalidParametersExceptionThenRedirectWithError() throws ServletException, IOException {
         when(this.httpSession.getAttribute(Attributes.ATR_LOGGED_USER_ID.v())).thenReturn(111L);
         var getUserFunction = (Function<Session, User>) Mockito.mock(Function.class);
         when(this.userStore.get(111L)).thenReturn(getUserFunction);
         when(getUserFunction.apply(this.hbSession)).thenReturn(this.user);
         when(this.imageFactory.createImageSet(this.req)).thenReturn(this.imageSet);
-        when(this.carFactory.createCar(this.req, this.user)).thenThrow(new InvalidParametersException("expected"));
+        when(this.carFactory.createCar(this.req, this.user)).thenThrow(new IllegalArgumentException("expected"));
         // actions
         var servlet = new EditCarServlet();
         servlet.init(this.sConfig);
