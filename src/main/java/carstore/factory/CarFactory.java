@@ -29,7 +29,7 @@ public class CarFactory {
     /**
      * Validator for parameters which are used to create car.
      */
-    private CarParamsValidator validator;
+    private final CarParamsValidator validator;
 
     /**
      * Constructor.
