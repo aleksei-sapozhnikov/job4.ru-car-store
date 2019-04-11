@@ -51,7 +51,7 @@
 
 **Кратко:** 
 
-PostgreSQL, JDBC, Hibernate, Liquibase, Servlet, Filter, JSP, HTML, CSS, Bootstrap, Javascript, JQuery, JSON. 
+PostgreSQL, JDBC, Hibernate, Liquibase, Servlet, Filter, Junit, Mockito, PowerMock, JSP, HTML, CSS, Bootstrap, Javascript, JQuery, JSON.
 
 **Подробнее:**
 
@@ -68,6 +68,10 @@ PostgreSQL, JDBC, Hibernate, Liquibase, Servlet, Filter, JSP, HTML, CSS, Bootstr
    
    Инициализация объектов производится в слушателе контекста при инициализации приложения. 
    Далее объекты передаются как параметры контекста.
+   
+1. Юнит-тестирование производилось с использованием библиотеки **JUnit**.
+   Нужные объекты и методы подменялись при помощи библиотеки **Mockito**. 
+   Также некоторые статические методы подменялись при помощи библиотеки **Powermock**.
    
 1. На Frontend применена смесь:
    
